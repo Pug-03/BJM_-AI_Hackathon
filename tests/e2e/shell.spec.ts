@@ -10,7 +10,7 @@ test("landing renders with one h1 and correct lang", async ({ page }) => {
 test("Thai locale switches copy and lang", async ({ page }) => {
   await page.goto("/th");
   await expect(page.locator("html")).toHaveAttribute("lang", "th");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("งานที่ใช่ สำหรับทุกคน");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("งานที่ใช่ สำหรับคุณ");
 });
 
 test("root redirects to English by default", async ({ page }) => {

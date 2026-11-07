@@ -163,10 +163,9 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             ) : null}
             <div className="flex flex-col gap-3">
               <Button
-                variant="outline"
+                variant="primary"
                 size="lg"
                 block
-                className="bg-raised"
                 onClick={google}
                 disabled={!available}
                 aria-describedby={googleNote ? "google-note" : undefined}
@@ -175,10 +174,9 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
                 {t("google")}
               </Button>
               <Button
-                variant="outline"
+                variant="secondary"
                 size="lg"
                 block
-                className="bg-raised"
                 onClick={() => go("email", 1)}
                 disabled={!available}
               >

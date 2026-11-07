@@ -13,7 +13,7 @@ export const Switch = React.forwardRef<
     className={cn(
       "relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-colors duration-200",
       "bg-cloud data-[state=checked]:bg-brand disabled:cursor-not-allowed disabled:opacity-50",
-      "outline-offset-2 before:absolute before:-inset-2 before:content-['']",
+      "outline-offset-2 before:absolute before:-inset-2.5 before:content-['']",
       className,
     )}
     {...props}

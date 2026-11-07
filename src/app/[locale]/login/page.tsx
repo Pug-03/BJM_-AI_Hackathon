@@ -40,7 +40,6 @@ export default async function LoginPage({
 
   return (
     <div className="bg-mist flex min-h-dvh flex-col">
-      <KeyNotice missing={missingServices()} />
       <header className="flex h-16 items-center justify-between px-4 md:px-8">
         <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
@@ -62,6 +61,7 @@ export default async function LoginPage({
           next={safeNext(next)}
         />
       </main>
+      <KeyNotice missing={missingServices()} />
     </div>
   );
 }

@@ -110,10 +110,11 @@
     "mockField": "About you",
     "mockListening": "Listening…",
     "mockFilled": "I answer customer chats in Thai and English and keep orders on track.",
-    "mockMatch": "Why this match: live chat, Thai–English, remote",
+    "mockMatch": "Why this match: live chat, Thai⁠–⁠English, remote",
     "mockSkill1": "Live chat",
-    "mockSkill2": "Thai–English",
-    "mockSkill3": "Excel"
+    "mockSkill2": "Thai⁠–⁠English",
+    "mockSkill3": "Excel",
+    "mockJustNow": "Just now"
   },
   "styleguide": {
     "title": "ABLE design system",

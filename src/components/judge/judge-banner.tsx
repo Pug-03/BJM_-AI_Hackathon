@@ -22,7 +22,7 @@ export function JudgeBanner({ role }: { role: "TALENT" | "EMPLOYER" | "ADMIN" | 
     window.location.assign(`/${locale}`);
   };
   const linkCls =
-    "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-medium underline underline-offset-2 hover:no-underline disabled:opacity-60 focus-visible:outline-current";
+    "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-medium underline underline-offset-2 hover:no-underline disabled:opacity-60 focus-visible:outline-current focus-visible:outline-offset-[-2px]";
   return (
     <div
       role="region"
@@ -31,7 +31,7 @@ export function JudgeBanner({ role }: { role: "TALENT" | "EMPLOYER" | "ADMIN" | 
     >
       <Gavel className="size-4 shrink-0" aria-hidden />
       <span className="hidden sm:inline">{t("banner")}</span>
-      <span className="sm:hidden">{t("bannerShort")}</span>
+      <span className="whitespace-nowrap sm:hidden">{t("bannerShort")}</span>
       <span className="flex items-center gap-x-1 whitespace-nowrap">
         <button type="button" onClick={() => void sw()} disabled={busy} className={linkCls}>
           {busy ? t("switching") : role === "TALENT" ? t("toEmployer") : t("toTalent")}

@@ -35,7 +35,7 @@ export function Avatar({ src, name, size = "md", className, alt = "" }: AvatarPr
         delayMs={src ? 300 : 0}
         // Initials are drawn with CSS content so they never leak into a parent control's
         // accessible name (e.g. an "Account menu" button). Neutral, not violet (§4.2).
-        className="bg-cloud text-graphite flex size-full items-center justify-center font-semibold before:content-[attr(data-initials)]"
+        className="bg-avatar text-graphite flex size-full items-center justify-center font-semibold before:content-[attr(data-initials)]"
         data-initials={initials(name)}
         aria-hidden
       />

@@ -21,7 +21,6 @@ export function AppShell({
       <IconRail user={user} />
       <div className="md:pl-[var(--rail-w)]">
         {banner}
-        <KeyNotice missing={missingServices()} />
         <TopBar user={user} />
         <main
           id="main"
@@ -32,6 +31,7 @@ export function AppShell({
         </main>
       </div>
       <BottomNav user={user} />
+      <KeyNotice missing={missingServices()} aboveBottomNav />
     </div>
   );
 }

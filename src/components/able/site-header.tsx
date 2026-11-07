@@ -15,7 +15,6 @@ export function SiteHeader() {
   const tb = useTranslations("brand");
   return (
     <>
-      <KeyNotice missing={missingServices()} />
       <header className="border-line bg-paper relative z-20 border-b">
         <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-4 md:px-8">
           <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
@@ -55,6 +54,7 @@ export function SiteHeader() {
           </div>
         </div>
       </header>
+      <KeyNotice missing={missingServices()} />
     </>
   );
 }

@@ -16,10 +16,10 @@ export default async function WelcomePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ intent?: string }>;
+  searchParams: Promise<{ intent?: string; role?: string }>;
 }) {
   const { locale } = await params;
-  const { intent } = await searchParams;
+  const { intent, role } = await searchParams;
   setRequestLocale(locale);
   const user = await getCurrentUser();
   if (!user) return redirect({ href: "/login?next=/welcome", locale });
@@ -47,7 +47,11 @@ export default async function WelcomePage({
           <h1 className="text-h1 tracking-display">{t("title")}</h1>
           <p className="text-graphite">{t("subtitle")}</p>
         </header>
-        <RoleChooser initial={intent === "hire" ? "EMPLOYER" : undefined} />
+        <RoleChooser
+          initial={
+            role === "TALENT" || role === "EMPLOYER" ? role : intent === "hire" ? "EMPLOYER" : undefined
+          }
+        />
       </main>
     </div>
   );

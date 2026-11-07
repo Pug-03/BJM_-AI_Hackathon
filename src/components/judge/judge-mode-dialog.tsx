@@ -15,7 +15,7 @@ export function JudgeModeDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="secondary" size="sm">
           <Gavel aria-hidden />
           {t("button")}
         </Button>

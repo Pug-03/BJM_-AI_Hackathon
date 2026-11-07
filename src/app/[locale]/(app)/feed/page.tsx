@@ -35,7 +35,9 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
       <header className="flex flex-col gap-2">
         <h1 className="text-h1 tracking-display">{t("title")}</h1>
         <p className="text-graphite">{employer ? t("employerIntro") : t("talentIntro")}</p>
-        <p className="text-caption text-graphite">{t("sampleNote")}</p>
+        {!user.isSandbox && items.some((i) => i.sample) ? (
+          <p className="text-caption text-graphite">{t("sampleNote")}</p>
+        ) : null}
       </header>
       {items.length ? (
         <ul className="grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-2">

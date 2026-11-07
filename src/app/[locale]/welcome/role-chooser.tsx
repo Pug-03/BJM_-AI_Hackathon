@@ -28,6 +28,9 @@ export function RoleChooser({ initial }: { initial?: "TALENT" | "EMPLOYER" }) {
   const [role, setRole] = React.useState<"TALENT" | "EMPLOYER" | undefined>(initial);
   const locale = useLocale();
   const [pending, start] = React.useTransition();
+  // Until hydration, a click would trigger a native GET submit and lose the choice.
+  const [hydrated, setHydrated] = React.useState(false);
+  React.useEffect(() => setHydrated(true), []);
   const [failed, setFailed] = React.useState(false);
   const [nudge, setNudge] = React.useState(false);
   const submit = (e: React.FormEvent) => {
@@ -121,7 +124,7 @@ export function RoleChooser({ initial }: { initial?: "TALENT" | "EMPLOYER" }) {
           </p>
         ) : null}
       </div>
-      <Submit disabled={false} pending={pending} />
+      <Submit disabled={!hydrated} pending={pending} />
     </form>
   );
 }

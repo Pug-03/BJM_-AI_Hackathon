@@ -18,7 +18,6 @@ export const buttonVariants = cva(
         primary:
           "bg-ink text-paper hover:opacity-90 disabled:bg-cloud disabled:text-graphite disabled:opacity-100 aria-busy:bg-ink aria-busy:text-paper",
         secondary: "bg-mist text-ink hover:bg-cloud",
-        outline: "border border-field-line bg-paper text-ink hover:bg-mist",
         ghost: "text-ink hover:bg-mist",
         link: "h-auto px-0 text-brand underline-offset-4 hover:underline",
         destructive: "border border-danger text-danger hover:bg-danger/10",

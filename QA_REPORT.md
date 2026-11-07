@@ -15,6 +15,7 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 | 1 | 1 | – | – | – | – | – | – | – | – | – | – | – | lint/type/unit pass; e2e blocked (networkidle + overwritten build) | 1 serious (select placeholder) | invalid (dev build) |
 | 1+2 | 2 | 5 | 7 | 5 | 6 | 5 | 7 | 6 | 7 | 7 | 3 | 5.8 | 50/50 e2e after fixes | 0 serious/critical | /en 90·100·100·100, CLS 0.08 ✗; /login 89·100·96·60 (noindex) |
 | 3 (full) | 1 | 6 | 7 | 6 | 5 | 6 | 7 | 6 | 7 | 7 | 5 | 6.2 | 38/50 (ENOENT clash) → 58/58 after fixes | 0 serious/critical at 390; 1 serious after (avatar name mismatch) → fixed | /en 90·100·100·100; explore 90; login 92; judge 91; CLS 0 |
+| 3 (full) | 2 | 7 | 7 | 6 | 8 | 7 | 6 | 7 | 7 | 7 | 5 | 6.7 | 57/58 (welcome pre-hydration race) → 58/58 after fixes | 0 serious/critical, 0 moderate | /en 91 (median of 90/92/91)·100·100·100; explore/login/judge 100; CLS 0 |
 
 ## Notes per loop
 
@@ -60,3 +61,26 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
   - The judge cards gave no sign they could be clicked.
   - The login logo appeared twice.
 - All of the above are fixed. Axe now runs with reduced motion so it never measures mid-fade.
+
+**Stage 3, full check, loop 2.**
+- Agent A found:
+  - Clicking Continue on /welcome before hydration did a native GET submit, losing the user's choice.
+  - The banner text wrapped at 320px.
+  - The Thai compound word "งานที่ใช่" split across lines.
+  - The feed note referred to "Sample" badges that aren't shown in judge mode.
+- Agent C: all targets passed. It also found:
+  - The key notice covered primary buttons on small phones, and the footer "Judge mode" button on mobile.
+  - The LCP cover image wasn't preloaded.
+  - The switch hit area was 42px tall.
+  - The banner focus ring was clipped at the top of the viewport.
+- Agent B found:
+  - The mic field grew when its text filled in, shifting the layout.
+  - The hero order didn't match §5 (it should be headline → mock → CTA).
+  - The cover read as a loading skeleton.
+  - Avatars almost disappeared in dark mode.
+  - The mobile footer was too long.
+  - The /judge content didn't line up with the header grid.
+  - Small text left orphans and broke at dashes.
+  - Login used an undefined `outline` button variant.
+  - The Thai headline meaning drifted from "Work that fits you."
+- All of the above are fixed. The Thai headline is now "งานที่ใช่ สำหรับคุณ".

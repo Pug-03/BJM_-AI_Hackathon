@@ -24,13 +24,15 @@ export default async function JudgePage({ params }: { params: Promise<{ locale: 
       <main
         id="main"
         tabIndex={-1}
-        className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-16 focus:outline-none md:py-24"
+        className="mx-auto max-w-[1200px] px-4 py-16 focus:outline-none md:px-8 md:py-24"
       >
-        <header className="flex flex-col gap-2">
-          <h1 className="text-h1 tracking-display">{t("title")}</h1>
-          <p className="measure text-graphite">{t("body")}</p>
-        </header>
-        <JudgeChoices />
+        <div className="flex max-w-2xl flex-col gap-6">
+          <header className="flex flex-col gap-2">
+            <h1 className="text-h1 tracking-display">{t("title")}</h1>
+            <p className="measure text-graphite">{t("body")}</p>
+          </header>
+          <JudgeChoices />
+        </div>
       </main>
       <SiteFooter />
     </>
