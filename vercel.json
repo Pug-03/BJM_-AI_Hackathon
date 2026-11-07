@@ -1,0 +1,3 @@
+{
+  "crons": [{ "path": "/api/cron/judge-reset", "schedule": "0 3 * * *" }]
+}

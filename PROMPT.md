@@ -323,20 +323,24 @@ model AuditLog { id String @id @default(cuid()) actorUserId String? action Strin
  
 ---
  
-## 12. The QA loop — run at the END OF EVERY STAGE (mandatory)
+## 12. QA process (updated during the build at the owner's request)
  
-After finishing each stage in section 13, run this loop. **Use subagents** (Claude Code Task/agent tool) so review is independent from the builder:
+### 12.1 Quick check — after EVERY stage (mandatory)
+Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, plus Playwright screenshots of the pages touched in the stage at **3 viewports only — 390×844, 820×1180, 1440×900 — light theme, English**. Fix every failure, then continue. No design-scoring agents in the quick check. Log the result in `QA_REPORT.md`.
  
-1. **Agent A — QA engineer:** `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, then Playwright e2e for everything built so far, and Playwright **screenshots of every page touched in this stage** at these viewports:
+### 12.2 Full QA loop — ONLY after Stage 3, Stage 7, Stage 8 and Stage 11
+Use subagents (Claude Code Task/agent tool) so review is independent from the builder:
+ 
+1. **Agent A — QA engineer:** `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, then Playwright e2e for everything built so far, and Playwright **screenshots of every page** at these viewports:
    - Phones: 320×568, 375×667, 390×844, 393×852, 430×932
    - Tablets: 768×1024, 820×1180, 1024×768, 1024×1366
    - Desktop: 1280×800, 1440×900, 1920×1080
    - Both light and dark theme, EN and TH.
    Reports failures with file:line.
 2. **Agent B — design critic (use the frontend-design skill if available):** looks at the screenshots and scores 1–10 with one-line reasons: Visual polish · Typography · Spacing & alignment · Colour use · Responsiveness (no overflow, no clipped text, tap targets) · Motion smoothness (check for layout shift, jank, reduced-motion) · UX clarity (can a first-time user finish the flow?) · Copy quality (sentence case, plain words, consistent action names) · Consistency with section 4 tokens · Delight (the mic moment). It must be strict: a 10 means a senior designer at a world-class product company would ship it unchanged.
-3. **Agent C — accessibility & performance:** axe on every route (0 serious/critical), keyboard walkthrough of the stage's flows, Lighthouse mobile (targets: Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 90), checks CLS < 0.05 and that animations use transform/opacity only.
-4. **Builder fixes everything reported**, then **re-run 1–3**. Repeat until: all tests pass, axe clean, Lighthouse targets met, **every design score ≥ 9 (aim for 10)**. Maximum **5 loops per stage** — if still below target, write the remaining issues to `QA_REPORT.md` and continue (don't stall the build).
-5. Append the stage's final score table and screenshots path to `QA_REPORT.md`:
+3. **Agent C — accessibility & performance:** axe on every route (0 serious/critical), keyboard walkthrough of the flows, Lighthouse mobile (targets: Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 90), checks CLS < 0.05 and that animations use transform/opacity only.
+4. **Builder fixes everything reported**, then **re-runs 1–3**. Repeat until: all tests pass, axe clean, Lighthouse targets met, **every design score ≥ 9**. Maximum **3 loops per full check** — if still below target, write the remaining issues to `QA_REPORT.md` and continue (don't stall the build).
+5. Append the final score table and screenshots path to `QA_REPORT.md`:
    `| Stage | Loop | Polish | Type | Spacing | Colour | Responsive | Motion | UX | Copy | Consistency | Delight | Avg | Tests | axe | Lighthouse |`
 Scores must be honest — never inflate a score to exit the loop.
  
@@ -345,18 +349,18 @@ Scores must be honest — never inflate a score to exit the loop.
 ## 13. Build order (commit after every stage, keep the app runnable)
  
 **All stages are mandatory, in this order:**
-1. **Foundation:** scaffold, tokens, fonts, i18n (EN default, TH), theme, app shell (icon rail / bottom nav), motion library, UI components, `.env.example`, Prisma schema, seed script skeleton. → QA loop.
-2. **Auth:** Better Auth with Google + Email OTP, `/login`, `/welcome`, session handling, route protection. → QA loop.
-3. **Judge mode + seed data:** sandbox accounts, 12 realistic sample talent (diverse, fictional, labelled "Sample"), 5 sample organizations of each type, needs, posts, reviews, conversations. → QA loop. (Do this early: it guarantees a demo even if later stages slip.)
-4. **Talent onboarding + profile page** (including uploads, cover, posts, certificates, reviews display, ProgressPill, contact visibility). → QA loop.
-5. **"Speak to fill"** — `MicInput`/`MicTextarea` everywhere + "Fill my profile by voice" (transcribe → Claude structures into fields with Zod → review UI with accept/edit per field, AI label) + "Write with AI" bio. → QA loop.
-6. **Employer onboarding + hiring needs + matched feed** (embeddings, scoring, "Why this match", star/follow/skip, filters, swipe on mobile). → QA loop.
-7. **Messages** (realtime text, images/files, voice notes, read receipts, offer cards, translate, block/report) + **voice/video calls** (Daily). → QA loop.
-8. **Landing page** (all of section 6, sponsors strip with placeholders, how-to guide, FAQ, footer judge button) + policy pages + cookie banner + settings (export/delete). → QA loop.
-9. **Social & trust features:** notifications page (in-app, realtime) + email notifications for new messages/offers (Resend, user can turn off), review-writing flow (only after a conversation with an accepted offer; 1–5 stars + text; one per conversation), comments and likes on posts, `/admin` (verification approvals, reports queue, user suspension), Section 33 calculator page, `/built-vs-planned` page. → QA loop.
-10. **Production hardening:** error boundaries and friendly error/404/500 pages, loading states on every route, SEO (metadata, Open Graph images per profile, sitemap, robots), PWA manifest + icons (installable on phones), image optimization (`next/image`, responsive sizes), caching strategy, Sentry error monitoring (optional key), structured server logs without PII, database indexes for feed/search/messages, rate limits verified, security headers (CSP, HSTS, X-Frame-Options, Referrer-Policy). → QA loop.
-11. **Deployment:** deploy to **Vercel** (app) + **Supabase** (Postgres with pgvector, Storage, Realtime). Document every step in `DEPLOY.md`: env vars, Google OAuth redirect URIs for the production domain, Resend domain verification, Supabase bucket policies, running migrations and seed, setting up the judge-sandbox reset cron (Vercel Cron). Run the full QA loop against the deployed URL, including real Google sign-in, real OTP email, real file upload, realtime chat between two browsers, and a real voice/video call. → final QA loop.
-Nothing in this list is optional. If a stage reveals a problem in an earlier stage, fix it there and re-run that stage's QA loop.
+1. **Foundation:** scaffold, tokens, fonts, i18n (EN default, TH), theme, app shell (icon rail / bottom nav), motion library, UI components, `.env.example`, Prisma schema, seed script skeleton. → quick check.
+2. **Auth:** Better Auth with Google + Email OTP, `/login`, `/welcome`, session handling, route protection. → quick check.
+3. **Judge mode + seed data:** sandbox accounts, 12 realistic sample talent (diverse, fictional, labelled "Sample"), 5 sample organizations of each type, needs, posts, reviews, conversations. → quick check + full QA loop. (Do this early: it guarantees a demo even if later stages slip.)
+4. **Talent onboarding + profile page** (including uploads, cover, posts, certificates, reviews display, ProgressPill, contact visibility). → quick check.
+5. **"Speak to fill"** — `MicInput`/`MicTextarea` everywhere + "Fill my profile by voice" (transcribe → Claude structures into fields with Zod → review UI with accept/edit per field, AI label) + "Write with AI" bio. → quick check.
+6. **Employer onboarding + hiring needs + matched feed** (embeddings, scoring, "Why this match", star/follow/skip, filters, swipe on mobile). → quick check.
+7. **Messages** (realtime text, images/files, voice notes, read receipts, offer cards, translate, block/report) + **voice/video calls** (Daily). → quick check + full QA loop.
+8. **Landing page** (all of section 6, sponsors strip with placeholders, how-to guide, FAQ, footer judge button) + policy pages + cookie banner + settings (export/delete). → quick check + full QA loop.
+9. **Social & trust features:** notifications page (in-app, realtime) + email notifications for new messages/offers (Resend, user can turn off), review-writing flow (only after a conversation with an accepted offer; 1–5 stars + text; one per conversation), comments and likes on posts, `/admin` (verification approvals, reports queue, user suspension), Section 33 calculator page, `/built-vs-planned` page. → quick check.
+10. **Production hardening:** error boundaries and friendly error/404/500 pages, loading states on every route, SEO (metadata, Open Graph images per profile, sitemap, robots), PWA manifest + icons (installable on phones), image optimization (`next/image`, responsive sizes), caching strategy, Sentry error monitoring (optional key), structured server logs without PII, database indexes for feed/search/messages, rate limits verified, security headers (CSP, HSTS, X-Frame-Options, Referrer-Policy). → quick check.
+11. **Deployment:** deploy to **Vercel** (app) + **Supabase** (Postgres with pgvector, Storage, Realtime). Document every step in `DEPLOY.md`: env vars, Google OAuth redirect URIs for the production domain, Resend domain verification, Supabase bucket policies, running migrations and seed, setting up the judge-sandbox reset cron (Vercel Cron). Run the full QA loop against the deployed URL, including real Google sign-in, real OTP email, real file upload, realtime chat between two browsers, and a real voice/video call. → full QA loop (final).
+Nothing in this list is optional. If a stage reveals a problem in an earlier stage, fix it there and re-run the quick check.
  
 ---
  

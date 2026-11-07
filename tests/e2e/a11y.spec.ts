@@ -12,7 +12,7 @@ for (const r of routes.filter((x) => !x.auth || x.auth === "new")) {
         const page = await ctx.newPage();
         await page.goto(`/${locale}${r.path === "/" ? "" : r.path}`, { waitUntil: "load" });
         await page.evaluate(() => document.fonts.ready);
-        await page.waitForTimeout(400);
+        await page.waitForTimeout(1500);
         const results = await new AxeBuilder({ page })
           .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
           .analyze();

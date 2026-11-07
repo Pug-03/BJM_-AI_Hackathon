@@ -41,8 +41,8 @@ export default async function LoginPage({
   return (
     <div className="bg-mist flex min-h-dvh flex-col">
       <KeyNotice missing={missingServices()} />
-      <header className="flex items-center justify-between px-4 py-3 md:px-8">
-        <Link href="/" aria-label={tb("home")} className="rounded-lg">
+      <header className="flex h-16 items-center justify-between px-4 md:px-8">
+        <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
         </Link>
         <div className="flex items-center">
@@ -53,7 +53,7 @@ export default async function LoginPage({
       <main
         id="main"
         tabIndex={-1}
-        className="flex flex-1 items-start justify-center px-4 pt-6 pb-16 focus:outline-none sm:items-center sm:pt-0"
+        className="flex flex-1 items-start justify-center px-4 pt-4 pb-16 focus:outline-none sm:pt-[8vh]"
       >
         <LoginCard
           googleEnabled={services.google()}

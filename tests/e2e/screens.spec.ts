@@ -8,13 +8,18 @@ import { signInFresh } from "./helpers";
  * Output: qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewport>.png
  */
 const stage = process.env.QA_STAGE ? Number(process.env.QA_STAGE) : undefined;
+// QA_QUICK=1 → quick check (section 12.1): 3 viewports, light theme, English only.
+const quick = process.env.QA_QUICK === "1";
+const vps = quick ? viewports.filter((v) => ["390x844", "820x1180", "1440x900"].includes(v.name)) : viewports;
+const locs = quick ? (["en"] as const) : locales;
+const ths = quick ? (["light"] as const) : themes;
 const selected = routes.filter(
   (r) => (!r.auth || r.auth === "new") && (stage === undefined || r.stage === stage),
 );
 
 for (const r of selected) {
-  for (const locale of locales) {
-    for (const theme of themes) {
+  for (const locale of locs) {
+    for (const theme of ths) {
       test(`${r.name} ${locale} ${theme}`, async ({ browser, baseURL }) => {
         const ctx = await browser.newContext({ colorScheme: theme, reducedMotion: "reduce" });
         if (r.auth === "new") await signInFresh(ctx, baseURL!);
@@ -25,7 +30,7 @@ for (const r of selected) {
             localStorage.setItem("able-qa", "1");
           } catch {}
         });
-        for (const vp of viewports) {
+        for (const vp of vps) {
           await page.setViewportSize({ width: vp.width, height: vp.height });
           await page.goto(`/${locale}${r.path === "/" ? "" : r.path}`, { waitUntil: "load" });
           await page.evaluate(() => document.fonts.ready);

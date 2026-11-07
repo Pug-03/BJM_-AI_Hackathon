@@ -2,9 +2,9 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export const inputBase = [
-  "w-full rounded-[14px] border border-transparent bg-mist px-4 text-ink placeholder:text-muted",
+  "w-full rounded-[14px] border border-field-line bg-paper px-4 text-ink placeholder:text-muted",
   "transition-[border-color,background-color] duration-200 ease-smooth",
-  "hover:bg-cloud focus:border-brand focus:bg-paper focus:ring-4 focus:ring-brand/20 focus:outline-none focus-visible:outline-none",
+  "hover:border-graphite focus:border-brand focus:bg-paper focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
   "aria-[invalid=true]:border-danger disabled:opacity-60",
 ].join(" ");
 

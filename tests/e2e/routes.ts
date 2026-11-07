@@ -13,6 +13,7 @@ export const routes: QaRoute[] = [
   { path: "/styleguide", stage: 1, name: "styleguide" },
   { path: "/login", stage: 2, name: "login" },
   { path: "/welcome", stage: 2, name: "welcome", auth: "new" },
+  { path: "/judge", stage: 3, name: "judge" },
 ];
 
 export const viewports = [

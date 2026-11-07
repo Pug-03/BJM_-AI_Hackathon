@@ -5,6 +5,7 @@ import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
 import { SponsorStrip } from "./sponsor-strip";
+import { SiteMenu } from "./site-menu";
 import { KeyNotice } from "./key-notice";
 import { missingServices } from "@/lib/env";
 
@@ -18,7 +19,7 @@ export function SiteHeader() {
       <KeyNotice missing={missingServices()} />
       <header className="border-line bg-paper relative z-20 border-b">
         <div className="mx-auto hidden max-w-[1200px] items-center justify-end gap-3 px-4 pt-2 md:flex md:px-8">
-          <span className="text-graphite text-[11px]">{t("supportedBy")}</span>
+          <span className="text-graphite text-caption">{t("supportedBy")}</span>
           <SponsorStrip />
         </div>
         <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-4 md:px-8">
@@ -49,12 +50,13 @@ export function SiteHeader() {
               <LanguageSwitch />
               <ThemeSwitch />
             </div>
-            <Button asChild variant="ghost" size="sm">
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
               <Link href="/login">{tn("login")}</Link>
             </Button>
-            <Button asChild size="sm" className="hidden min-[400px]:inline-flex">
+            <Button asChild size="sm">
               <Link href="/login">{tn("getStarted")}</Link>
             </Button>
+            <SiteMenu />
           </div>
         </div>
       </header>

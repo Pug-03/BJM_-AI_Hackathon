@@ -26,7 +26,7 @@ export function AppShell({
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-[1200px] px-4 pt-6 pb-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom)+40px)] focus:outline-none md:px-8 md:pt-10 md:pb-16"
+          className="mx-auto w-full max-w-[1200px] px-4 pt-6 pb-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom)+112px)] focus:outline-none md:px-8 md:pt-10 md:pb-28"
         >
           <PageTransition>{children}</PageTransition>
         </main>

@@ -10,6 +10,8 @@ export async function rateLimit(
   max: number,
   windowSec: number,
 ): Promise<{ ok: boolean; retryAfter: number }> {
+  // The E2E suite signs in many times from one IP; limits are relaxed only in that mode (never on Vercel).
+  if (process.env.ABLE_E2E_OTP && !process.env.VERCEL) max = max * 50;
   const now = Date.now();
   const k = `able:${key}`;
   try {

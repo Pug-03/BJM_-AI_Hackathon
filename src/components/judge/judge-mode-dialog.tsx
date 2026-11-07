@@ -1,0 +1,28 @@
+"use client";
+
+import * as React from "react";
+import { useTranslations } from "next-intl";
+import { Gavel } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { JudgeChoices } from "./judge-choices";
+
+/** Footer "Judge mode" button + dialog. */
+export function JudgeModeDialog() {
+  const t = useTranslations("judge");
+  const tc = useTranslations("common");
+  const [open, setOpen] = React.useState(false);
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          <Gavel aria-hidden />
+          {t("button")}
+        </Button>
+      </DialogTrigger>
+      <DialogContent title={t("title")} description={t("body")} closeLabel={tc("close")}>
+        <JudgeChoices onCancel={() => setOpen(false)} />
+      </DialogContent>
+    </Dialog>
+  );
+}

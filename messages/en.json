@@ -99,7 +99,21 @@
     "headline": "Work that fits you.",
     "subline": "Show what you can do. Get found by employers who want to hire you.",
     "ctaPrimary": "Get started",
-    "ctaSecondary": "I’m hiring"
+    "ctaSecondary": "I’m hiring",
+    "example": "Example",
+    "mockAlt": "Example of an ABLE profile card, an employer message and the mic filling a field by voice.",
+    "mockName": "Ploy Jaidee",
+    "mockHeadline": "Customer support · Bangkok",
+    "mockRating": "4.9 (18 reviews)",
+    "mockFrom": "Bright Path Co.",
+    "mockMessage": "Hi Ploy, your support experience is a great fit. Can we talk this week?",
+    "mockField": "About you",
+    "mockListening": "Listening…",
+    "mockFilled": "I answer customer chats in Thai and English and keep orders on track.",
+    "mockMatch": "Why this match: live chat, Thai–English, remote",
+    "mockSkill1": "Live chat",
+    "mockSkill2": "Thai–English",
+    "mockSkill3": "Excel"
   },
   "styleguide": {
     "title": "ABLE design system",
@@ -175,13 +189,21 @@
     "h3": "Heading three",
     "starN": "{n} stars",
     "emptyTitle": "No saved talent yet",
-    "emptyBody": "Star people from your feed and they’ll appear here."
+    "emptyBody": "Star people from your feed and they’ll appear here.",
+    "skillA": "Customer support",
+    "skillB": "Excel",
+    "sugg1": "Data entry",
+    "sugg2": "Graphic design",
+    "sugg3": "Thai–English translation",
+    "sugg4": "Bookkeeping",
+    "sugg5": "Video editing"
   },
   "explore": {
     "title": "Explore talent",
     "subtitle": "Browse people by skill, location and how they like to work.",
     "emptyTitle": "No profiles yet",
-    "emptyBody": "Profiles appear here as soon as talent publish them."
+    "emptyBody": "New profiles show up here as soon as people publish them.",
+    "emptyAction": "Create your profile"
   },
   "site": {
     "howItWorks": "How it works",
@@ -189,7 +211,9 @@
     "faq": "FAQ",
     "supportedBy": "Supported by",
     "sponsorLogo": "Sponsor logo",
-    "primaryNav": "Site"
+    "primaryNav": "Site",
+    "menu": "Menu",
+    "openMenu": "Open menu"
   },
   "auth": {
     "title": "Welcome to ABLE",
@@ -234,7 +258,11 @@
     "continue": "Continue",
     "choose": "Choose how you’ll use ABLE",
     "saving": "Setting up…",
-    "error": "We couldn’t save your choice. Please try again."
+    "error": "We couldn’t save your choice. Please try again.",
+    "talentMeta": "Free · about 5 minutes · speak or type",
+    "employerMeta": "Free · post your first role in minutes",
+    "chooseFirst": "Choose one option to continue",
+    "signOut": "Sign out"
   },
   "onboarding": {
     "talentTitle": "Build your profile",
@@ -245,5 +273,47 @@
     "notFoundTitle": "We can’t find that page",
     "notFoundBody": "It may have moved, or the link may be wrong.",
     "home": "Go to the home page"
+  },
+  "judge": {
+    "button": "Judge mode",
+    "title": "Try ABLE as a judge?",
+    "body": "We’ll sign you in to a demo account filled with sample data. Nothing you do affects real users.",
+    "asTalent": "Try as talent",
+    "asEmployer": "Try as an employer",
+    "talentHint": "See a finished profile, offers and chats.",
+    "employerHint": "See a matched talent feed and conversations.",
+    "cancel": "Cancel",
+    "starting": "Setting up your demo…",
+    "pageTitle": "Judge mode",
+    "unavailable": "Judge mode needs a database, which isn’t set up in this environment.",
+    "rateLimited": "Too many tries from this network. Please wait a little and try again.",
+    "failed": "We couldn’t start judge mode. Please try again.",
+    "banner": "Judge mode — sample data.",
+    "switchToEmployer": "Switch to employer",
+    "switchToTalent": "Switch to talent",
+    "exit": "Exit",
+    "switching": "Switching…"
+  },
+  "footer": {
+    "rights": "© 2026 ABLE",
+    "pdpa": "Personal data handled under Thailand’s PDPA B.E. 2562.",
+    "product": "Product",
+    "policies": "Policies",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "dataRights": "Your data rights",
+    "accessibility": "Accessibility",
+    "explore": "Explore talent",
+    "login": "Log in",
+    "calculator": "Section 33 calculator",
+    "builtVsPlanned": "Built vs planned"
+  },
+  "feed": {
+    "title": "Your feed",
+    "talentIntro": "Employers and roles that match your profile.",
+    "employerIntro": "Talent matched to your hiring needs.",
+    "sample": "Sample",
+    "empty": "Nothing to show yet."
   }
 }

@@ -22,9 +22,9 @@ export function SponsorStrip({ size = "sm", className }: { size?: "sm" | "lg"; c
           ) : (
             <span
               className={cn(
-                "border-line text-graphite flex items-center justify-center rounded-full border border-dashed px-3",
+                "border-line text-graphite bg-mist flex items-center justify-center rounded-full border px-3",
                 h,
-                size === "sm" ? "text-[11px]" : "text-caption min-w-36",
+                size === "sm" ? "text-caption" : "text-caption min-w-36",
               )}
             >
               {t("sponsorLogo")}

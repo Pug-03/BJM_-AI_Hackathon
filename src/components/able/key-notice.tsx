@@ -6,7 +6,7 @@ import { Info, X } from "lucide-react";
 
 const KEY = "able-key-notice-dismissed";
 
-/** One-line dismissible notice listing services missing in this environment. */
+/** Dismissible notice listing services missing in this environment. */
 export function KeyNotice({ missing }: { missing: string[] }) {
   const t = useTranslations("notice");
   const [hidden, setHidden] = React.useState(true);
@@ -21,12 +21,10 @@ export function KeyNotice({ missing }: { missing: string[] }) {
   }, [sig]);
   if (!missing.length || hidden) return null;
   const names = missing.map((m) => t(m as "ai")).join(", ");
+  // Floating, out of document flow: appearing after hydration must not shift the page (CLS).
   return (
-    <div
-      role="status"
-      className="border-line bg-mist text-caption text-graphite flex items-start gap-3 border-b px-4 py-2 md:items-center"
-    >
-      <Info className="mt-0.5 size-4 shrink-0 md:mt-0" aria-hidden />
+    <div className="border-line bg-paper text-caption text-graphite shadow-float fixed bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom)+24px)] left-4 z-30 flex max-w-[min(360px,calc(100vw-32px))] items-start gap-3 rounded-[20px] border py-3 pr-2 pl-4 md:bottom-6 md:left-[calc(var(--rail-w)+24px)]">
+      <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
       <p className="min-w-0 flex-1">{t("missingKeys", { services: names })}</p>
       <button
         type="button"
@@ -36,7 +34,7 @@ export function KeyNotice({ missing }: { missing: string[] }) {
             localStorage.setItem(KEY, sig);
           } catch {}
         }}
-        className="hover:bg-cloud -my-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full"
+        className="hover:bg-mist -my-2 flex size-11 shrink-0 items-center justify-center rounded-full"
         aria-label={t("dismiss")}
       >
         <X className="size-4" aria-hidden />

@@ -58,7 +58,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export function Styleguide() {
   const t = useTranslations("styleguide");
   const tc = useTranslations("common");
-  const [skills, setSkills] = React.useState(["Customer support", "Excel"]);
+  const [skills, setSkills] = React.useState<string[]>([]);
+  React.useEffect(() => setSkills([t("skillA"), t("skillB")]), [t]);
   const [rating, setRating] = React.useState(4);
   const [showAge, setShowAge] = React.useState(false);
   const [confirm, setConfirm] = React.useState(false);
@@ -167,13 +168,7 @@ export function Styleguide() {
                 addLabel={t("addSkill")}
                 removeLabel={(s) => t("removeSkill", { skill: s })}
                 suggestionsLabel={t("suggested")}
-                suggestions={[
-                  "Data entry",
-                  "Graphic design",
-                  "Thai–English translation",
-                  "Bookkeeping",
-                  "Video editing",
-                ]}
+                suggestions={[t("sugg1"), t("sugg2"), t("sugg3"), t("sugg4"), t("sugg5")]}
               />
             )}
           </Field>

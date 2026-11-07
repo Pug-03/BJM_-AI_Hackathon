@@ -11,13 +11,14 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "qa:shots": "playwright test --project=screens",
+    "qa:shots": "ABLE_E2E_OTP=424242 playwright test --project=screens",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "qa:quick": "QA_QUICK=1 ABLE_E2E_OTP=424242 playwright test --project=screens"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

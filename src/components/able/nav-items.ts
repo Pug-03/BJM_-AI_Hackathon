@@ -5,6 +5,7 @@ export interface ShellUser {
   image: string | null;
   role: "TALENT" | "EMPLOYER" | "ADMIN" | null;
   profileHref: string;
+  isSandbox?: boolean;
   unreadMessages?: number;
   unreadNotifications?: number;
 }

@@ -2,6 +2,7 @@ import { AppShell } from "@/components/able/app-shell";
 import type { ShellUser } from "@/components/able/nav-items";
 import { getCurrentUser } from "@/lib/session";
 import { db } from "@/lib/db";
+import { JudgeBanner } from "@/components/judge/judge-banner";
 
 async function unread(userId: string) {
   try {
@@ -31,9 +32,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       image: user.image,
       role: user.role,
       profileHref: "/me",
+      isSandbox: user.isSandbox,
       unreadMessages: counts.messages,
       unreadNotifications: counts.notifications,
     };
   }
-  return <AppShell user={shellUser}>{children}</AppShell>;
+  return (
+    <AppShell user={shellUser} banner={user?.isSandbox ? <JudgeBanner role={user.role} /> : null}>
+      {children}
+    </AppShell>
+  );
 }

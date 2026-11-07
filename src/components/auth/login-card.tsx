@@ -13,6 +13,7 @@ import { toast } from "@/components/ui/toaster";
 import { tabSlide, useReducedMotion, variantsFor } from "@/lib/motion";
 import { GoogleIcon } from "./google-icon";
 import { OtpInput } from "./otp-input";
+import { LogoMark } from "@/components/able/logo";
 
 type Step = "choose" | "email" | "otp";
 
@@ -40,10 +41,16 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
   const [status, setStatus] = React.useState("");
   const emailRef = React.useRef<HTMLInputElement>(null);
 
-  // Move focus to the email field after the user chooses "Continue with email".
-  React.useEffect(() => {
-    if (step === "email") setTimeout(() => emailRef.current?.focus(), 60);
-  }, [step]);
+  const chooseHeadingRef = React.useRef<HTMLHeadingElement>(null);
+  const navigated = React.useRef(false);
+  const [otpFocus, setOtpFocus] = React.useState(0);
+  // Focus moves once the new step has finished animating in (AnimatePresence "wait"
+  // keeps the old step mounted during its exit).
+  const onStepShown = (s: Step) => (def: unknown) => {
+    if (def !== "animate" || !navigated.current) return;
+    if (s === "email") emailRef.current?.focus();
+    if (s === "choose") chooseHeadingRef.current?.focus();
+  };
 
   React.useEffect(() => {
     if (cooldown <= 0) return;
@@ -52,6 +59,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
   }, [cooldown]);
 
   const go = (s: Step, d: number) => {
+    navigated.current = true;
     setDir(d);
     setError(null);
     setStep(s);
@@ -106,6 +114,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
       setStatus("");
       setError(mapError(err.code, err.status));
       setOtp("");
+      setOtpFocus((n) => n + 1);
       return;
     }
     setStatus(t("signedIn"));
@@ -125,7 +134,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
   const v = variantsFor(tabSlide, reduced);
 
   return (
-    <div className="border-line bg-paper w-full max-w-[440px] rounded-[28px] border p-6 sm:p-10">
+    <div className="border-line bg-raised w-full max-w-[440px] rounded-[28px] border p-6 sm:p-10">
       <p className="sr-only" role="status" aria-live="polite">
         {status}
       </p>
@@ -133,6 +142,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
         {step === "choose" ? (
           <motion.div
             key="choose"
+            onAnimationComplete={onStepShown("choose")}
             custom={dir}
             variants={v}
             initial="initial"
@@ -140,8 +150,11 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             exit="exit"
             className="flex flex-col gap-6"
           >
-            <header className="flex flex-col gap-2 text-center">
-              <h1 className="text-h2">{t("title")}</h1>
+            <header className="flex flex-col items-center gap-2 text-center">
+              <LogoMark className="mb-3 size-11" />
+              <h1 ref={chooseHeadingRef} tabIndex={-1} className="text-h2 focus:outline-none">
+                {t("title")}
+              </h1>
               <p className="text-graphite">{t("subtitle")}</p>
             </header>
             {!available ? (
@@ -155,6 +168,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
                 variant="outline"
                 size="lg"
                 block
+                className="bg-raised"
                 onClick={google}
                 disabled={!available}
                 aria-describedby={googleNote ? "google-note" : undefined}
@@ -162,23 +176,31 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
                 <GoogleIcon className="size-5" />
                 {t("google")}
               </Button>
-              <div aria-live="polite">
-                {googleNote ? (
-                  <p id="google-note" className="text-caption text-graphite flex items-start gap-2">
-                    <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
-                    {t("googleUnavailable")}
-                  </p>
-                ) : null}
-              </div>
-              <Button size="lg" block onClick={() => go("email", 1)} disabled={!available}>
+              <Button
+                variant="outline"
+                size="lg"
+                block
+                className="bg-raised"
+                onClick={() => go("email", 1)}
+                disabled={!available}
+              >
                 <Mail aria-hidden />
                 {t("email")}
               </Button>
+            </div>
+            <div aria-live="polite" className="empty:hidden">
+              {googleNote ? (
+                <p id="google-note" className="text-caption text-graphite -mt-2 flex items-start gap-2">
+                  <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
+                  {t("googleUnavailable")}
+                </p>
+              ) : null}
             </div>
           </motion.div>
         ) : step === "email" ? (
           <motion.form
             key="email"
+            onAnimationComplete={onStepShown("email")}
             custom={dir}
             variants={v}
             initial="initial"
@@ -249,6 +271,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             </header>
             <div className="flex flex-col gap-2">
               <OtpInput
+                focusSignal={otpFocus}
                 value={otp}
                 onChange={(v) => {
                   setOtp(v);
@@ -293,15 +316,23 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
           </motion.form>
         )}
       </AnimatePresence>
-      <p className="text-caption text-graphite mt-8 text-center">
+      <p className="border-line text-caption text-graphite mt-8 border-t pt-6 text-center">
         {t.rich("terms", {
           terms: (c) => (
-            <Link href="/terms" className="text-ink hover:text-brand underline underline-offset-2">
+            <Link
+              href="/terms"
+              prefetch={false}
+              className="text-ink hover:text-brand underline underline-offset-2"
+            >
               {c}
             </Link>
           ),
           privacy: (c) => (
-            <Link href="/privacy" className="text-ink hover:text-brand underline underline-offset-2">
+            <Link
+              href="/privacy"
+              prefetch={false}
+              className="text-ink hover:text-brand underline underline-offset-2"
+            >
               {c}
             </Link>
           ),

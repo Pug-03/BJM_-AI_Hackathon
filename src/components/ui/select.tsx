@@ -41,8 +41,8 @@ export function Select({ id, options, placeholder, className, ...props }: Select
         aria-invalid={props["aria-invalid"]}
         aria-label={props["aria-label"]}
         className={cn(
-          "bg-mist text-ink flex h-12 w-full items-center justify-between gap-2 rounded-[14px] border border-transparent px-4 text-left",
-          "hover:bg-cloud focus:border-brand focus:bg-paper focus-visible:ring-brand/20 data-[placeholder]:text-graphite aria-[invalid=true]:border-danger focus:outline-none focus-visible:ring-4",
+          "bg-paper text-ink border-field-line flex h-12 w-full items-center justify-between gap-2 rounded-[14px] border px-4 text-left",
+          "hover:border-graphite focus:border-brand focus:bg-paper data-[placeholder]:text-graphite aria-[invalid=true]:border-danger focus-visible:outline-brand focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
           className,
         )}
       >

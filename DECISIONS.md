@@ -17,3 +17,23 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **`User.name` is non-null (`@default("")`).** Better Auth's core user schema requires `name`. The spec's `String?` would break its adapter.
 - **`.env.example` is shipped as `env.example`.** This environment's permission settings block writing any `.env*` file. The content is identical: copy it to `.env`.
 - **Local database.** Homebrew Postgres 16 on this machine has no pgvector, and compiling pgvector from source was blocked by the sandbox. `docker-compose.yml` runs `pgvector/pgvector:pg16` on **port 5433**, so it doesn't clash with a local Postgres on 5432.
+
+## Stage 2: Auth
+
+- **Session cookies** are signed with `BETTER_AUTH_SECRET`. Without it, the app derives a stable fallback from `DATABASE_URL` instead of crashing. Production must set the real secret.
+- **Server actions return `{ ok, href }`.** Client code navigates with `window.location.assign`. A `redirect()` from inside a server action combined with next-intl produced "unexpected response" errors.
+- **`getCurrentUser()` reads `headers()` before anything else.** This forces dynamic rendering, so signed-in pages are never prerendered as signed out at build time.
+- **E2E mode.** `ABLE_E2E_OTP` makes OTP codes predictable and multiplies rate limits by 50. It only takes effect when the variable is set, and never on Vercel. Real limits are 6 OTP sends per minute per IP and 5 per email per 15 minutes.
+- **Login stays `noindex`.** This is an intentional SEO exception, same as `/styleguide` and `/judge`.
+- **Accepting Terms and Privacy** is recorded as a `ConsentRecord` when the account is created ("By continuing, you agree…").
+
+## Stage 3: Judge mode and seed data
+
+- **Sample data is fictional and flagged `isSample`.** It covers 12 talent profiles and 25 organizations, 5 of each type. The government agencies are invented and labelled "(sample agency)". The artwork in `public/sample` is generated abstract SVG (`scripts/gen-sample-art.mjs`), not real photos or logos.
+- **Sample reviews** come from seeded conversations with an accepted offer, the same rule the app enforces for real reviews.
+- **Each browser gets its own judge sandbox,** identified by the `able_judge_id` cookie. A sandbox is two `isSandbox` users (talent "Ploy Jaidee" and employer "Bright Path Co.") with 3 conversations each: a pending offer, a past call and a fresh message. Sandboxes are reset after 24 hours, both when a judge enters and by a daily Vercel Cron job (`/api/cron/judge-reset`).
+- **Sandbox sign-in** uses Better Auth's server-only `createVerificationOTP` and then `signInEmailOTP`, so it works without Google or Resend keys.
+- **Sandbox internals live in a `server-only` module.** They are never exported from a `"use server"` file, because every export from such a file becomes a public action.
+- **Local testing without pgvector.** `scripts/local-schema.mjs` writes a copy of the schema without vector columns for a local Postgres that lacks pgvector. The real target remains Supabase with pgvector.
+- **QA builds** go to `NEXT_DIST_DIR=.next-qa`, so a developer's `next dev` on `.next` can't break them.
+- **QA process changed at the owner's request** (PROMPT.md section 12): a quick check after every stage, and the full A/B/C loop only after stages 3, 7, 8 and 11, with at most 3 loops each.

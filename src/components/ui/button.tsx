@@ -7,16 +7,18 @@ import { cn } from "@/lib/utils";
 export const buttonVariants = cva(
   [
     "inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none",
-    "transition-[transform,opacity,background-color,color,border-color] duration-200 ease-smooth",
-    "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
+    "transition-[transform,opacity] duration-200 ease-smooth",
+    // Disabled = quiet solid surface (not a faded ink slab); loading keeps the variant's fill.
+    "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 aria-busy:opacity-100",
     "[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]",
   ],
   {
     variants: {
       variant: {
-        primary: "bg-ink text-paper hover:opacity-90",
+        primary:
+          "bg-ink text-paper hover:opacity-90 disabled:bg-cloud disabled:text-graphite disabled:opacity-100 aria-busy:bg-ink aria-busy:text-paper",
         secondary: "bg-mist text-ink hover:bg-cloud",
-        outline: "border border-line bg-paper text-ink hover:bg-mist",
+        outline: "border border-field-line bg-paper text-ink hover:bg-mist",
         ghost: "text-ink hover:bg-mist",
         link: "h-auto px-0 text-brand underline-offset-4 hover:underline",
         destructive: "border border-danger text-danger hover:bg-danger/10",

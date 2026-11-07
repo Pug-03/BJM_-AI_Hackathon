@@ -1,5 +1,5 @@
 import "server-only";
-import { randomBytes } from "crypto";
+import { createHash } from "crypto";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { emailOTP } from "better-auth/plugins";
@@ -11,7 +11,11 @@ import { CONSENT_VERSION } from "./consent";
 import { log } from "./log";
 
 const e2e = Boolean(process.env.ABLE_E2E_OTP && !process.env.VERCEL);
-const fallbackSecret = randomBytes(32).toString("base64");
+// Must be identical in every server bundle (route handlers, server actions), so it is derived,
+// not random. The database URL contains the DB password, so outsiders cannot reproduce it.
+const fallbackSecret = createHash("sha256")
+  .update(`able-fallback-secret:${process.env.DATABASE_URL ?? "no-db"}`)
+  .digest("base64");
 
 const google =
   process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
@@ -39,8 +43,8 @@ function localeFrom(headers?: Headers | null): string {
 export const auth = betterAuth({
   appName: "ABLE",
   baseURL: process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL,
-  // Without BETTER_AUTH_SECRET the app still boots (never white-screens): a random per-process
-  // secret is used, so sessions reset on restart. Production deployments must set the variable.
+  // Without BETTER_AUTH_SECRET the app still boots (never white-screens) with a derived secret.
+  // Production deployments must set the variable.
   secret: process.env.BETTER_AUTH_SECRET ?? fallbackSecret,
   database: prismaAdapter(db, { provider: "postgresql" }),
   emailAndPassword: { enabled: false },
@@ -75,7 +79,7 @@ export const auth = betterAuth({
     customRules: {
       // Relaxed only for the E2E suite (many sign-ins from one IP); see ABLE_E2E_OTP.
       "/email-otp/send-verification-otp": { window: 60, max: e2e ? 200 : 6 },
-      "/sign-in/email-otp": { window: 60, max: 10 },
+      "/sign-in/email-otp": { window: 60, max: e2e ? 200 : 10 },
       "/sign-in/social": { window: 60, max: 10 },
     },
   },

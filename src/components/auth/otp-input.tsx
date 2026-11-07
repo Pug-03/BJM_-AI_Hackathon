@@ -12,6 +12,8 @@ export interface OtpInputProps {
   invalid?: boolean;
   disabled?: boolean;
   describedBy?: string;
+  /** Increment to move focus back to the first box (e.g. after a wrong code). */
+  focusSignal?: number;
 }
 
 /** Six boxes: auto-advance, backspace to previous, arrow keys, paste a full code. */
@@ -24,6 +26,7 @@ export function OtpInput({
   invalid,
   disabled,
   describedBy,
+  focusSignal,
 }: OtpInputProps) {
   const refs = React.useRef<Array<HTMLInputElement | null>>([]);
   const digits = Array.from({ length: 6 }, (_, i) => value[i] ?? "");
@@ -37,7 +40,7 @@ export function OtpInput({
 
   React.useEffect(() => {
     refs.current[0]?.focus();
-  }, []);
+  }, [focusSignal]);
 
   return (
     <div
@@ -96,8 +99,8 @@ export function OtpInput({
             refs.current[Math.min(clean.length, 5)]?.focus();
           }}
           className={cn(
-            "bg-mist text-h3 text-ink h-14 w-full max-w-14 min-w-0 rounded-[14px] border border-transparent text-center font-semibold tabular-nums",
-            "focus:border-brand focus:bg-paper transition-[border-color,background-color] focus:outline-none",
+            "bg-paper text-h3 text-ink border-field-line h-14 w-full max-w-14 min-w-0 rounded-[14px] border text-center font-semibold tabular-nums",
+            "focus:border-brand focus:bg-paper focus-visible:outline-brand transition-[border-color,background-color] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
             invalid && "border-danger",
           )}
         />

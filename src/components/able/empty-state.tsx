@@ -17,18 +17,18 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "bg-mist flex flex-col items-center gap-3 rounded-[20px] px-6 py-12 text-center",
+        "border-line mx-auto flex w-full max-w-xl flex-col items-center gap-3 rounded-[20px] border border-dashed px-6 py-14 text-center",
         className,
       )}
     >
       {Icon ? (
-        <span className="bg-paper text-graphite flex size-12 items-center justify-center rounded-full">
+        <span className="border-line bg-mist text-graphite mb-1 flex size-14 items-center justify-center rounded-full border">
           <Icon className="size-6" aria-hidden />
         </span>
       ) : null}
-      <p className="text-body text-ink font-medium">{title}</p>
-      {body ? <p className="measure text-small text-graphite">{body}</p> : null}
-      {action ? <div className="mt-2">{action}</div> : null}
+      <p className="text-h3 text-ink">{title}</p>
+      {body ? <p className="measure text-graphite">{body}</p> : null}
+      {action ? <div className="mt-3">{action}</div> : null}
     </div>
   );
 }
