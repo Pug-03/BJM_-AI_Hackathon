@@ -36,8 +36,16 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   const [typed, setTyped] = React.useState("");
   const ok = !requireText || typed.trim() === requireText;
+  // Opened via `open` (no Radix trigger), so remember the opener and return focus to it on close.
+  const opener = React.useRef<HTMLElement | null>(null);
   React.useEffect(() => {
-    if (!open) setTyped("");
+    if (open) {
+      opener.current = document.activeElement as HTMLElement | null;
+    } else {
+      setTyped("");
+      const el = opener.current;
+      if (el) setTimeout(() => el.focus(), 0);
+    }
   }, [open]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -52,7 +60,7 @@ export function ConfirmDialog({
               autoComplete="off"
               value={typed}
               onChange={(e) => setTyped(e.target.value)}
-              className="h-12 rounded-[14px] bg-mist px-4 focus:outline-2 focus:outline-brand"
+              className="bg-mist focus:outline-brand h-12 rounded-[14px] px-4 focus:outline-2"
             />
           </div>
         ) : null}

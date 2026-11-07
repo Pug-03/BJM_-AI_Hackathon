@@ -4,3 +4,4 @@ pnpm-lock.yaml
 qa
 playwright-report
 test-results
+.next-*

@@ -1,0 +1,67 @@
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { redirect } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
+import { LoginCard } from "@/components/auth/login-card";
+import { Logo } from "@/components/able/logo";
+import { LanguageSwitch } from "@/components/able/language-switch";
+import { ThemeSwitch } from "@/components/able/theme-switch";
+import { missingServices, services } from "@/lib/env";
+import { KeyNotice } from "@/components/able/key-notice";
+import { getCurrentUser, homeFor } from "@/lib/session";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "auth" });
+  return { title: t("title"), robots: { index: false } };
+}
+
+function safeNext(n?: string) {
+  return n && n.startsWith("/") && !n.startsWith("//") ? n : undefined;
+}
+
+export default async function LoginPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { locale } = await params;
+  const { next } = await searchParams;
+  setRequestLocale(locale);
+  const user = await getCurrentUser();
+  if (user) redirect({ href: safeNext(next) ?? homeFor(user), locale });
+  const tb = await getTranslations("brand");
+
+  return (
+    <div className="bg-mist flex min-h-dvh flex-col">
+      <KeyNotice missing={missingServices()} />
+      <header className="flex items-center justify-between px-4 py-3 md:px-8">
+        <Link href="/" aria-label={tb("home")} className="rounded-lg">
+          <Logo />
+        </Link>
+        <div className="flex items-center">
+          <LanguageSwitch />
+          <ThemeSwitch />
+        </div>
+      </header>
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex flex-1 items-start justify-center px-4 pt-6 pb-16 focus:outline-none sm:items-center sm:pt-0"
+      >
+        <LoginCard
+          googleEnabled={services.google()}
+          devOtpInLog={process.env.NODE_ENV !== "production" && !services.email()}
+          available={services.database()}
+          next={safeNext(next)}
+        />
+      </main>
+    </div>
+  );
+}

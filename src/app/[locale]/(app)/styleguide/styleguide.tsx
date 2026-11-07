@@ -13,7 +13,14 @@ import { Select } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { RatingInput, RatingStars } from "@/components/ui/rating-stars";
 import { Tabs, TabPanel } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogTrigger, Sheet, SheetContent, SheetTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/dialog";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Accordion } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,7 +31,20 @@ import { EmptyState } from "@/components/able/empty-state";
 import { StatRow } from "@/components/able/stat-row";
 import { ProgressPill } from "@/components/able/progress-pill";
 
-const tokens = ["paper", "mist", "cloud", "line", "ink", "graphite", "muted", "brand", "brand-soft", "star", "success", "danger"];
+const tokens = [
+  "paper",
+  "mist",
+  "cloud",
+  "line",
+  "ink",
+  "graphite",
+  "muted",
+  "brand",
+  "brand-soft",
+  "star",
+  "success",
+  "danger",
+];
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -49,7 +69,7 @@ export function Styleguide() {
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
           {tokens.map((tok) => (
             <li key={tok} className="flex flex-col gap-2">
-              <span className="h-16 rounded-2xl border border-line" style={{ background: `var(--${tok})` }} />
+              <span className="border-line h-16 rounded-2xl border" style={{ background: `var(--${tok})` }} />
               <code className="text-caption text-graphite">--{tok}</code>
             </li>
           ))}
@@ -89,10 +109,22 @@ export function Styleguide() {
 
       <Section title={t("inputs")}>
         <div className="grid max-w-2xl gap-6 md:grid-cols-2">
-          <Field id="sg-name" label={t("nameLabel")} hint={t("nameHint")} required requiredLabel={tc("required")}>
+          <Field
+            id="sg-name"
+            label={t("nameLabel")}
+            hint={t("nameHint")}
+            required
+            requiredLabel={tc("required")}
+          >
             {(a) => <Input {...a} placeholder={t("namePlaceholder")} />}
           </Field>
-          <Field id="sg-name-err" label={t("nameLabel")} error={t("errorExample")} required requiredLabel={tc("required")}>
+          <Field
+            id="sg-name-err"
+            label={t("nameLabel")}
+            error={t("errorExample")}
+            required
+            requiredLabel={tc("required")}
+          >
             {(a) => <Input {...a} />}
           </Field>
           <Field id="sg-date" label={t("dateLabel")} optionalLabel={tc("optional")}>
@@ -114,7 +146,7 @@ export function Styleguide() {
           <Field id="sg-bio" label={t("bioLabel")} className="md:col-span-2">
             {(a) => <Textarea {...a} placeholder={t("bioPlaceholder")} />}
           </Field>
-          <div className="flex items-center justify-between gap-4 rounded-[20px] bg-mist px-4 py-3 md:col-span-2">
+          <div className="bg-mist flex items-center justify-between gap-4 rounded-[20px] px-4 py-3 md:col-span-2">
             <label htmlFor="sg-age" className="text-small font-medium">
               {t("switchLabel")}
             </label>
@@ -135,7 +167,13 @@ export function Styleguide() {
                 addLabel={t("addSkill")}
                 removeLabel={(s) => t("removeSkill", { skill: s })}
                 suggestionsLabel={t("suggested")}
-                suggestions={["Data entry", "Graphic design", "Thai–English translation", "Bookkeeping", "Video editing"]}
+                suggestions={[
+                  "Data entry",
+                  "Graphic design",
+                  "Thai–English translation",
+                  "Bookkeeping",
+                  "Video editing",
+                ]}
               />
             )}
           </Field>
@@ -157,7 +195,12 @@ export function Styleguide() {
             </span>
             <RatingStars value={4.6} label={t("rating", { value: 4.6 })} />
           </div>
-          <RatingInput value={rating} onChange={setRating} legend={t("rating", { value: rating })} starLabel={(n) => t("starN", { n })} />
+          <RatingInput
+            value={rating}
+            onChange={setRating}
+            legend={t("rating", { value: rating })}
+            starLabel={(n) => t("starN", { n })}
+          />
           <StatRow
             stats={[
               { label: t("statRating"), value: "★ 4.8 (23)" },

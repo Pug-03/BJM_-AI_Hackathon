@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 export const inputBase = [
   "w-full rounded-[14px] border border-transparent bg-mist px-4 text-ink placeholder:text-muted",
   "transition-[border-color,background-color] duration-200 ease-smooth",
-  "hover:bg-cloud focus:border-brand focus:bg-paper focus:outline-none focus-visible:outline-none",
+  "hover:bg-cloud focus:border-brand focus:bg-paper focus:ring-4 focus:ring-brand/20 focus:outline-none focus-visible:outline-none",
   "aria-[invalid=true]:border-danger disabled:opacity-60",
 ].join(" ");
 
@@ -19,6 +19,11 @@ export const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >(({ className, rows = 4, ...props }, ref) => (
-  <textarea ref={ref} rows={rows} className={cn(inputBase, "min-h-28 resize-y py-3 leading-relaxed", className)} {...props} />
+  <textarea
+    ref={ref}
+    rows={rows}
+    className={cn(inputBase, "min-h-28 resize-y py-3 leading-relaxed", className)}
+    {...props}
+  />
 ));
 Textarea.displayName = "Textarea";

@@ -23,7 +23,7 @@ export function Tooltip({
           side={side}
           sideOffset={8}
           className={cn(
-            "z-50 max-w-64 rounded-xl bg-ink px-3 py-2 text-caption text-paper shadow-float",
+            "bg-ink text-caption text-paper shadow-float z-50 max-w-64 rounded-xl px-3 py-2",
             "data-[state=delayed-open]:animate-[able-fade_160ms_var(--ease-smooth)]",
           )}
         >

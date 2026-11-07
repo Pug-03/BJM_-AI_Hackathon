@@ -117,53 +117,55 @@ export function DialogContent({
               asSheet ? "items-end" : "items-center p-4",
             )}
           >
-          <D.Content asChild forceMount>
-            <motion.div
-              className={cn(
-                "pointer-events-auto flex flex-col bg-paper text-ink shadow-dialog focus:outline-none",
-                asSheet
-                  ? "max-h-[92dvh] w-full max-w-2xl rounded-t-[28px] pb-[max(env(safe-area-inset-bottom),16px)]"
-                  : "max-h-[88dvh] w-full max-w-lg rounded-[28px]",
-                className,
-              )}
-              variants={variantsFor(asSheet ? sheetUp : dropIn, reduced)}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              drag={asSheet && !reduced ? "y" : false}
-              dragControls={drag}
-              dragListener={false}
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={{ top: 0, bottom: 0.6 }}
-              onDragEnd={onDragEnd}
-            >
-              {asSheet ? (
-                <div
-                  className="flex h-6 shrink-0 cursor-grab touch-none items-center justify-center"
-                  onPointerDown={(e) => drag.start(e)}
-                  aria-hidden
-                >
-                  <span className="h-1 w-10 rounded-full bg-line" />
+            <D.Content asChild forceMount>
+              <motion.div
+                className={cn(
+                  "bg-paper text-ink shadow-dialog pointer-events-auto flex flex-col focus:outline-none",
+                  asSheet
+                    ? "max-h-[92dvh] w-full max-w-2xl rounded-t-[28px] pb-[max(env(safe-area-inset-bottom),16px)]"
+                    : "max-h-[88dvh] w-full max-w-lg rounded-[28px]",
+                  className,
+                )}
+                variants={variantsFor(asSheet ? sheetUp : dropIn, reduced)}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                drag={asSheet && !reduced ? "y" : false}
+                dragControls={drag}
+                dragListener={false}
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={{ top: 0, bottom: 0.6 }}
+                onDragEnd={onDragEnd}
+              >
+                {asSheet ? (
+                  <div
+                    className="flex h-6 shrink-0 cursor-grab touch-none items-center justify-center"
+                    onPointerDown={(e) => drag.start(e)}
+                    aria-hidden
+                  >
+                    <span className="bg-line h-1 w-10 rounded-full" />
+                  </div>
+                ) : null}
+                <div className={cn("flex items-start gap-4 px-6", asSheet ? "pt-1" : "pt-6")}>
+                  <div className="min-w-0 flex-1">
+                    <D.Title className={cn("text-h3 text-ink", hideTitle && "sr-only")}>{title}</D.Title>
+                    {description ? (
+                      <D.Description className="text-small text-graphite mt-1">{description}</D.Description>
+                    ) : (
+                      <D.Description className="sr-only">
+                        {typeof title === "string" ? title : ""}
+                      </D.Description>
+                    )}
+                  </div>
+                  <D.Close asChild>
+                    <IconButton aria-label={closeLabel} className="-mt-1 -mr-2">
+                      <X aria-hidden />
+                    </IconButton>
+                  </D.Close>
                 </div>
-              ) : null}
-              <div className={cn("flex items-start gap-4 px-6", asSheet ? "pt-1" : "pt-6")}>
-                <div className="min-w-0 flex-1">
-                  <D.Title className={cn("text-h3 text-ink", hideTitle && "sr-only")}>{title}</D.Title>
-                  {description ? (
-                    <D.Description className="mt-1 text-small text-graphite">{description}</D.Description>
-                  ) : (
-                    <D.Description className="sr-only">{typeof title === "string" ? title : ""}</D.Description>
-                  )}
-                </div>
-                <D.Close asChild>
-                  <IconButton aria-label={closeLabel} className="-mt-1 -mr-2">
-                    <X aria-hidden />
-                  </IconButton>
-                </D.Close>
-              </div>
-              <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-4 pb-6">{children}</div>
-            </motion.div>
-          </D.Content>
+                <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-4 pb-6">{children}</div>
+              </motion.div>
+            </D.Content>
           </div>
         </D.Portal>
       ) : null}

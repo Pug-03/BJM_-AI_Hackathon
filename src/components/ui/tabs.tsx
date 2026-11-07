@@ -59,25 +59,25 @@ export function Tabs({
       >
         <T.List
           aria-label={label}
-          className={cn("no-scrollbar flex gap-1 overflow-x-auto border-b border-line", listClassName)}
+          className={cn("no-scrollbar border-line flex gap-1 overflow-x-auto border-b", listClassName)}
         >
           {items.map((it) => (
             <T.Trigger
               key={it.value}
               value={it.value}
               className={cn(
-                "relative flex min-h-12 shrink-0 items-center gap-2 px-4 text-small font-medium whitespace-nowrap text-graphite transition-colors",
+                "text-small text-graphite relative flex min-h-12 shrink-0 items-center gap-2 px-4 font-medium whitespace-nowrap transition-colors",
                 "hover:text-ink data-[state=active]:text-ink",
               )}
             >
               {it.label}
               {typeof it.count === "number" ? (
-                <span className="rounded-full bg-mist px-2 text-caption text-graphite">{it.count}</span>
+                <span className="bg-mist text-caption text-graphite rounded-full px-2">{it.count}</span>
               ) : null}
               {value === it.value ? (
                 <motion.span
                   layoutId={reduced ? undefined : `tab-underline-${label}`}
-                  className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-brand"
+                  className="bg-brand absolute inset-x-3 -bottom-px h-0.5 rounded-full"
                   transition={{ type: "spring", stiffness: 380, damping: 32 }}
                 />
               ) : null}
@@ -96,7 +96,15 @@ export function Tabs({
   );
 }
 
-export function TabPanel({ value, className, children }: { value: string; className?: string; children: React.ReactNode }) {
+export function TabPanel({
+  value,
+  className,
+  children,
+}: {
+  value: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   const ctx = React.useContext(Ctx);
   const reduced = useReducedMotion();
   if (ctx.value !== value) return null;
@@ -109,7 +117,7 @@ export function TabPanel({ value, className, children }: { value: string; classN
         initial="initial"
         animate="animate"
         exit="exit"
-        className={cn("pt-6 focus-visible:outline-none", className)}
+        className={cn("pt-6", className)}
       >
         {children}
       </motion.div>

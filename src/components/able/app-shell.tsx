@@ -3,6 +3,8 @@ import { BottomNav } from "./bottom-nav";
 import { TopBar } from "./top-bar";
 import { PageTransition } from "./page-transition";
 import type { ShellUser } from "./nav-items";
+import { KeyNotice } from "./key-notice";
+import { missingServices } from "@/lib/env";
 
 /** Signed-in / explore shell: icon rail ≥768px, top bar + floating bottom nav below. */
 export function AppShell({
@@ -15,10 +17,11 @@ export function AppShell({
   banner?: React.ReactNode;
 }) {
   return (
-    <div className="min-h-dvh bg-paper">
+    <div className="bg-paper min-h-dvh">
       <IconRail user={user} />
       <div className="md:pl-[var(--rail-w)]">
         {banner}
+        <KeyNotice missing={missingServices()} />
         <TopBar user={user} />
         <main
           id="main"

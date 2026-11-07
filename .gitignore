@@ -45,3 +45,5 @@ next-env.d.ts
 /playwright-report
 /test-results
 /.lighthouseci
+prisma/.local.prisma
+.next-*

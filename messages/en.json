@@ -190,5 +190,60 @@
     "supportedBy": "Supported by",
     "sponsorLogo": "Sponsor logo",
     "primaryNav": "Site"
+  },
+  "auth": {
+    "title": "Welcome to ABLE",
+    "subtitle": "Sign in or create an account",
+    "google": "Continue with Google",
+    "email": "Continue with email",
+    "googleUnavailable": "Google sign-in isn’t set up in this environment. Use email instead.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "sendCode": "Send code",
+    "emailInvalid": "Enter a valid email address",
+    "otpTitle": "Check your email",
+    "otpSent": "We sent a 6-digit code to {email}.",
+    "otpLabel": "6-digit code",
+    "otpDigit": "Digit {n} of 6",
+    "verify": "Verify",
+    "verifying": "Checking your code…",
+    "resendIn": "Resend code in {seconds}s",
+    "resend": "Resend code",
+    "resent": "New code sent",
+    "changeEmail": "Use a different email",
+    "devCode": "Code printed in server log",
+    "otpInvalid": "That code isn’t right. Check it and try again.",
+    "otpInvalidLeft": "That code isn’t right. {left, plural, one {# try} other {# tries}} left.",
+    "otpExpired": "That code has expired. We can send you a new one.",
+    "otpTooMany": "Too many tries. Ask for a new code.",
+    "rateLimited": "Too many requests. Wait a few minutes and try again.",
+    "genericError": "Something went wrong. Please try again.",
+    "unavailable": "Sign-in needs a database, which isn’t set up in this environment. Try Judge mode to explore with sample data.",
+    "terms": "By continuing, you agree to ABLE’s <terms>Terms</terms> and <privacy>Privacy Policy</privacy>.",
+    "back": "Back",
+    "signedIn": "Signed in",
+    "expires": "The code expires in 10 minutes."
+  },
+  "welcome": {
+    "title": "How will you use ABLE?",
+    "subtitle": "Choose one to start. You can add the other later in Settings.",
+    "talentTitle": "I’m looking for work",
+    "talentBody": "Build a profile that shows your skills and get found by employers.",
+    "employerTitle": "I’m hiring",
+    "employerBody": "Tell us who you need and browse talent matched to you.",
+    "continue": "Continue",
+    "choose": "Choose how you’ll use ABLE",
+    "saving": "Setting up…",
+    "error": "We couldn’t save your choice. Please try again."
+  },
+  "onboarding": {
+    "talentTitle": "Build your profile",
+    "employerTitle": "Set up your organization",
+    "soon": "This step opens in the next build stage."
+  },
+  "errors": {
+    "notFoundTitle": "We can’t find that page",
+    "notFoundBody": "It may have moved, or the link may be wrong.",
+    "home": "Go to the home page"
   }
 }

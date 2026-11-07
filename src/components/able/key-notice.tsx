@@ -13,7 +13,8 @@ export function KeyNotice({ missing }: { missing: string[] }) {
   const sig = missing.join(",");
   React.useEffect(() => {
     try {
-      setHidden(localStorage.getItem(KEY) === sig);
+      // `able-qa` hides the notice in QA screenshots.
+      setHidden(localStorage.getItem(KEY) === sig || localStorage.getItem("able-qa") === "1");
     } catch {
       setHidden(false);
     }
@@ -21,7 +22,10 @@ export function KeyNotice({ missing }: { missing: string[] }) {
   if (!missing.length || hidden) return null;
   const names = missing.map((m) => t(m as "ai")).join(", ");
   return (
-    <div role="status" className="flex items-start gap-3 border-b border-line bg-mist px-4 py-2 text-caption text-graphite md:items-center">
+    <div
+      role="status"
+      className="border-line bg-mist text-caption text-graphite flex items-start gap-3 border-b px-4 py-2 md:items-center"
+    >
       <Info className="mt-0.5 size-4 shrink-0 md:mt-0" aria-hidden />
       <p className="min-w-0 flex-1">{t("missingKeys", { services: names })}</p>
       <button
@@ -32,7 +36,7 @@ export function KeyNotice({ missing }: { missing: string[] }) {
             localStorage.setItem(KEY, sig);
           } catch {}
         }}
-        className="-my-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-cloud"
+        className="hover:bg-cloud -my-2 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full"
         aria-label={t("dismiss")}
       >
         <X className="size-4" aria-hidden />

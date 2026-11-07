@@ -51,5 +51,6 @@ test("mobile shows bottom nav, desktop shows rail", async ({ page, isMobile }) =
   await page.goto("/en/explore");
   const navs = page.getByRole("navigation", { name: "Main" });
   await expect(navs.filter({ visible: true })).toHaveCount(1);
-  if (isMobile) await expect(page.getByRole("link", { name: "Log in" }).filter({ visible: true }).first()).toBeVisible();
+  if (isMobile)
+    await expect(page.getByRole("link", { name: "Log in" }).filter({ visible: true }).first()).toBeVisible();
 });

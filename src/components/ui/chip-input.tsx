@@ -71,14 +71,14 @@ export function ChipInput({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                className="flex h-9 items-center gap-1 rounded-full bg-brand-soft pr-1 pl-3.5 text-small font-medium text-ink"
+                className="bg-brand-soft text-small text-ink flex h-9 items-center gap-1 rounded-full pr-1 pl-3.5 font-medium"
               >
                 {chip}
                 <button
                   type="button"
                   onClick={() => onChange(value.filter((v) => v !== chip))}
                   aria-label={removeLabel(chip)}
-                  className="relative flex size-7 items-center justify-center rounded-full text-graphite hover:bg-paper hover:text-ink before:absolute before:-inset-1.5"
+                  className="text-graphite hover:bg-paper hover:text-ink relative flex size-7 items-center justify-center rounded-full before:absolute before:-inset-2"
                 >
                   <X className="size-4" aria-hidden />
                 </button>
@@ -116,7 +116,7 @@ export function ChipInput({
             onClick={() => add(draft)}
             disabled={!draft.trim()}
             aria-label={addLabel}
-            className="flex size-11 items-center justify-center rounded-full text-ink hover:bg-cloud disabled:opacity-40"
+            className="text-ink hover:bg-cloud flex size-11 items-center justify-center rounded-full disabled:opacity-40"
           >
             <Plus className="size-5 stroke-[1.75]" aria-hidden />
           </button>
@@ -131,9 +131,9 @@ export function ChipInput({
                 <button
                   type="button"
                   onClick={() => add(s)}
-                  className="flex h-11 items-center gap-1.5 rounded-full border border-line px-3.5 text-small text-ink hover:bg-mist md:h-9"
+                  className="border-line text-small text-ink hover:bg-mist flex h-11 items-center gap-1.5 rounded-full border px-3.5 md:h-9"
                 >
-                  <Plus className="size-4 text-graphite" aria-hidden />
+                  <Plus className="text-graphite size-4" aria-hidden />
                   {s}
                 </button>
               </li>

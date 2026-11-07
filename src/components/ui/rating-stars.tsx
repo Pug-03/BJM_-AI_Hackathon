@@ -23,9 +23,19 @@ export function RatingStars({
         const fill = Math.max(0, Math.min(1, value - (i - 1)));
         return (
           <span key={i} className="relative inline-block" style={{ width: size, height: size }} aria-hidden>
-            <Star className="absolute inset-0 text-line" style={{ width: size, height: size }} fill="currentColor" strokeWidth={0} />
+            <Star
+              className="text-line absolute inset-0"
+              style={{ width: size, height: size }}
+              fill="currentColor"
+              strokeWidth={0}
+            />
             <span className="absolute inset-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
-              <Star className="text-star" style={{ width: size, height: size }} fill="currentColor" strokeWidth={0} />
+              <Star
+                className="text-star"
+                style={{ width: size, height: size }}
+                fill="currentColor"
+                strokeWidth={0}
+              />
             </span>
           </span>
         );
@@ -52,12 +62,12 @@ export function RatingInput({
   const shown = hover || value;
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="mb-2 text-small font-medium">{legend}</legend>
+      <legend className="text-small mb-2 font-medium">{legend}</legend>
       <div className="flex gap-1" onMouseLeave={() => setHover(0)}>
         {[1, 2, 3, 4, 5].map((n) => (
           <label
             key={n}
-            className="relative flex size-11 cursor-pointer items-center justify-center rounded-full has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-brand"
+            className="has-[:focus-visible]:outline-brand relative flex size-11 cursor-pointer items-center justify-center rounded-full has-[:focus-visible]:outline-2"
             onMouseEnter={() => setHover(n)}
           >
             <input
@@ -70,7 +80,11 @@ export function RatingInput({
               aria-label={starLabel(n)}
             />
             <Star
-              className={cn("size-8 transition-transform duration-150", n <= shown ? "text-star" : "text-line", n === hover && "scale-110")}
+              className={cn(
+                "size-8 transition-transform duration-150",
+                n <= shown ? "text-star" : "text-line",
+                n === hover && "scale-110",
+              )}
               fill="currentColor"
               strokeWidth={0}
               aria-hidden

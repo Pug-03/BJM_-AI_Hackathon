@@ -12,6 +12,11 @@ export const DatePicker = React.forwardRef<
   HTMLInputElement,
   Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
 >(({ className, ...props }, ref) => (
-  <input ref={ref} type="date" className={cn(inputBase, "h-12 [color-scheme:inherit]", className)} {...props} />
+  <input
+    ref={ref}
+    type="date"
+    className={cn(inputBase, "h-12 [color-scheme:inherit]", className)}
+    {...props}
+  />
 ));
 DatePicker.displayName = "DatePicker";

@@ -18,7 +18,7 @@ export const Switch = React.forwardRef<
     )}
     {...props}
   >
-    <S.Thumb className="pointer-events-none block size-6 translate-x-0.5 rounded-full bg-paper shadow-sm ring-1 ring-line transition-transform duration-200 ease-smooth data-[state=checked]:translate-x-[22px]" />
+    <S.Thumb className="bg-paper ring-line ease-smooth pointer-events-none block size-6 translate-x-0.5 rounded-full shadow-sm ring-1 transition-transform duration-200 data-[state=checked]:translate-x-[22px]" />
   </S.Root>
 ));
 Switch.displayName = "Switch";

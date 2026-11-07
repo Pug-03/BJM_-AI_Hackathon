@@ -33,7 +33,11 @@ export const pageTransition: Variants = {
 export const tabSlide: Variants = {
   initial: (dir: number) => ({ opacity: 0, x: 24 * dir }),
   animate: { opacity: 1, x: 0, transition: { duration: durations.base, ease: easeSmooth } },
-  exit: (dir: number) => ({ opacity: 0, x: -24 * dir, transition: { duration: durations.fast, ease: easeSmooth } }),
+  exit: (dir: number) => ({
+    opacity: 0,
+    x: -24 * dir,
+    transition: { duration: durations.fast, ease: easeSmooth },
+  }),
 };
 
 export const dropIn: Variants = {

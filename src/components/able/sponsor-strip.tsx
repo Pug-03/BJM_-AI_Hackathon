@@ -12,13 +12,19 @@ export function SponsorStrip({ size = "sm", className }: { size?: "sm" | "lg"; c
       {sponsors.map((s) => (
         <li key={s.id}>
           {s.logo ? (
-            <Image src={s.logo} alt={s.name ?? t("sponsorLogo")} width={size === "sm" ? 84 : 168} height={size === "sm" ? 28 : 56} className={cn(h, "w-auto object-contain")} />
+            <Image
+              src={s.logo}
+              alt={s.name ?? t("sponsorLogo")}
+              width={size === "sm" ? 84 : 168}
+              height={size === "sm" ? 28 : 56}
+              className={cn(h, "w-auto object-contain")}
+            />
           ) : (
             <span
               className={cn(
-                "flex items-center justify-center rounded-full border border-dashed border-line px-3 text-graphite",
+                "border-line text-graphite flex items-center justify-center rounded-full border border-dashed px-3",
                 h,
-                size === "sm" ? "text-[11px]" : "min-w-36 text-caption",
+                size === "sm" ? "text-[11px]" : "text-caption min-w-36",
               )}
             >
               {t("sponsorLogo")}

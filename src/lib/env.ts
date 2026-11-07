@@ -17,4 +17,5 @@ export function missingServices(): ServiceName[] {
   return (Object.keys(services) as ServiceName[]).filter((k) => !services[k]());
 }
 
-export const appUrl = () => process.env.NEXT_PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+export const appUrl = () =>
+  process.env.NEXT_PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";

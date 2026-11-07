@@ -4,11 +4,11 @@ import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { Tooltip } from "@/components/ui/tooltip";
-import { Avatar } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
+import { AccountMenu } from "./account-menu";
 import { isActive, railItems, settingsItem, type ShellUser } from "./nav-items";
 
 /** Desktop/tablet slim left icon rail (≥768px). */
@@ -19,7 +19,7 @@ export function IconRail({ user }: { user: ShellUser | null }) {
   const items = user ? railItems : railItems.filter((i) => i.key === "explore");
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] flex-col items-center border-r border-line bg-paper py-4 md:flex">
+    <aside className="border-line bg-paper fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] flex-col items-center border-r py-4 md:flex">
       <Link href={user ? "/feed" : "/"} aria-label={tb("home")} className="mb-6 rounded-[10px]">
         <LogoMark className="size-9" />
       </Link>
@@ -27,7 +27,11 @@ export function IconRail({ user }: { user: ShellUser | null }) {
         {items.map((it) => {
           const active = isActive(pathname, it.href);
           const count =
-            it.key === "messages" ? user?.unreadMessages : it.key === "notifications" ? user?.unreadNotifications : 0;
+            it.key === "messages"
+              ? user?.unreadMessages
+              : it.key === "notifications"
+                ? user?.unreadNotifications
+                : 0;
           return (
             <Tooltip key={it.key} content={t(it.key)} side="right">
               <Link
@@ -42,13 +46,16 @@ export function IconRail({ user }: { user: ShellUser | null }) {
                 {active ? (
                   <motion.span
                     layoutId="rail-active"
-                    className="absolute inset-0 rounded-2xl bg-brand-soft"
+                    className="bg-brand-soft absolute inset-0 rounded-2xl"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 ) : null}
                 <it.icon className="relative size-[22px] stroke-[1.75]" aria-hidden />
                 {count ? (
-                  <span className="absolute top-2 right-2 size-2.5 rounded-full bg-brand ring-2 ring-paper" aria-hidden />
+                  <span
+                    className="bg-brand ring-paper absolute top-2 right-2 size-2.5 rounded-full ring-2"
+                    aria-hidden
+                  />
                 ) : null}
               </Link>
             </Tooltip>
@@ -67,21 +74,36 @@ export function IconRail({ user }: { user: ShellUser | null }) {
                 aria-current={isActive(pathname, settingsItem.href) ? "page" : undefined}
                 className={cn(
                   "flex size-12 items-center justify-center rounded-2xl",
-                  isActive(pathname, settingsItem.href) ? "bg-brand-soft text-brand" : "text-graphite hover:bg-mist hover:text-ink",
+                  isActive(pathname, settingsItem.href)
+                    ? "bg-brand-soft text-brand"
+                    : "text-graphite hover:bg-mist hover:text-ink",
                 )}
               >
                 <settingsItem.icon className="size-[22px] stroke-[1.75]" aria-hidden />
               </Link>
             </Tooltip>
-            <Link href={user.profileHref} aria-label={t("myProfile")} className="mt-2 rounded-full">
-              <Avatar src={user.image} name={user.name} size="sm" />
-            </Link>
+            <AccountMenu user={user} />
           </>
         ) : (
           <Tooltip content={t("login")} side="right">
-            <Link href="/login" aria-label={t("login")} className="mt-2 flex size-12 items-center justify-center rounded-2xl bg-ink text-paper">
-              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.75} aria-hidden>
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" strokeLinecap="round" strokeLinejoin="round" />
+            <Link
+              href="/login"
+              aria-label={t("login")}
+              className="bg-ink text-paper mt-2 flex size-12 items-center justify-center rounded-2xl"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                aria-hidden
+              >
+                <path
+                  d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </Link>
           </Tooltip>

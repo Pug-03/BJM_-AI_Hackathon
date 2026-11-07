@@ -22,7 +22,9 @@ describe("i18n messages", () => {
 
   it("has no empty strings", () => {
     const empty = (o: Tree, p = ""): string[] =>
-      Object.entries(o).flatMap(([k, v]) => (typeof v === "object" ? empty(v, `${p}${k}.`) : v.trim() ? [] : [`${p}${k}`]));
+      Object.entries(o).flatMap(([k, v]) =>
+        typeof v === "object" ? empty(v, `${p}${k}.`) : v.trim() ? [] : [`${p}${k}`],
+      );
     expect(empty(en as Tree)).toEqual([]);
     expect(empty(th as Tree)).toEqual([]);
   });

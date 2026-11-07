@@ -23,11 +23,17 @@ export interface AvatarProps {
 
 export function Avatar({ src, name, size = "md", className, alt = "" }: AvatarProps) {
   return (
-    <A.Root className={cn("relative inline-flex shrink-0 overflow-hidden rounded-full bg-cloud", sizes[size], className)}>
+    <A.Root
+      className={cn(
+        "bg-cloud relative inline-flex shrink-0 overflow-hidden rounded-full",
+        sizes[size],
+        className,
+      )}
+    >
       {src ? <A.Image src={src} alt={alt} className="size-full object-cover" /> : null}
       <A.Fallback
         delayMs={src ? 300 : 0}
-        className="flex size-full items-center justify-center bg-brand-soft font-semibold text-brand"
+        className="bg-brand-soft text-brand flex size-full items-center justify-center font-semibold"
         aria-hidden={alt ? undefined : true}
       >
         {initials(name)}

@@ -15,13 +15,18 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center gap-3 rounded-[20px] bg-mist px-6 py-12 text-center", className)}>
+    <div
+      className={cn(
+        "bg-mist flex flex-col items-center gap-3 rounded-[20px] px-6 py-12 text-center",
+        className,
+      )}
+    >
       {Icon ? (
-        <span className="flex size-12 items-center justify-center rounded-full bg-paper text-graphite">
+        <span className="bg-paper text-graphite flex size-12 items-center justify-center rounded-full">
           <Icon className="size-6" aria-hidden />
         </span>
       ) : null}
-      <p className="text-body font-medium text-ink">{title}</p>
+      <p className="text-body text-ink font-medium">{title}</p>
       {body ? <p className="measure text-small text-graphite">{body}</p> : null}
       {action ? <div className="mt-2">{action}</div> : null}
     </div>

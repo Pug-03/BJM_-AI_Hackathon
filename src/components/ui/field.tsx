@@ -36,12 +36,12 @@ export function Field({
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <label htmlFor={id} className="flex items-baseline gap-2 text-small font-medium text-ink">
+      <label htmlFor={id} className="text-small text-ink flex items-baseline gap-2 font-medium">
         {label}
         {required ? (
-          <span className="text-caption font-normal text-graphite">({requiredLabel})</span>
+          <span className="text-caption text-graphite font-normal">({requiredLabel})</span>
         ) : optionalLabel ? (
-          <span className="text-caption font-normal text-graphite">({optionalLabel})</span>
+          <span className="text-caption text-graphite font-normal">({optionalLabel})</span>
         ) : null}
       </label>
       {children({
@@ -57,7 +57,7 @@ export function Field({
       ) : null}
       <div aria-live="polite">
         {error ? (
-          <p id={errorId} className="flex items-center gap-1.5 text-caption text-danger">
+          <p id={errorId} className="text-caption text-danger flex items-center gap-1.5">
             <AlertCircle className="size-4" aria-hidden />
             {error}
           </p>

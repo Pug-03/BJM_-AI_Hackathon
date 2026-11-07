@@ -17,7 +17,13 @@ import {
 import { IconButton } from "@/components/ui/icon-button";
 import { Button } from "@/components/ui/button";
 
-export function LanguageSwitch({ compact = true, side = "bottom" }: { compact?: boolean; side?: "bottom" | "right" | "top" }) {
+export function LanguageSwitch({
+  compact = true,
+  side = "bottom",
+}: {
+  compact?: boolean;
+  side?: "bottom" | "right" | "top";
+}) {
   const t = useTranslations("language");
   const locale = useLocale() as Locale;
   const router = useRouter();

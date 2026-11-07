@@ -23,7 +23,7 @@ export function BottomNav({ user }: { user: ShellUser | null }) {
       aria-label={t("main")}
       className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+12px)] md:hidden"
     >
-      <ul className="flex h-[var(--bottom-nav-h)] w-full max-w-sm items-center justify-around rounded-full border border-line bg-paper/95 px-2 shadow-float backdrop-blur-md">
+      <ul className="border-line bg-paper/95 shadow-float flex h-[var(--bottom-nav-h)] w-full max-w-sm items-center justify-around rounded-full border px-2 backdrop-blur-md">
         {items.map((it) => {
           const active = isActive(pathname, it.href);
           const count = it.key === "messages" ? user?.unreadMessages : 0;
@@ -40,14 +40,14 @@ export function BottomNav({ user }: { user: ShellUser | null }) {
                 {active ? (
                   <motion.span
                     layoutId="bottom-active"
-                    className="absolute inset-0 rounded-full bg-brand-soft"
+                    className="bg-brand-soft absolute inset-0 rounded-full"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 ) : null}
                 <it.icon className="relative size-[22px] stroke-[1.75]" aria-hidden />
                 <span className="relative">{t(it.key)}</span>
                 {count ? (
-                  <span className="absolute top-1.5 right-[calc(50%-18px)] size-2.5 rounded-full bg-brand ring-2 ring-paper">
+                  <span className="bg-brand ring-paper absolute top-1.5 right-[calc(50%-18px)] size-2.5 rounded-full ring-2">
                     <span className="sr-only">({count})</span>
                   </span>
                 ) : null}

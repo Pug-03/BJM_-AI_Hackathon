@@ -9,11 +9,16 @@ export interface Stat {
 /** Compact definition list of profile stats. */
 export function StatRow({ stats, className }: { stats: Stat[]; className?: string }) {
   return (
-    <dl className={cn("grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line bg-line sm:grid-cols-4", className)}>
+    <dl
+      className={cn(
+        "border-line bg-line grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border sm:grid-cols-4",
+        className,
+      )}
+    >
       {stats.map((s) => (
-        <div key={s.label} className="flex flex-col gap-0.5 bg-paper px-4 py-3">
+        <div key={s.label} className="bg-paper flex flex-col gap-0.5 px-4 py-3">
           <dt className="text-caption text-graphite">{s.label}</dt>
-          <dd className="text-body font-semibold text-ink">{s.value}</dd>
+          <dd className="text-body text-ink font-semibold">{s.value}</dd>
         </div>
       ))}
     </dl>
