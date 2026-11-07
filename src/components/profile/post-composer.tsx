@@ -4,7 +4,7 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/input";
+import { MicTextarea } from "@/components/ai/mic-field";
 import { toast } from "@/components/ui/toaster";
 import { toWebp, uploadFile } from "@/lib/upload-client";
 import { createPost } from "@/server/talent";
@@ -78,13 +78,14 @@ export function PostComposer({ onCreated }: { onCreated: (p: NewPost) => void })
       <label htmlFor="post-text" className="sr-only">
         {t("newPost")}
       </label>
-      <Textarea
+      <MicTextarea
         id="post-text"
+        label={t("newPost")}
         rows={3}
         maxLength={3000}
         placeholder={t("postPlaceholder")}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onValueChange={setText}
       />
       {images.length ? (
         <ul className="flex flex-wrap gap-2">

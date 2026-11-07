@@ -42,6 +42,10 @@ import {
   suggestMyHandle,
 } from "@/server/talent";
 import { VoiceFillSlot } from "./voice-fill-slot";
+import { MicInput, MicTextarea } from "@/components/ai/mic-field";
+import { AiNote } from "@/components/ai/ai-note";
+import { useAi } from "@/components/ai/ai-provider";
+import type { DraftKey, ProfileDraft } from "@/lib/schemas/ai";
 
 export interface BuilderData {
   avatarUrl: string | null;
@@ -124,6 +128,56 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
   const [done, setDone] = React.useState<string | null>(null);
   const headingRef = React.useRef<HTMLHeadingElement>(null);
   const set = <K extends keyof BuilderData>(k: K, v: BuilderData[K]) => setD((p) => ({ ...p, [k]: v }));
+  const ai = useAi();
+  // Fields filled by "Fill my profile by voice" keep an "AI suggestion" label until kept or edited.
+  const [marks, setMarks] = React.useState<Set<string>>(new Set());
+  const unmark = React.useCallback(
+    (k: string) => setMarks((m) => (m.has(k) ? new Set([...m].filter((x) => x !== k)) : m)),
+    [],
+  );
+  // Inline AI consent (given at the first mic use) must not be undone by the step-5 autosave.
+  React.useEffect(() => {
+    const on = () => setD((p) => ({ ...p, consentAi: true }));
+    window.addEventListener("able:ai-consent", on);
+    return () => window.removeEventListener("able:ai-consent", on);
+  }, []);
+  const applyDraft = (dr: Partial<ProfileDraft>, keys: DraftKey[]) => {
+    setD((p) => {
+      const n = { ...p };
+      const union = (a: string[], b: string[] | undefined, max: number) => {
+        const seen = new Set(a.map((x) => x.toLowerCase()));
+        return [...a, ...(b ?? []).filter((x) => !seen.has(x.toLowerCase()))].slice(0, max);
+      };
+      if (dr.firstName) n.firstName = dr.firstName;
+      if (dr.lastName) n.lastName = dr.lastName;
+      if (dr.displayName) n.displayName = dr.displayName;
+      else if (!p.displayName && (dr.firstName || dr.lastName))
+        n.displayName = `${n.firstName} ${n.lastName}`.trim();
+      if (dr.headline) n.headline = dr.headline;
+      if (dr.bio) n.bio = dr.bio;
+      if (dr.specialTalents) n.specialTalents = dr.specialTalents;
+      if (dr.province && p.country === "TH") n.province = dr.province;
+      if (dr.workMode) n.workMode = dr.workMode;
+      if (dr.languages) n.languages = union(p.languages, dr.languages, 10);
+      if (dr.skills) n.skills = union(p.skills, dr.skills, 30);
+      if (dr.availability) n.availability = [...new Set([...p.availability, ...dr.availability])];
+      if (dr.educations?.length)
+        n.educations = [
+          ...p.educations.filter((e) => e.school.trim()),
+          ...dr.educations.map((e) => ({
+            level: e.level,
+            school: e.school,
+            field: e.field ?? "",
+            yearEnd: e.yearEnd ? String(e.yearEnd) : "",
+          })),
+        ].slice(0, 10);
+      return n;
+    });
+    setMarks(
+      (m) =>
+        new Set([...m, ...keys, ...(dr.displayName || dr.firstName || dr.lastName ? ["displayName"] : [])]),
+    );
+  };
 
   const basics = {
     firstName: d.firstName,
@@ -374,15 +428,23 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
           exit="exit"
         >
           {key === "basics" ? (
-            <StepBasics d={d} set={set} errors={errors} setErrors={setErrors} />
+            <StepBasics
+              d={d}
+              set={set}
+              marks={marks}
+              unmark={unmark}
+              errors={errors}
+              setErrors={setErrors}
+              onVoiceFill={applyDraft}
+            />
           ) : key === "about" ? (
-            <StepAbout d={d} set={set} />
+            <StepAbout d={d} set={set} marks={marks} unmark={unmark} />
           ) : key === "skills" ? (
-            <StepSkills d={d} set={set} />
+            <StepSkills d={d} set={set} marks={marks} unmark={unmark} />
           ) : key === "proof" ? (
-            <StepProof d={d} set={set} />
+            <StepProof d={d} set={set} marks={marks} unmark={unmark} />
           ) : (
-            <StepContact d={d} set={set} />
+            <StepContact d={d} set={set} marks={marks} unmark={unmark} onAiConsent={ai.setConsent} />
           )}
         </motion.div>
       </AnimatePresence>
@@ -409,17 +471,35 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
   );
 }
 
-type StepProps = { d: BuilderData; set: <K extends keyof BuilderData>(k: K, v: BuilderData[K]) => void };
+type StepProps = {
+  d: BuilderData;
+  set: <K extends keyof BuilderData>(k: K, v: BuilderData[K]) => void;
+  marks: Set<string>;
+  unmark: (k: string) => void;
+};
+
+/** "AI suggestion" label for non-text fields filled by voice (chips, choices, education). */
+function MarkNote({ p, k }: { p: StepProps; k: keyof BuilderData }) {
+  return p.marks.has(k) ? <AiNote onKeep={() => p.unmark(k)} /> : null;
+}
+
+/** Props that wire a field to the voice-fill "AI suggestion" label. */
+const mark = (p: StepProps, k: keyof BuilderData) => ({
+  aiSuggested: p.marks.has(k),
+  onSuggestionResolved: () => p.unmark(k),
+});
 
 function StepBasics({
-  d,
-  set,
   errors,
   setErrors,
+  onVoiceFill,
+  ...p
 }: StepProps & {
   errors: Record<string, string>;
   setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  onVoiceFill: (dr: Partial<ProfileDraft>, keys: DraftKey[]) => void;
 }) {
+  const { d, set } = p;
   const t = useTranslations("onboard");
   const te = useTranslations("enums");
   const tco = useTranslations("countries");
@@ -447,7 +527,7 @@ function StepBasics({
   const req = { required: true, requiredLabel: t("required") };
   return (
     <div className="flex flex-col gap-8">
-      <VoiceFillSlot />
+      <VoiceFillSlot onApply={onVoiceFill} />
       <section className="flex flex-col gap-3">
         <h2 className="text-small font-medium">{t("photo")}</h2>
         <AvatarUpload
@@ -464,28 +544,34 @@ function StepBasics({
       <div className="grid gap-6 md:grid-cols-2">
         <Field id="ob-firstName" label={t("firstName")} error={errors.firstName} {...req}>
           {(a) => (
-            <Input
+            <MicInput
               {...a}
+              {...mark(p, "firstName")}
+              label={t("firstName")}
               autoComplete="given-name"
+              maxLength={60}
               value={d.firstName}
-              onChange={(e) => {
-                set("firstName", e.target.value);
+              onValueChange={(v) => {
+                set("firstName", v);
                 if (!d.displayName || d.displayName === `${d.firstName} ${d.lastName}`.trim())
-                  set("displayName", `${e.target.value} ${d.lastName}`.trim());
+                  set("displayName", `${v} ${d.lastName}`.trim());
               }}
             />
           )}
         </Field>
         <Field id="ob-lastName" label={t("lastName")} error={errors.lastName} {...req}>
           {(a) => (
-            <Input
+            <MicInput
               {...a}
+              {...mark(p, "lastName")}
+              label={t("lastName")}
               autoComplete="family-name"
+              maxLength={60}
               value={d.lastName}
-              onChange={(e) => {
-                set("lastName", e.target.value);
+              onValueChange={(v) => {
+                set("lastName", v);
                 if (!d.displayName || d.displayName === `${d.firstName} ${d.lastName}`.trim())
-                  set("displayName", `${d.firstName} ${e.target.value}`.trim());
+                  set("displayName", `${d.firstName} ${v}`.trim());
               }}
             />
           )}
@@ -498,11 +584,14 @@ function StepBasics({
           {...req}
         >
           {(a) => (
-            <Input
+            <MicInput
               {...a}
+              {...mark(p, "displayName")}
+              label={t("displayName")}
               autoComplete="nickname"
+              maxLength={80}
               value={d.displayName}
-              onChange={(e) => set("displayName", e.target.value)}
+              onValueChange={(v) => set("displayName", v)}
             />
           )}
         </Field>
@@ -588,7 +677,13 @@ function StepBasics({
                 options={thProvinces.map((p) => ({ value: p.en, label: locale === "th" ? p.th : p.en }))}
               />
             ) : (
-              <Input {...a} value={d.province} onChange={(e) => set("province", e.target.value)} />
+              <MicInput
+                {...a}
+                label={t("province")}
+                maxLength={80}
+                value={d.province}
+                onValueChange={(v) => set("province", v)}
+              />
             )
           }
         </Field>
@@ -645,7 +740,8 @@ function ToggleChips<T extends string>({
   );
 }
 
-function StepAbout({ d, set }: StepProps) {
+function StepAbout(p: StepProps) {
+  const { d, set } = p;
   const t = useTranslations("onboard");
   const te = useTranslations("enums");
   const ts = useTranslations("styleguide");
@@ -653,24 +749,39 @@ function StepAbout({ d, set }: StepProps) {
     <div className="flex flex-col gap-8">
       <Field id="ob-headline" label={t("headline")} optionalLabel={t("optional")}>
         {(a) => (
-          <Input
+          <MicInput
             {...a}
+            {...mark(p, "headline")}
+            label={t("headline")}
             maxLength={120}
             placeholder={t("headlinePlaceholder")}
             value={d.headline}
-            onChange={(e) => set("headline", e.target.value)}
+            onValueChange={(v) => set("headline", v)}
           />
         )}
       </Field>
       <Field id="ob-bio" label={t("bio")} optionalLabel={t("optional")}>
         {(a) => (
-          <Textarea
+          <MicTextarea
             {...a}
+            {...mark(p, "bio")}
+            label={t("bio")}
             rows={6}
             maxLength={2000}
             placeholder={t("bioPlaceholder")}
             value={d.bio}
-            onChange={(e) => set("bio", e.target.value)}
+            onValueChange={(v) => set("bio", v)}
+            writeWithAi={() => ({
+              displayName: d.displayName,
+              headline: d.headline,
+              bio: d.bio,
+              skills: d.skills,
+              languages: d.languages,
+              workMode: d.workMode,
+              availability: d.availability,
+              specialTalents: d.specialTalents,
+              educations: d.educations.filter((e) => e.school.trim()),
+            })}
           />
         )}
       </Field>
@@ -679,7 +790,10 @@ function StepAbout({ d, set }: StepProps) {
           <ChipInput
             {...a}
             value={d.languages}
-            onChange={(v) => set("languages", v)}
+            onChange={(v) => {
+              set("languages", v);
+              p.unmark("languages");
+            }}
             placeholder={t("languagesPlaceholder")}
             addLabel={t("languagesPlaceholder")}
             removeLabel={(s) => ts("removeSkill", { skill: s })}
@@ -697,27 +811,37 @@ function StepAbout({ d, set }: StepProps) {
           />
         )}
       </Field>
+      <MarkNote p={p} k="languages" />
       <ToggleChips
         legend={t("workMode")}
         options={workModes}
         value={[d.workMode as (typeof workModes)[number]]}
-        onChange={(v) => set("workMode", v[0] ?? "ANY")}
+        onChange={(v) => {
+          set("workMode", v[0] ?? "ANY");
+          p.unmark("workMode");
+        }}
         multiple={false}
         label={(v) => te(`workMode.${v}`)}
       />
+      <MarkNote p={p} k="workMode" />
       <ToggleChips
         legend={t("availability")}
         options={availabilities}
         value={d.availability as (typeof availabilities)[number][]}
-        onChange={(v) => set("availability", v)}
+        onChange={(v) => {
+          set("availability", v);
+          p.unmark("availability");
+        }}
         multiple
         label={(v) => te(`availability.${v}`)}
       />
+      <MarkNote p={p} k="availability" />
     </div>
   );
 }
 
-function StepSkills({ d, set }: StepProps) {
+function StepSkills(p: StepProps) {
+  const { d, set } = p;
   const t = useTranslations("onboard");
   const te = useTranslations("enums");
   const ts = useTranslations("styleguide");
@@ -746,10 +870,26 @@ function StepSkills({ d, set }: StepProps) {
               )}
             </Field>
             <Field id={`ob-edu-school-${i}`} label={t("school")}>
-              {(a) => <Input {...a} value={e.school} onChange={(ev) => upd(i, "school", ev.target.value)} />}
+              {(a) => (
+                <MicInput
+                  {...a}
+                  label={t("school")}
+                  maxLength={120}
+                  value={e.school}
+                  onValueChange={(v) => upd(i, "school", v)}
+                />
+              )}
             </Field>
             <Field id={`ob-edu-field-${i}`} label={t("field")} optionalLabel={t("optional")}>
-              {(a) => <Input {...a} value={e.field} onChange={(ev) => upd(i, "field", ev.target.value)} />}
+              {(a) => (
+                <MicInput
+                  {...a}
+                  label={t("field")}
+                  maxLength={120}
+                  value={e.field}
+                  onValueChange={(v) => upd(i, "field", v)}
+                />
+              )}
             </Field>
             <div className="flex items-end gap-3">
               <Field
@@ -795,13 +935,17 @@ function StepSkills({ d, set }: StepProps) {
           <Plus aria-hidden />
           {t("addEducation")}
         </Button>
+        <MarkNote p={p} k="educations" />
       </section>
       <Field id="ob-skills" label={t("skills")}>
         {(a) => (
           <ChipInput
             {...a}
             value={d.skills}
-            onChange={(v) => set("skills", v)}
+            onChange={(v) => {
+              set("skills", v);
+              p.unmark("skills");
+            }}
             placeholder={t("skillsPlaceholder")}
             addLabel={ts("addSkill")}
             removeLabel={(s) => ts("removeSkill", { skill: s })}
@@ -810,6 +954,7 @@ function StepSkills({ d, set }: StepProps) {
           />
         )}
       </Field>
+      <MarkNote p={p} k="skills" />
       <Field
         id="ob-special"
         label={t("specialTalents")}
@@ -817,12 +962,14 @@ function StepSkills({ d, set }: StepProps) {
         optionalLabel={t("optional")}
       >
         {(a) => (
-          <Textarea
+          <MicTextarea
             {...a}
+            {...mark(p, "specialTalents")}
+            label={t("specialTalents")}
             rows={3}
             maxLength={500}
             value={d.specialTalents}
-            onChange={(e) => set("specialTalents", e.target.value)}
+            onValueChange={(v) => set("specialTalents", v)}
           />
         )}
       </Field>
@@ -974,19 +1121,23 @@ function StepProof({ d, set }: StepProps) {
           </Field>
           <Field id="ob-cert-title" label={t("certTitle")}>
             {(a) => (
-              <Input
+              <MicInput
                 {...a}
+                label={t("certTitle")}
+                maxLength={140}
                 value={cert.title}
-                onChange={(e) => setCert({ ...cert, title: e.target.value })}
+                onValueChange={(v) => setCert({ ...cert, title: v })}
               />
             )}
           </Field>
           <Field id="ob-cert-issuer" label={t("certIssuer")} optionalLabel={t("optional")}>
             {(a) => (
-              <Input
+              <MicInput
                 {...a}
+                label={t("certIssuer")}
+                maxLength={140}
                 value={cert.issuer}
-                onChange={(e) => setCert({ ...cert, issuer: e.target.value })}
+                onValueChange={(v) => setCert({ ...cert, issuer: v })}
               />
             )}
           </Field>
@@ -1066,7 +1217,13 @@ function StepProof({ d, set }: StepProps) {
         <div className="border-line grid gap-4 rounded-[20px] border border-dashed p-4 md:grid-cols-2 md:p-5">
           <Field id="ob-pf-title" label={t("pfTitle")}>
             {(a) => (
-              <Input {...a} value={pf.title} onChange={(e) => setPf({ ...pf, title: e.target.value })} />
+              <MicInput
+                {...a}
+                label={t("pfTitle")}
+                maxLength={120}
+                value={pf.title}
+                onValueChange={(v) => setPf({ ...pf, title: v })}
+              />
             )}
           </Field>
           <Field id="ob-pf-link" label={t("pfLink")} optionalLabel={t("optional")}>
@@ -1087,11 +1244,13 @@ function StepProof({ d, set }: StepProps) {
             className="md:col-span-2"
           >
             {(a) => (
-              <Textarea
+              <MicTextarea
                 {...a}
+                label={t("pfDescription")}
                 rows={3}
+                maxLength={1000}
                 value={pf.description}
-                onChange={(e) => setPf({ ...pf, description: e.target.value })}
+                onValueChange={(v) => setPf({ ...pf, description: v })}
               />
             )}
           </Field>
@@ -1121,7 +1280,15 @@ function StepProof({ d, set }: StepProps) {
           </div>
           {pf.images.length ? (
             <Field id="ob-pf-alt" label={t("pfAlt")} optionalLabel={t("optional")} className="md:col-span-2">
-              {(a) => <Input {...a} value={pf.alt} onChange={(e) => setPf({ ...pf, alt: e.target.value })} />}
+              {(a) => (
+                <MicInput
+                  {...a}
+                  label={t("pfAlt")}
+                  maxLength={200}
+                  value={pf.alt}
+                  onValueChange={(v) => setPf({ ...pf, alt: v })}
+                />
+              )}
             </Field>
           ) : null}
           <Button
@@ -1140,7 +1307,7 @@ function StepProof({ d, set }: StepProps) {
   );
 }
 
-function StepContact({ d, set }: StepProps) {
+function StepContact({ d, set, onAiConsent }: StepProps & { onAiConsent: (v: boolean) => void }) {
   const t = useTranslations("onboard");
   const te = useTranslations("enums");
   const get = (kind: string) =>
@@ -1234,7 +1401,13 @@ function StepContact({ d, set }: StepProps) {
         <fieldset className="flex flex-col gap-3">
           <legend className="text-small mb-1 font-medium">{t("consentTitle")}</legend>
           <label className="text-small flex items-start gap-3">
-            <Checkbox checked={d.consentAi} onCheckedChange={(v) => set("consentAi", v === true)} />
+            <Checkbox
+              checked={d.consentAi}
+              onCheckedChange={(v) => {
+                set("consentAi", v === true);
+                onAiConsent(v === true);
+              }}
+            />
             <span className="flex items-start gap-1.5">
               <Mic className="text-graphite mt-0.5 size-4 shrink-0" aria-hidden />
               {t("consentAi")}

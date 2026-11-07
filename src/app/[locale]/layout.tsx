@@ -5,7 +5,8 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers/providers";
-import { appUrl } from "@/lib/env";
+import { appUrl, services } from "@/lib/env";
+import { AiProvider } from "@/components/ai/ai-provider";
 import "../globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
@@ -70,7 +71,9 @@ export default async function LocaleLayout({
             >
               {t("skipToContent")}
             </a>
-            {children}
+            <AiProvider speech={services.speech()} text={services.ai()}>
+              {children}
+            </AiProvider>
           </Providers>
         </NextIntlClientProvider>
       </body>

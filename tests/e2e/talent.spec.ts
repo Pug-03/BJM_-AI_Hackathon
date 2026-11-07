@@ -12,8 +12,8 @@ test.describe("talent onboarding + profile", () => {
     await expect(page).toHaveURL(/\/en\/onboarding\/talent/);
 
     // Step 1
-    await page.getByLabel("First name").fill("Nina");
-    await page.getByLabel("Last name").fill("Tester");
+    await page.getByRole("textbox", { name: /^First name/ }).fill("Nina");
+    await page.getByRole("textbox", { name: /^Last name/ }).fill("Tester");
     await expect(page.getByLabel("Profile link")).not.toHaveValue("", { timeout: 10_000 });
     await page
       .locator('input[type="file"][accept="image/*"]')
@@ -25,7 +25,7 @@ test.describe("talent onboarding + profile", () => {
 
     // Step 2
     await expect(page.getByRole("heading", { level: 1, name: "About" })).toBeVisible();
-    await page.getByLabel("Headline").fill("QA specialist");
+    await page.getByRole("textbox", { name: /^Headline/ }).fill("QA specialist");
     await page.getByText("Remote", { exact: true }).click();
     await page.getByRole("button", { name: "Continue" }).click();
 
@@ -51,7 +51,7 @@ test.describe("talent onboarding + profile", () => {
 
     // New post
     await page.getByRole("button", { name: "New post" }).click();
-    await page.getByLabel("New post").fill("Finished my first accessibility audit.");
+    await page.getByRole("textbox", { name: "New post" }).fill("Finished my first accessibility audit.");
     await page.getByRole("button", { name: "Post", exact: true }).click();
     await expect(page.getByText("Finished my first accessibility audit.")).toBeVisible();
   });

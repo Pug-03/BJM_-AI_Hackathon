@@ -53,3 +53,23 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **Consents** (AI processing, work setup) are versioned `ConsentRecord` rows. A new row is written only when the value changes.
 - **Brand icons:** lucide removed them, so Instagram and LinkedIn contacts use neutral icons (`AtSign`, `Briefcase`), labelled by name.
 - **Explore is interim.** The searchable directory with filters is built with matching in Stage 6, which shares its filter schema.
+
+## Stage 5: Speak to fill
+
+- **Providers:** `src/lib/ai/{types,openai,anthropic,index}.ts`.
+  - Transcriber: `gpt-4o-transcribe`, falling back to `whisper-1`.
+  - StructuredModel: Claude via `messages.parse` + `zodOutputFormat`, then re-validated with Zod and retried once.
+  - Embedder: `text-embedding-3-small`.
+  - Swapping a provider means editing `index.ts` only.
+- **Audio is never stored.** `/api/ai/transcribe` reads the upload into memory, forwards it and discards it. Limits: 25 MB, audio MIME types only.
+- **Every AI call goes through `aiGate`:** service configured, the latest `AI_PROCESSING` consent is granted, and a rate limit of 30 per hour per user.
+  - Consent is asked inline the first time someone uses a mic or AI button. A dialog explains that OpenAI and Anthropic act as processors, and the answer is recorded as a ConsentRecord.
+  - The step-5 checkbox stays in sync through an `able:ai-consent` event, so the autosave can't revoke it.
+- **The voice-fill schema has no private fields** (DOB, gender, contacts, work setup). The prompt tells Claude to skip health, disability, religion, ethnicity, gender, age and pay information. Unit tests cover both.
+- **The "Work setup I need" field has no mic** on purpose. It is sensitive, so it is not sent to AI providers (data minimization).
+- **Voice-fill review:** each field can be ticked or unticked and edited. Nothing is applied until confirmed.
+  - Applied fields show an "AI suggestion · Keep" label until kept or edited.
+  - Mic dictation and "Write with AI" also show the label, with Undo (principle 5).
+- **"Type instead" exists** for people who can't or prefer not to speak (accessibility).
+- **Without keys,** every mic and AI button opens a popover explaining the feature isn't set up here and suggesting typing. It is never a dead button.
+- **Mic placement:** dictation replaces the value in single-line inputs and appends in textareas. Mics are skipped on handle, year, URL, phone and contact values.

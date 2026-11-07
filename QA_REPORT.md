@@ -127,3 +127,4 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 | Stage | lint | typecheck | unit | build | e2e | shots (390/820/1440, light, EN) | Notes |
 |---|---|---|---|---|---|---|---|
 | 4 | ✓ | ✓ | 22/22 | ✓ | 78/78 | onboarding-talent, profile-public, profile-me — no overflow | Fixed: an avatar added before the profile existed was lost; fast step navigation outran autosave (now flushed on step change); "Share" wrapped on its own line |
+| 5 | ✓ | ✓ | 31/31 | ✓ | 80/80 (4 skipped) | onboarding-talent, profile-me — no overflow | Live AI not exercised: the QA server has no OpenAI/Anthropic keys, so e2e covers the "not set up here" explanations and the auth/consent gate on /api/ai/transcribe. Fixed: mic aria-labels collided with field labels in e2e selectors |
