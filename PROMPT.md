@@ -161,7 +161,7 @@ Named patterns (implement once in `src/lib/motion.ts`, reuse everywhere):
  
 ## 6. Landing page (`/[locale]`)
  
-1. **Header:** logo (wordmark "ABLE" + simple mark), links (How it works, For employers, FAQ), language switch, theme switch, "Log in" (ghost) and "Get started" (ink pill). **Top-right corner, small: "Supported by" + sponsor logos** from `src/config/sponsors.ts` (see 6.9).
+1. **Header:** logo (wordmark "ABLE" + simple mark), links (How it works, For employers, FAQ), language switch, theme switch, "Log in" (ghost) and "Get started" (ink pill). (Sponsor logos are NOT in the header — owner's change: "Supported by" + logos from `src/config/sponsors.ts` sit in the footer and the thank-you section, see 6.9.)
 2. **Hero:** left — headline "Work that fits you.", one-sentence subline ("Show what you can do. Get found by employers who want to hire you."), primary "Get started", secondary "I'm hiring". Right — a live-feeling product mock: a talent profile card (photo, name, verified badge, skills, stars) beside an employer chat bubble, with the mic capsule animating once. All sample content clearly labelled "Example".
 3. **Two paths (tabs: "For talent" / "For employers")** with 4 steps each (a real sequence, so numbered):
    - Talent: Sign in with Google or email → Build your profile (speak or type) → Add your work, certificates and training → Chat and interview with employers.

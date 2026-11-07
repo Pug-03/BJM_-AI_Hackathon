@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
-import { SponsorStrip } from "./sponsor-strip";
 import { SiteMenu } from "./site-menu";
 import { KeyNotice } from "./key-notice";
 import { missingServices } from "@/lib/env";
@@ -18,10 +17,6 @@ export function SiteHeader() {
     <>
       <KeyNotice missing={missingServices()} />
       <header className="border-line bg-paper relative z-20 border-b">
-        <div className="mx-auto hidden max-w-[1200px] items-center justify-end gap-3 px-4 pt-2 md:flex md:px-8">
-          <span className="text-graphite text-caption">{t("supportedBy")}</span>
-          <SponsorStrip />
-        </div>
         <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-4 md:px-8">
           <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
             <Logo />

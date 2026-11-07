@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { JudgeModeDialog } from "@/components/judge/judge-mode-dialog";
 import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
+import { SponsorStrip } from "./sponsor-strip";
 
 export function SiteFooter() {
   const t = useTranslations("footer");
@@ -55,6 +56,12 @@ export function SiteFooter() {
             ))}
           </ul>
         </nav>
+      </div>
+      <div className="mx-auto max-w-[1200px] px-4 md:px-8">
+        <div className="border-line flex flex-col items-start gap-3 border-t py-6 md:flex-row md:items-center md:gap-4">
+          <p className="text-caption text-graphite">{t("supportedBy")}</p>
+          <SponsorStrip />
+        </div>
       </div>
       <div className="mx-auto max-w-[1200px] px-4 md:px-8">
         <div className="border-line flex flex-col items-center gap-4 border-t py-6 pb-[calc(env(safe-area-inset-bottom)+24px)] md:flex-row md:justify-between">

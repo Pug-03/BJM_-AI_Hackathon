@@ -9,7 +9,6 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
-import { SponsorStrip } from "./sponsor-strip";
 
 /** Header menu below 1024px: site links, sign-in, language and theme in a bottom sheet. */
 export function SiteMenu() {
@@ -57,10 +56,6 @@ export function SiteMenu() {
           <Button asChild block>
             <Link href="/login">{tn("getStarted")}</Link>
           </Button>
-        </div>
-        <div className="mt-6 flex flex-col gap-2">
-          <p className="text-caption text-graphite">{t("supportedBy")}</p>
-          <SponsorStrip />
         </div>
       </SheetContent>
     </Sheet>

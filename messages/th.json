@@ -310,7 +310,8 @@
     "explore": "สำรวจคนเก่ง",
     "login": "เข้าสู่ระบบ",
     "calculator": "เครื่องคำนวณมาตรา 33",
-    "builtVsPlanned": "แผนการพัฒนา"
+    "builtVsPlanned": "แผนการพัฒนา",
+    "supportedBy": "สนับสนุนโดย"
   },
   "feed": {
     "title": "ฟีดของคุณ",

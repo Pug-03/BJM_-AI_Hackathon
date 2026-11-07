@@ -310,7 +310,8 @@
     "explore": "Explore talent",
     "login": "Log in",
     "calculator": "Section 33 calculator",
-    "builtVsPlanned": "Roadmap"
+    "builtVsPlanned": "Roadmap",
+    "supportedBy": "Supported by"
   },
   "feed": {
     "title": "Your feed",

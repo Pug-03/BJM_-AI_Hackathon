@@ -37,3 +37,4 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **Local testing without pgvector.** `scripts/local-schema.mjs` writes a copy of the schema without vector columns for a local Postgres that lacks pgvector. The real target remains Supabase with pgvector.
 - **QA builds** go to `NEXT_DIST_DIR=.next-qa`, so a developer's `next dev` on `.next` can't break them.
 - **QA process changed at the owner's request** (PROMPT.md section 12): a quick check after every stage, and the full A/B/C loop only after stages 3, 7, 8 and 11, with at most 3 loops each.
+- **Sponsor logos moved out of the header** at the owner's request ("not at the top"). "Supported by" and the logos now sit in the footer, and Stage 8 adds a thank-you section in the middle of the landing page. PROMPT.md section 6.1 is updated to match.
