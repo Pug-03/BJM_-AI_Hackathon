@@ -4,8 +4,10 @@ import { JudgeModeDialog } from "@/components/judge/judge-mode-dialog";
 import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { SponsorStrip } from "./sponsor-strip";
+import { KeyNotice } from "./key-notice";
+import { missingServices } from "@/lib/env";
 
-export function SiteFooter() {
+export function SiteFooter({ hideJudge = false }: { hideJudge?: boolean }) {
   const t = useTranslations("footer");
   const product = [
     { href: "/explore", label: t("explore") },
@@ -23,8 +25,8 @@ export function SiteFooter() {
   const linkCls =
     "inline-flex min-h-11 min-w-11 items-center text-small text-graphite hover:text-ink md:min-h-9";
   return (
-    <footer className="border-line bg-mist border-t">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-10 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
+    <footer className="border-line bg-mist mt-auto border-t">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-12 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
         <div className="col-span-2 flex flex-col gap-3 md:col-span-1">
           <Logo />
           <p className="measure text-small text-graphite">{t("pdpa")}</p>
@@ -64,11 +66,12 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="mx-auto max-w-[1200px] px-4 md:px-8">
-        <div className="border-line flex flex-col items-start gap-4 border-t py-6 pb-[calc(env(safe-area-inset-bottom)+24px)] md:flex-row md:justify-between">
+        <div className="border-line flex flex-col items-start gap-4 border-t py-6 pb-[calc(env(safe-area-inset-bottom)+24px)] md:flex-row md:items-center md:justify-between">
           <p className="text-caption text-graphite">{t("rights")}</p>
-          <JudgeModeDialog />
+          {hideJudge ? null : <JudgeModeDialog />}
         </div>
       </div>
+      <KeyNotice missing={missingServices()} />
     </footer>
   );
 }

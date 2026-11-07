@@ -16,6 +16,7 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 | 1+2 | 2 | 5 | 7 | 5 | 6 | 5 | 7 | 6 | 7 | 7 | 3 | 5.8 | 50/50 e2e after fixes | 0 serious/critical | /en 90·100·100·100, CLS 0.08 ✗; /login 89·100·96·60 (noindex) |
 | 3 (full) | 1 | 6 | 7 | 6 | 5 | 6 | 7 | 6 | 7 | 7 | 5 | 6.2 | 38/50 (ENOENT clash) → 58/58 after fixes | 0 serious/critical at 390; 1 serious after (avatar name mismatch) → fixed | /en 90·100·100·100; explore 90; login 92; judge 91; CLS 0 |
 | 3 (full) | 2 | 7 | 7 | 6 | 8 | 7 | 6 | 7 | 7 | 7 | 5 | 6.7 | 57/58 (welcome pre-hydration race) → 58/58 after fixes | 0 serious/critical, 0 moderate | /en 91 (median of 90/92/91)·100·100·100; explore/login/judge 100; CLS 0 |
+| 3 (full) | 3 (final) | 7 | 7 | 6 | 8 | 7 | 7 | 7 | 7 | 6 | 5 | 6.7 | 58/58 (78/78 incl. Stage 4 specs) | 0 violations (32/32 + 28 scans) | /en 91 (median 89/91/91)·100·100·100; explore/login/judge 100; CLS 0 |
 
 ## Notes per loop
 
@@ -84,3 +85,45 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
   - Login used an undefined `outline` button variant.
   - The Thai headline meaning drifted from "Work that fits you."
 - All of the above are fixed. The Thai headline is now "งานที่ใช่ สำหรับคุณ".
+
+**Stage 3, full check, loop 3 (final; the 3-loop cap is reached).**
+- Agent A: all commands pass and nothing overflows horizontally. Fixed afterwards:
+  - `text-wrap: pretty` overrode `truncate`.
+  - The footer didn't stretch to the bottom on short pages.
+  - Two Thai words split mid-word.
+- Agent C: every target passes except one. The key notice still covered first-view controls at 320 and 375. Fixed afterwards: below `md` the notice is now part of the normal page flow at the end of the page, and the hero cover is a real `<img fetchpriority=high>`.
+- Agent B: average 6.7. **Still below the target of 9. Remaining issues:**
+  - The footer's "Judge mode" button has no visible edge.
+  - The hero subline uses off-scale text sizes.
+  - The hero mock spacing and its axis at tablet widths.
+  - The mic capsule squashes its text, plays while off-screen, and doesn't morph into the filled text.
+  - The hero shifts before JavaScript loads.
+  - The login card uses the sheet radius and off-scale padding, and its header isn't in the 1200px container.
+  - The dark secondary button looks recessed inside raised cards.
+  - The /judge layout is half empty and its heading gap is too tight.
+  - Judge card copy and press token.
+- Next step, at the owner's request: a focused design pass on landing, login and judge mode, held strictly to section 4, before Stage 4 continues.
+
+**Design pass after Stage 3 (owner request: landing, login, judge mode; section 4 strictly).** Addresses all 10 loop-3 findings from Agent B:
+- **Footer:**
+  - Spacing is on scale (`gap-12`) and the bottom row is aligned (`md:items-center`).
+  - "Judge mode" is a visible outlined paper pill, hidden on /judge itself.
+- **Hero:**
+  - The subline uses the H3 size at regular weight, not the off-scale 18/20px.
+  - The entrance runs in CSS (`able-rise`), so it starts at first paint and keeps the headline → mock → CTA order.
+  - The mock shares the copy's left edge below lg, and the 8px crowding is gone.
+  - The mic capsule background grows from the mic button with its content fading in (no squashed text). It starts only when in view, and hands over to the text from the mic side.
+- **Login:** the card uses the 20px card radius and on-scale padding (24/48). The header sits in the 1200px container, so the logo no longer jumps.
+- **Dark mode:** the secondary button uses `--line` and icon discs use `--avatar`, so neither reads as a hole inside raised cards.
+- **Judge:**
+  - Focused 720px column with on-scale gaps (16/32).
+  - Action-oriented card hints, plus a reassurance line about privacy and the 24h reset.
+  - Shared `pressable` token.
+- **Mobile landing header:** shows "Log in", since the hero already has the full-width "Get started".
+- No new design scores yet. The next full A/B/C loop runs after Stage 7.
+
+## Quick checks (section 12.1)
+
+| Stage | lint | typecheck | unit | build | e2e | shots (390/820/1440, light, EN) | Notes |
+|---|---|---|---|---|---|---|---|
+| 4 | ✓ | ✓ | 22/22 | ✓ | 78/78 | onboarding-talent, profile-public, profile-me — no overflow | Fixed: an avatar added before the profile existed was lost; fast step navigation outran autosave (now flushed on step change); "Share" wrapped on its own line |

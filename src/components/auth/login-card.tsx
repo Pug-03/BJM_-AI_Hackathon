@@ -133,7 +133,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
   const v = variantsFor(tabSlide, reduced);
 
   return (
-    <div className="border-line bg-raised w-full max-w-[440px] rounded-[28px] border p-6 sm:p-10">
+    <div className="border-line bg-raised w-full max-w-[440px] rounded-[20px] border p-6 sm:p-12">
       <p className="sr-only" role="status" aria-live="polite">
         {status}
       </p>

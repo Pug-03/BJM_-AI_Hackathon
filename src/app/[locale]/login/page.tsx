@@ -40,7 +40,7 @@ export default async function LoginPage({
 
   return (
     <div className="bg-mist flex min-h-dvh flex-col">
-      <header className="flex h-16 items-center justify-between px-4 md:px-8">
+      <header className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-4 md:px-8">
         <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
         </Link>

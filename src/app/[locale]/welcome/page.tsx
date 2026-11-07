@@ -45,7 +45,9 @@ export default async function WelcomePage({
       >
         <header className="flex flex-col gap-2">
           <h1 className="text-h1 tracking-display">{t("title")}</h1>
-          <p className="text-graphite">{t("subtitle")}</p>
+          <p className="text-graphite">
+            {t.rich("subtitle", { nb: (c) => <span className="whitespace-nowrap">{c}</span> })}
+          </p>
         </header>
         <RoleChooser
           initial={

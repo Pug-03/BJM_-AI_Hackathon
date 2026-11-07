@@ -31,7 +31,7 @@ export function KeyNotice({
   return (
     <div
       data-key-notice
-      className={`border-line bg-paper text-caption text-graphite shadow-float fixed ${aboveBottomNav ? "bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom)+24px)]" : "bottom-[calc(env(safe-area-inset-bottom)+16px)]"} left-4 z-30 flex max-w-[min(360px,calc(100vw-32px))] items-start gap-3 rounded-[20px] border py-3 pr-2 pl-4 md:bottom-6 ${aboveBottomNav ? "md:left-[calc(var(--rail-w)+24px)]" : "md:left-6"}`}
+      className={`border-line bg-paper text-caption text-graphite shadow-float fixed max-md:static max-md:mx-4 max-md:my-6 max-md:max-w-none ${aboveBottomNav ? "bottom-[calc(var(--bottom-nav-h)+env(safe-area-inset-bottom)+24px)]" : "bottom-[calc(env(safe-area-inset-bottom)+16px)]"} left-4 z-30 flex max-w-[min(360px,calc(100vw-32px))] items-start gap-3 rounded-[20px] border py-3 pr-2 pl-4 md:bottom-6 ${aboveBottomNav ? "md:left-[calc(var(--rail-w)+24px)]" : "md:left-6"}`}
     >
       <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
       <p className="min-w-0 flex-1">{t("missingKeys", { services: names })}</p>

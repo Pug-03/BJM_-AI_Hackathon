@@ -6,6 +6,7 @@ import { Building2, ChevronRight, Info, UserRound } from "lucide-react";
 import { motion } from "motion/react";
 import { enterJudgeMode } from "@/server/judge";
 import { cn } from "@/lib/utils";
+import { pressable } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 
 /** The two judge-mode choices; used by the dialog and the /judge page. */
@@ -45,7 +46,7 @@ export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
           <motion.button
             key={o.role}
             type="button"
-            whileTap={{ scale: 0.98 }}
+            {...pressable}
             disabled={busy !== null}
             onClick={() => void go(o.role)}
             aria-busy={busy === o.role || undefined}
@@ -54,7 +55,7 @@ export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
               busy === o.role && "border-brand",
             )}
           >
-            <span className="bg-mist flex size-10 items-center justify-center rounded-full">
+            <span className="bg-avatar flex size-10 items-center justify-center rounded-full">
               <o.icon className="size-5 stroke-[1.75]" aria-hidden />
             </span>
             <ChevronRight

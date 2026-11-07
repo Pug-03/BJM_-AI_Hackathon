@@ -47,3 +47,4 @@ next-env.d.ts
 /.lighthouseci
 prisma/.local.prisma
 .next-*
+.uploads

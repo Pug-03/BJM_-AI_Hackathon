@@ -173,12 +173,10 @@
   font-size: 1rem;
 }
 @utility text-small {
-  text-wrap: pretty;
   font-size: 0.875rem;
   line-height: 1.5;
 }
 @utility text-caption {
-  text-wrap: pretty;
   font-size: 0.8125rem;
   line-height: 1.45;
 }
@@ -244,6 +242,33 @@
 }
 
 /* While the floating environment notice is visible, reserve room so it never covers the end of the page. */
-body:has([data-key-notice]) {
-  padding-bottom: 11rem;
+@media (width >= 48rem) {
+  body:has([data-key-notice]) {
+    padding-bottom: 11rem;
+  }
+}
+
+/* Fewer orphans in small text — but never override `truncate` (nowrap). */
+:where(.text-small, .text-caption):not(.truncate) {
+  text-wrap: pretty;
+}
+
+/* Hero entrance (section 5): transform-only rise for LCP elements, rise + fade for the rest. */
+@keyframes able-rise {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes able-rise-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

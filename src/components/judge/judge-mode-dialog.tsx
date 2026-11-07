@@ -15,12 +15,20 @@ export function JudgeModeDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="sm">
+        <Button
+          variant="secondary"
+          size="sm"
+          className="bg-paper border-line hover:bg-cloud dark:bg-paper border"
+        >
           <Gavel aria-hidden />
           {t("button")}
         </Button>
       </DialogTrigger>
-      <DialogContent title={t("title")} description={t("body")} closeLabel={tc("close")}>
+      <DialogContent
+        title={t("title")}
+        description={t.rich("body", { nb: (c) => <span className="whitespace-nowrap">{c}</span> })}
+        closeLabel={tc("close")}
+      >
         <JudgeChoices onCancel={() => setOpen(false)} />
       </DialogContent>
     </Dialog>

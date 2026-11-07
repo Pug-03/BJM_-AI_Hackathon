@@ -8,12 +8,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   setRequestLocale(locale);
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <SiteHeader />
-      <main id="main" tabIndex={-1} className="focus:outline-none">
+      <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
         <Hero />
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

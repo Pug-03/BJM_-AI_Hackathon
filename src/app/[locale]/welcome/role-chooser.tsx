@@ -93,7 +93,7 @@ export function RoleChooser({ initial }: { initial?: "TALENT" | "EMPLOYER" }) {
               <span
                 className={cn(
                   "flex size-12 items-center justify-center rounded-full",
-                  on ? "bg-brand-soft text-brand" : "bg-mist text-ink",
+                  on ? "bg-brand-soft text-brand" : "bg-avatar text-ink",
                 )}
               >
                 <o.icon className="size-6 stroke-[1.75]" aria-hidden />

@@ -5,8 +5,6 @@ import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
 import { SiteMenu } from "./site-menu";
-import { KeyNotice } from "./key-notice";
-import { missingServices } from "@/lib/env";
 
 /** Marketing header for public pages. */
 export function SiteHeader() {
@@ -44,17 +42,16 @@ export function SiteHeader() {
               <LanguageSwitch />
               <ThemeSwitch />
             </div>
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+            <Button asChild variant="ghost" size="sm">
               <Link href="/login">{tn("login")}</Link>
             </Button>
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="hidden sm:inline-flex">
               <Link href="/login">{tn("getStarted")}</Link>
             </Button>
             <SiteMenu />
           </div>
         </div>
       </header>
-      <KeyNotice missing={missingServices()} />
     </>
   );
 }

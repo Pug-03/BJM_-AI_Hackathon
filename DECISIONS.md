@@ -38,3 +38,18 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **QA builds** go to `NEXT_DIST_DIR=.next-qa`, so a developer's `next dev` on `.next` can't break them.
 - **QA process changed at the owner's request** (PROMPT.md section 12): a quick check after every stage, and the full A/B/C loop only after stages 3, 7, 8 and 11, with at most 3 loops each.
 - **Sponsor logos moved out of the header** at the owner's request ("not at the top"). "Supported by" and the logos now sit in the footer, and Stage 8 adds a thank-you section in the middle of the landing page. PROMPT.md section 6.1 is updated to match.
+
+## Stage 4: Talent onboarding and profile
+
+- **Uploads:**
+  - Supabase Storage in production.
+  - Without Supabase keys, files go to `.uploads/` and are served by `/api/files`. This happens only outside production, or when `ABLE_LOCAL_UPLOADS=1` (used by the local QA server).
+  - Real file types are sniffed from magic bytes on the server. The client resizes images to at most 2560px WebP.
+  - Private buckets (`certificates`, `chat`) are authorized per request: owner, public certificate, or conversation participant. On Supabase they use signed URLs.
+- **Privacy rules live in pure functions** (`src/lib/privacy.ts`), with unit tests and an HTML-level e2e test. Date of birth, gender and work-setup notes are removed from every non-owner payload, not just hidden in the UI. The identity tier is capped at 2 (Phase 2).
+- **The filter schema is `.strict()`,** so disability, gender, religion, ethnicity, race and age keys are rejected (unit tests).
+- **Autosave:** onboarding saves each step 700ms after the last change, and saves again on Back, Continue and Finish so fast navigation never loses data.
+- **Work-setup text** is stored only while its processing consent is on.
+- **Consents** (AI processing, work setup) are versioned `ConsentRecord` rows. A new row is written only when the value changes.
+- **Brand icons:** lucide removed them, so Instagram and LinkedIn contacts use neutral icons (`AtSign`, `Briefcase`), labelled by name.
+- **Explore is interim.** The searchable directory with filters is built with matching in Stage 6, which shares its filter schema.

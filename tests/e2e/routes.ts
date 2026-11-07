@@ -15,6 +15,9 @@ export const routes: QaRoute[] = [
   { path: "/welcome", stage: 2, name: "welcome", auth: "new" },
   { path: "/judge", stage: 3, name: "judge" },
   { path: "/feed", stage: 3, name: "feed-talent", auth: "judge-talent" },
+  { path: "/u/kittipong-design", stage: 4, name: "profile-public" },
+  { path: "/me", stage: 4, name: "profile-me", auth: "judge-talent" },
+  { path: "/onboarding/talent", stage: 4, name: "onboarding-talent", auth: "judge-talent" },
   { path: "/feed", stage: 3, name: "feed-employer", auth: "judge-employer" },
 ];
 
