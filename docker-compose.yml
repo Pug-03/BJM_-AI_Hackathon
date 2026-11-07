@@ -1,0 +1,19 @@
+# Local Postgres with pgvector: `docker compose up -d db`
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: able
+      POSTGRES_PASSWORD: able
+      POSTGRES_DB: able
+    ports:
+      - "5433:5432"
+    volumes:
+      - able-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U able"]
+      interval: 5s
+      retries: 10
+volumes:
+  able-db:

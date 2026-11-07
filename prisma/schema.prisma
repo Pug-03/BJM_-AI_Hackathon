@@ -1,0 +1,571 @@
+// ABLE data model — PROMPT.md section 11, plus Better Auth tables.
+// Private fields (never sent to unauthorized viewers): TalentProfile.dob, gender,
+// workSetupNeeds; OrgProfile.registrationNo; ContactChannel rows by visibility.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [vector]
+}
+
+// ───────────── Accounts (Better Auth core tables + ABLE fields) ─────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  name          String    @default("")
+  image         String?
+  role          Role?
+  locale        String    @default("en")
+  isSandbox     Boolean   @default(false)
+  suspendedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  talent        TalentProfile?
+  org           OrgProfile?
+  sessions      Session[]
+  accounts      Account[]
+  consents      ConsentRecord[]
+  notifyPrefs   NotificationPrefs?
+
+  @@index([isSandbox])
+  @@map("user")
+}
+
+enum Role {
+  TALENT
+  EMPLOYER
+  ADMIN
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model RateLimit {
+  id          String @id @default(cuid())
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+
+  @@map("rateLimit")
+}
+
+// ───────────── Talent ─────────────
+
+model TalentProfile {
+  id             String         @id @default(cuid())
+  userId         String         @unique
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle         String         @unique
+  firstName      String
+  lastName       String
+  displayName    String
+  avatarUrl      String?
+  coverUrl       String?
+  coverOffsetY   Int            @default(50)
+  headline       String?
+  bio            String?
+  dob            DateTime? // private
+  showAge        Boolean        @default(false)
+  gender         String? // private, never public, never filterable
+  country        String         @default("TH")
+  province       String?
+  languages      String[]
+  workMode       WorkMode       @default(ANY)
+  availability   Availability[]
+  specialTalents String?
+  workSetupNeeds String? // private
+  isSample       Boolean        @default(false)
+
+  skills       Skill[]
+  educations   Education[]
+  certificates Certificate[]
+  portfolio    PortfolioItem[]
+  posts        Post[]
+  contacts     ContactChannel[]
+  reviews      Review[]         @relation("ReviewTarget")
+  setupShares  SetupShare[]
+
+  embedding     Unsupported("vector(1536)")?
+  embeddingHash String?
+
+  ratingAvg     Float    @default(0)
+  ratingCount   Int      @default(0)
+  completedJobs Int      @default(0)
+  rehires       Int      @default(0)
+  responseMins  Int?
+  verifyTier    Int      @default(1)
+  isPublic      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isPublic, updatedAt])
+  @@index([country, province])
+}
+
+/// Talent chose to share their private "Work setup I need" with one employer.
+model SetupShare {
+  talentId       String
+  talent         TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  employerUserId String
+  createdAt      DateTime      @default(now())
+
+  @@id([talentId, employerUserId])
+}
+
+// ───────────── Employers ─────────────
+
+model OrgProfile {
+  id             String           @id @default(cuid())
+  userId         String           @unique
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle         String           @unique
+  type           OrgType
+  name           String
+  logoUrl        String?
+  coverUrl       String?
+  description    String?
+  industry       String?
+  country        String           @default("TH")
+  province       String?
+  website        String?
+  employeeCount  Int?
+  currentHires   Int?
+  registrationNo String? // private, for verification
+  verifyRequestedAt DateTime?
+  verifyTier     Int              @default(1)
+  isSample       Boolean          @default(false)
+  contacts       ContactChannel[]
+  needs          HiringNeed[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+enum OrgType {
+  INDIVIDUAL
+  ASSOCIATION
+  STARTUP
+  PRIVATE_COMPANY
+  GOVERNMENT
+}
+
+enum WorkMode {
+  REMOTE
+  ONSITE
+  HYBRID
+  ANY
+}
+
+enum Availability {
+  FULL_TIME
+  PART_TIME
+  FREELANCE
+  PROJECT
+}
+
+model HiringNeed {
+  id             String       @id @default(cuid())
+  orgId          String
+  org            OrgProfile   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  title          String
+  skills         String[]
+  workMode       WorkMode
+  location       String?
+  employmentType Availability
+  educationLevel String?
+  ageMin         Int?
+  ageMax         Int?
+  offeredSetup   String[]
+  description    String?
+  embedding      Unsupported("vector(1536)")?
+  embeddingHash  String?
+  isOpen         Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  scores         MatchScore[]
+
+  @@index([orgId, isOpen])
+}
+
+/// Cached match scores per hiring need (recomputed on profile/need update).
+model MatchScore {
+  needId     String
+  need       HiringNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
+  talentId   String
+  score      Float
+  parts      Json
+  reason     String?
+  reasonLang String?
+  updatedAt  DateTime   @updatedAt
+
+  @@id([needId, talentId])
+  @@index([needId, score(sort: Desc)])
+}
+
+model Skip {
+  employerUserId String
+  talentId       String
+  needId         String
+  createdAt      DateTime @default(now())
+
+  @@id([employerUserId, talentId, needId])
+}
+
+// ───────────── Profile content ─────────────
+
+model Skill {
+  id       String        @id @default(cuid())
+  talentId String
+  talent   TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  name     String
+  level    String?
+
+  @@index([talentId])
+  @@index([name])
+}
+
+model Education {
+  id       String        @id @default(cuid())
+  talentId String
+  talent   TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  level    String
+  school   String
+  field    String?
+  yearEnd  Int?
+
+  @@index([talentId])
+}
+
+model Certificate {
+  id       String        @id @default(cuid())
+  talentId String
+  talent   TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  kind     CertKind
+  title    String
+  issuer   String?
+  issuedAt DateTime?
+  fileUrl  String
+  isPublic Boolean       @default(true)
+  createdAt DateTime     @default(now())
+
+  @@index([talentId])
+}
+
+enum CertKind {
+  EMPLOYMENT
+  TRAINING
+  OTHER
+}
+
+model PortfolioItem {
+  id          String        @id @default(cuid())
+  talentId    String
+  talent      TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  images      String[]
+  imageAlts   String[]
+  link        String?
+  createdAt   DateTime      @default(now())
+
+  @@index([talentId])
+}
+
+model Post {
+  id           String        @id @default(cuid())
+  talentId     String
+  talent       TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  kind         PostKind
+  text         String?
+  images       String[]
+  imageAlts    String[]
+  likeCount    Int           @default(0)
+  commentCount Int           @default(0)
+  createdAt    DateTime      @default(now())
+  likes        PostLike[]
+  comments     PostComment[]
+
+  @@index([talentId, createdAt(sort: Desc)])
+}
+
+enum PostKind {
+  WORK
+  PHOTO
+}
+
+model PostLike {
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@id([postId, userId])
+}
+
+model PostComment {
+  id           String   @id @default(cuid())
+  postId       String
+  post         Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorUserId String
+  text         String
+  createdAt    DateTime @default(now())
+
+  @@index([postId, createdAt])
+}
+
+model ContactChannel {
+  id         String         @id @default(cuid())
+  talentId   String?
+  talent     TalentProfile? @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  orgId      String?
+  org        OrgProfile?    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  kind       ContactKind
+  value      String
+  visibility Visibility     @default(CHAT_ONLY)
+
+  @@index([talentId])
+  @@index([orgId])
+}
+
+enum ContactKind {
+  PHONE
+  EMAIL
+  LINE
+  INSTAGRAM
+  TIKTOK
+  FACEBOOK
+  LINKEDIN
+  WEBSITE
+}
+
+enum Visibility {
+  PUBLIC
+  CHAT_ONLY
+  HIDDEN
+}
+
+// ───────────── Social ─────────────
+
+model Follow {
+  followerId     String
+  followeeUserId String
+  createdAt      DateTime @default(now())
+
+  @@id([followerId, followeeUserId])
+  @@index([followeeUserId])
+}
+
+model Star {
+  employerUserId String
+  talentId       String
+  needId         String?
+  createdAt      DateTime @default(now())
+
+  @@id([employerUserId, talentId])
+  @@index([talentId])
+}
+
+model ProfileView {
+  id           String   @id @default(cuid())
+  viewerUserId String
+  talentId     String
+  createdAt    DateTime @default(now())
+
+  @@index([talentId, createdAt(sort: Desc)])
+}
+
+model Review {
+  id             String        @id @default(cuid())
+  targetId       String
+  target         TalentProfile @relation("ReviewTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  authorUserId   String
+  conversationId String
+  rating         Int
+  text           String?
+  createdAt      DateTime      @default(now())
+
+  @@unique([authorUserId, targetId, conversationId])
+  @@index([targetId, createdAt(sort: Desc)])
+}
+
+// ───────────── Messaging ─────────────
+
+model Conversation {
+  id             String    @id @default(cuid())
+  talentUserId   String
+  employerUserId String
+  lastMessageAt  DateTime  @default(now())
+  blockedBy      String?
+  callRoom       String?
+  messages       Message[]
+  createdAt      DateTime  @default(now())
+
+  @@unique([talentUserId, employerUserId])
+  @@index([talentUserId, lastMessageAt(sort: Desc)])
+  @@index([employerUserId, lastMessageAt(sort: Desc)])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderUserId   String
+  kind           MsgKind
+  text           String?
+  attachments    Json?
+  offer          Json?
+  callRoom       String?
+  deliveredAt    DateTime?
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+enum MsgKind {
+  TEXT
+  IMAGE
+  FILE
+  VOICE_NOTE
+  OFFER
+  CALL
+  SYSTEM
+}
+
+model TypingState {
+  conversationId String
+  userId         String
+  updatedAt      DateTime @updatedAt
+
+  @@id([conversationId, userId])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  kind      String
+  payload   Json
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+}
+
+model NotificationPrefs {
+  userId        String  @id
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailMessages Boolean @default(true)
+  emailOffers   Boolean @default(true)
+  showViewers   Boolean @default(true)
+  whoCanMessage String  @default("EVERYONE") // EVERYONE | VERIFIED_ORGS
+}
+
+model Report {
+  id             String    @id @default(cuid())
+  reporterUserId String
+  targetUserId   String
+  reason         String
+  details        String?
+  resolvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([resolvedAt, createdAt])
+}
+
+model Block {
+  blockerUserId String
+  blockedUserId String
+  createdAt     DateTime @default(now())
+
+  @@id([blockerUserId, blockedUserId])
+}
+
+// ───────────── Privacy & audit ─────────────
+
+model ConsentRecord {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String // TERMS_PRIVACY | WORK_SETUP | AI_PROCESSING | EMAIL_NOTIFICATIONS
+  version   String
+  granted   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([userId, kind, createdAt(sort: Desc)])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String?
+  action      String
+  meta        Json
+  createdAt   DateTime @default(now())
+
+  @@index([actorUserId, createdAt])
+}
+
+/// Anonymized aggregates kept after account deletion (no personal data).
+model AggregateCounter {
+  key   String @id
+  value Int    @default(0)
+}
+
+/// Judge-mode sandbox: one per browser cookie, reset every 24 hours.
+model JudgeSandbox {
+  id             String   @id
+  talentUserId   String
+  employerUserId String
+  seededAt       DateTime @default(now())
+}
