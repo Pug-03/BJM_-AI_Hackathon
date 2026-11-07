@@ -100,7 +100,7 @@ export function OtpInput({
           }}
           className={cn(
             "bg-paper text-h3 text-ink border-field-line h-14 w-full max-w-14 min-w-0 rounded-[14px] border text-center font-semibold tabular-nums",
-            "focus:border-brand focus:bg-paper focus-visible:outline-brand transition-[border-color,background-color] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
+            "focus:border-brand focus:bg-paper focus-visible:outline-brand transition-[border-color,background-color] focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid",
             invalid && "border-danger",
           )}
         />

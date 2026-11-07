@@ -58,3 +58,10 @@ for (let i = 1; i <= 10; i++) {
 fs.writeFileSync("public/sample/certificate.svg",
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 566"><rect width="800" height="566" fill="#FBFAFD"/><rect x="24" y="24" width="752" height="518" fill="none" stroke="#C9B8FF" stroke-width="4"/><text x="400" y="190" text-anchor="middle" font-family="system-ui,sans-serif" font-size="40" font-weight="600" fill="#17151C">Certificate</text><text x="400" y="250" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#5C5866">Sample document for demo purposes</text><circle cx="400" cy="380" r="48" fill="#F0EAFF"/><path d="M380 380 l14 14 l28 -28" stroke="#6D28FF" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
 console.log("sample art written");
+
+// Neutral hero covers (light + dark) — the hero keeps violet for the mic only.
+const neutral = (bg, a, b, c) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="500" fill="${bg}"/><circle cx="260" cy="520" r="360" fill="${a}"/><circle cx="1180" cy="-40" r="300" fill="${b}"/><circle cx="1500" cy="420" r="200" fill="${c}"/><rect x="560" y="180" width="420" height="22" rx="11" fill="${b}" opacity=".7"/><rect x="560" y="226" width="300" height="22" rx="11" fill="${a}" opacity=".9"/></svg>`;
+fs.writeFileSync("public/sample/cover-neutral.svg", neutral("#F5F4F7", "#ECEBF0", "#E4E2EA", "#DCD9E3"));
+fs.writeFileSync("public/sample/cover-neutral-dark.svg", neutral("#18171C", "#232129", "#2E2C35", "#1E1D23"));
+console.log("neutral covers written");

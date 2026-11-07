@@ -17,7 +17,7 @@ test("judge mode: enter as talent, switch to employer, exit", async ({ page }) =
 test("judge dialog opens from the footer", async ({ page }) => {
   await page.goto("/en");
   await page.getByRole("button", { name: "Judge mode" }).click();
-  const dialog = page.getByRole("dialog", { name: "Try ABLE as a judge?" });
+  const dialog = page.getByRole("dialog", { name: "Try ABLE with sample data" });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("button", { name: /Try as an employer/ })).toBeVisible();
   await dialog.getByRole("button", { name: "Cancel" }).click();

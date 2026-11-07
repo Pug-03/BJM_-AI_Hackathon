@@ -19,14 +19,15 @@ export function SiteFooter() {
     { href: "/data-rights", label: t("dataRights") },
     { href: "/accessibility", label: t("accessibility") },
   ];
-  const linkCls = "inline-flex min-h-11 items-center text-small text-graphite hover:text-ink md:min-h-9";
+  const linkCls =
+    "inline-flex min-h-11 min-w-11 items-center text-small text-graphite hover:text-ink md:min-h-9";
   return (
     <footer className="border-line bg-mist border-t">
       <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
         <div className="flex flex-col gap-3">
           <Logo />
           <p className="measure text-small text-graphite">{t("pdpa")}</p>
-          <div className="-ml-2">
+          <div className="-ml-4">
             <LanguageSwitch compact={false} side="top" />
           </div>
         </div>
@@ -55,9 +56,11 @@ export function SiteFooter() {
           </ul>
         </nav>
       </div>
-      <div className="border-line mx-auto flex max-w-[1200px] flex-col items-center gap-4 border-t px-4 py-6 pb-[calc(env(safe-area-inset-bottom)+24px)] md:flex-row md:justify-between md:px-8">
-        <p className="text-caption text-graphite">{t("rights")}</p>
-        <JudgeModeDialog />
+      <div className="mx-auto max-w-[1200px] px-4 md:px-8">
+        <div className="border-line flex flex-col items-center gap-4 border-t py-6 pb-[calc(env(safe-area-inset-bottom)+24px)] md:flex-row md:justify-between">
+          <p className="text-caption text-graphite">{t("rights")}</p>
+          <JudgeModeDialog />
+        </div>
       </div>
     </footer>
   );

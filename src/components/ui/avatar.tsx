@@ -33,11 +33,12 @@ export function Avatar({ src, name, size = "md", className, alt = "" }: AvatarPr
       {src ? <A.Image src={src} alt={alt} className="size-full object-cover" /> : null}
       <A.Fallback
         delayMs={src ? 300 : 0}
-        className="bg-brand-soft text-brand flex size-full items-center justify-center font-semibold"
-        aria-hidden={alt ? undefined : true}
-      >
-        {initials(name)}
-      </A.Fallback>
+        // Initials are drawn with CSS content so they never leak into a parent control's
+        // accessible name (e.g. an "Account menu" button). Neutral, not violet (§4.2).
+        className="bg-cloud text-graphite flex size-full items-center justify-center font-semibold before:content-[attr(data-initials)]"
+        data-initials={initials(name)}
+        aria-hidden
+      />
     </A.Root>
   );
 }

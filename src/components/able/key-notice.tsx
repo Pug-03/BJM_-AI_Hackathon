@@ -9,7 +9,7 @@ const KEY = "able-key-notice-dismissed";
 /** Dismissible notice listing services missing in this environment. */
 export function KeyNotice({ missing }: { missing: string[] }) {
   const t = useTranslations("notice");
-  const [hidden, setHidden] = React.useState(true);
+  const [hidden, setHidden] = React.useState(false);
   const sig = missing.join(",");
   React.useEffect(() => {
     try {

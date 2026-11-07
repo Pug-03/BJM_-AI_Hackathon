@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 export const inputBase = [
   "w-full rounded-[14px] border border-field-line bg-paper px-4 text-ink placeholder:text-muted",
   "transition-[border-color,background-color] duration-200 ease-smooth",
-  "hover:border-graphite focus:border-brand focus:bg-paper focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+  "hover:border-graphite focus:border-brand focus:bg-paper focus:outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
   "aria-[invalid=true]:border-danger disabled:opacity-60",
 ].join(" ");
 

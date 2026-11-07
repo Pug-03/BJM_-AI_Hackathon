@@ -53,7 +53,7 @@ export default async function LoginPage({
       <main
         id="main"
         tabIndex={-1}
-        className="flex flex-1 items-start justify-center px-4 pt-4 pb-16 focus:outline-none sm:pt-[8vh]"
+        className="flex flex-1 items-start justify-center px-4 pt-4 pb-16 focus:outline-none sm:items-center sm:pt-0 sm:pb-[10vh]"
       >
         <LoginCard
           googleEnabled={services.google()}

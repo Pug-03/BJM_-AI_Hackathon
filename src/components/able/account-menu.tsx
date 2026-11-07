@@ -26,7 +26,9 @@ export function AccountMenu({ user }: { user: ShellUser }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button type="button" aria-label={t("account")} className="mt-2 rounded-full">
-          <Avatar src={user.image} name={user.name} size="sm" />
+          <span aria-hidden className="inline-flex">
+            <Avatar src={user.image} name={user.name} size="sm" />
+          </span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="end">

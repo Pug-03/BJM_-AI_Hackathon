@@ -32,10 +32,10 @@ export default async function WelcomePage({
         <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
         </Link>
-        <div className="-mr-2 flex items-center">
+        <div className="-mr-2 flex min-w-0 items-center">
           <LanguageSwitch />
           <ThemeSwitch />
-          <SignOutButton label={t("signOut")} />
+          <SignOutButton label={t("signOut")} compact />
         </div>
       </header>
       <main

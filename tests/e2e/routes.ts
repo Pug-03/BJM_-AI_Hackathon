@@ -4,7 +4,7 @@ export interface QaRoute {
   stage: number;
   name: string;
   /** Requires a signed-in session (set up by the judge-mode helper from Stage 3). */
-  auth?: "new" | "talent" | "employer";
+  auth?: "new" | "judge-talent" | "judge-employer" | "talent" | "employer";
 }
 
 export const routes: QaRoute[] = [
@@ -14,6 +14,8 @@ export const routes: QaRoute[] = [
   { path: "/login", stage: 2, name: "login" },
   { path: "/welcome", stage: 2, name: "welcome", auth: "new" },
   { path: "/judge", stage: 3, name: "judge" },
+  { path: "/feed", stage: 3, name: "feed-talent", auth: "judge-talent" },
+  { path: "/feed", stage: 3, name: "feed-employer", auth: "judge-employer" },
 ];
 
 export const viewports = [

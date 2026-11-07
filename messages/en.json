@@ -276,7 +276,7 @@
   },
   "judge": {
     "button": "Judge mode",
-    "title": "Try ABLE as a judge?",
+    "title": "Try ABLE with sample data",
     "body": "We’ll sign you in to a demo account filled with sample data. Nothing you do affects real users.",
     "asTalent": "Try as talent",
     "asEmployer": "Try as an employer",
@@ -292,7 +292,10 @@
     "switchToEmployer": "Switch to employer",
     "switchToTalent": "Switch to talent",
     "exit": "Exit",
-    "switching": "Switching…"
+    "switching": "Switching…",
+    "bannerShort": "Judge mode",
+    "toEmployer": "Switch to employer",
+    "toTalent": "Switch to talent"
   },
   "footer": {
     "rights": "© 2026 ABLE",
@@ -307,13 +310,14 @@
     "explore": "Explore talent",
     "login": "Log in",
     "calculator": "Section 33 calculator",
-    "builtVsPlanned": "Built vs planned"
+    "builtVsPlanned": "Roadmap"
   },
   "feed": {
     "title": "Your feed",
     "talentIntro": "Employers and roles that match your profile.",
     "employerIntro": "Talent matched to your hiring needs.",
     "sample": "Sample",
-    "empty": "Nothing to show yet."
+    "empty": "Nothing to show yet.",
+    "sampleNote": "Profiles marked Sample are fictional examples."
   }
 }

@@ -14,6 +14,7 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 1 | 1 | – | – | – | – | – | – | – | – | – | – | – | lint/type/unit pass; e2e blocked (networkidle + overwritten build) | 1 serious (select placeholder) | invalid (dev build) |
 | 1+2 | 2 | 5 | 7 | 5 | 6 | 5 | 7 | 6 | 7 | 7 | 3 | 5.8 | 50/50 e2e after fixes | 0 serious/critical | /en 90·100·100·100, CLS 0.08 ✗; /login 89·100·96·60 (noindex) |
+| 3 (full) | 1 | 6 | 7 | 6 | 5 | 6 | 7 | 6 | 7 | 7 | 5 | 6.2 | 38/50 (ENOENT clash) → 58/58 after fixes | 0 serious/critical at 390; 1 serious after (avatar name mismatch) → fixed | /en 90·100·100·100; explore 90; login 92; judge 91; CLS 0 |
 
 ## Notes per loop
 
@@ -37,3 +38,25 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
   - The welcome radio ring had low contrast.
   - The ProgressPill overlapped content.
 - Design critic fixes in progress: dark-mode surfaces, the hero product mock, the disabled button state, login and welcome hierarchy, the explore empty state, the mobile header menu, the sponsor strip, and input boundaries.
+
+**Stage 3, full check, loop 1.**
+- Agent A found:
+  - /feed overflowed horizontally on phones (a grid item had no column template).
+  - The judge banner wrapped, leaving a dangling "·".
+  - The welcome header overflowed at 320px in TH.
+  - Thai link text broke mid-word.
+- Agent C found:
+  - The hero waveform widened the page at 320px.
+  - The judge banner's focus ring and Exit target were too small.
+  - Footer links were narrower than 44px.
+  - The 2px input focus ring never rendered (Tailwind v4 `outline-none` variable).
+  - The LCP was delayed by the entrance animation and by the client-only notice.
+- Agent B found:
+  - Too much violet: the cover, avatars and chips.
+  - Hero timing ran past the 320ms token.
+  - The footer hairline was misaligned.
+  - The hero axis drifted at tablet widths.
+  - The TH headline wrapped badly.
+  - The judge cards gave no sign they could be clicked.
+  - The login logo appeared twice.
+- All of the above are fixed. Axe now runs with reduced motion so it never measures mid-fade.

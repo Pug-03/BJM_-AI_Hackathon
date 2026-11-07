@@ -35,18 +35,22 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
       <header className="flex flex-col gap-2">
         <h1 className="text-h1 tracking-display">{t("title")}</h1>
         <p className="text-graphite">{employer ? t("employerIntro") : t("talentIntro")}</p>
+        <p className="text-caption text-graphite">{t("sampleNote")}</p>
       </header>
       {items.length ? (
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-2">
           {items.map((i) => (
-            <li key={i.id} className="border-line flex items-center gap-3 rounded-[20px] border p-4">
+            <li
+              key={i.id}
+              className="border-line bg-raised flex min-w-0 items-center gap-3 rounded-[20px] border p-4"
+            >
               <Avatar src={i.img} name={i.name} size="md" />
-              <span className="flex min-w-0 flex-col">
+              <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate font-medium">{i.name}</span>
                 <span className="text-small text-graphite truncate">{i.sub}</span>
               </span>
-              {i.sample ? (
-                <span className="bg-mist text-caption text-graphite ml-auto rounded-full px-2.5 py-0.5">
+              {i.sample && !user.isSandbox ? (
+                <span className="bg-mist text-caption text-graphite shrink-0 rounded-full px-2.5 py-0.5">
                   {t("sample")}
                 </span>
               ) : null}

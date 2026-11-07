@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { locales, routes, themes, viewports } from "./routes";
-import { signInFresh } from "./helpers";
+import { applyAuth } from "./helpers";
 
 /**
  * QA screenshots: every route × 12 viewports × light/dark × EN/TH.
@@ -14,7 +14,8 @@ const vps = quick ? viewports.filter((v) => ["390x844", "820x1180", "1440x900"].
 const locs = quick ? (["en"] as const) : locales;
 const ths = quick ? (["light"] as const) : themes;
 const selected = routes.filter(
-  (r) => (!r.auth || r.auth === "new") && (stage === undefined || r.stage === stage),
+  (r) =>
+    (!r.auth || r.auth === "new" || r.auth.startsWith("judge")) && (stage === undefined || r.stage === stage),
 );
 
 for (const r of selected) {
@@ -22,7 +23,7 @@ for (const r of selected) {
     for (const theme of ths) {
       test(`${r.name} ${locale} ${theme}`, async ({ browser, baseURL }) => {
         const ctx = await browser.newContext({ colorScheme: theme, reducedMotion: "reduce" });
-        if (r.auth === "new") await signInFresh(ctx, baseURL!);
+        await applyAuth(ctx, baseURL!, r.auth);
         const page = await ctx.newPage();
         // Hide the environment notice and consent banner so shots show the product.
         await page.addInitScript(() => {

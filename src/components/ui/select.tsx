@@ -42,7 +42,7 @@ export function Select({ id, options, placeholder, className, ...props }: Select
         aria-label={props["aria-label"]}
         className={cn(
           "bg-paper text-ink border-field-line flex h-12 w-full items-center justify-between gap-2 rounded-[14px] border px-4 text-left",
-          "hover:border-graphite focus:border-brand focus:bg-paper data-[placeholder]:text-graphite aria-[invalid=true]:border-danger focus-visible:outline-brand focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2",
+          "hover:border-graphite focus:border-brand focus:bg-paper data-[placeholder]:text-graphite aria-[invalid=true]:border-danger focus-visible:outline-brand focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid",
           className,
         )}
       >

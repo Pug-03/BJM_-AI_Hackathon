@@ -22,22 +22,25 @@ export function JudgeBanner({ role }: { role: "TALENT" | "EMPLOYER" | "ADMIN" | 
     window.location.assign(`/${locale}`);
   };
   const linkCls =
-    "inline-flex min-h-11 items-center rounded-full px-2 font-medium underline underline-offset-2 hover:no-underline disabled:opacity-60";
+    "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2 font-medium underline underline-offset-2 hover:no-underline disabled:opacity-60 focus-visible:outline-current";
   return (
     <div
       role="region"
       aria-label={t("pageTitle")}
-      className="bg-ink text-small text-paper flex flex-wrap items-center justify-center gap-x-2 px-4"
+      className="bg-ink text-small text-paper dark:bg-cloud dark:text-ink flex items-center justify-center gap-x-2 px-4"
     >
-      <Gavel className="size-4" aria-hidden />
-      <span>{t("banner")}</span>
-      <button type="button" onClick={() => void sw()} disabled={busy} className={linkCls}>
-        {busy ? t("switching") : role === "TALENT" ? t("switchToEmployer") : t("switchToTalent")}
-      </button>
-      <span aria-hidden>·</span>
-      <button type="button" onClick={() => void exit()} disabled={busy} className={linkCls}>
-        {t("exit")}
-      </button>
+      <Gavel className="size-4 shrink-0" aria-hidden />
+      <span className="hidden sm:inline">{t("banner")}</span>
+      <span className="sm:hidden">{t("bannerShort")}</span>
+      <span className="flex items-center gap-x-1 whitespace-nowrap">
+        <button type="button" onClick={() => void sw()} disabled={busy} className={linkCls}>
+          {busy ? t("switching") : role === "TALENT" ? t("toEmployer") : t("toTalent")}
+        </button>
+        <span aria-hidden>·</span>
+        <button type="button" onClick={() => void exit()} disabled={busy} className={linkCls}>
+          {t("exit")}
+        </button>
+      </span>
     </div>
   );
 }

@@ -13,7 +13,6 @@ import { toast } from "@/components/ui/toaster";
 import { tabSlide, useReducedMotion, variantsFor } from "@/lib/motion";
 import { GoogleIcon } from "./google-icon";
 import { OtpInput } from "./otp-input";
-import { LogoMark } from "@/components/able/logo";
 
 type Step = "choose" | "email" | "otp";
 
@@ -151,7 +150,6 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             className="flex flex-col gap-6"
           >
             <header className="flex flex-col items-center gap-2 text-center">
-              <LogoMark className="mb-3 size-11" />
               <h1 ref={chooseHeadingRef} tabIndex={-1} className="text-h2 focus:outline-none">
                 {t("title")}
               </h1>
@@ -322,7 +320,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             <Link
               href="/terms"
               prefetch={false}
-              className="text-ink hover:text-brand underline underline-offset-2"
+              className="text-ink hover:text-brand whitespace-nowrap underline underline-offset-2"
             >
               {c}
             </Link>
@@ -331,7 +329,7 @@ export function LoginCard({ googleEnabled, devOtpInLog, available, next }: Login
             <Link
               href="/privacy"
               prefetch={false}
-              className="text-ink hover:text-brand underline underline-offset-2"
+              className="text-ink hover:text-brand whitespace-nowrap underline underline-offset-2"
             >
               {c}
             </Link>

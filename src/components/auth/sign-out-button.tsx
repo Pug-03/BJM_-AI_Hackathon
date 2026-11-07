@@ -5,7 +5,8 @@ import { LogOut } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 
-export function SignOutButton({ label }: { label: string }) {
+/** `compact`: icon-only below 640px (label stays as the accessible name). */
+export function SignOutButton({ label, compact }: { label: string; compact?: boolean }) {
   const locale = useLocale();
   return (
     <Button
@@ -17,7 +18,7 @@ export function SignOutButton({ label }: { label: string }) {
       }}
     >
       <LogOut aria-hidden />
-      {label}
+      <span className={compact ? "sr-only sm:not-sr-only" : undefined}>{label}</span>
     </Button>
   );
 }

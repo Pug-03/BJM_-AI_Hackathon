@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Briefcase, Info, Sparkles } from "lucide-react";
+import { Building2, ChevronRight, Info, UserRound } from "lucide-react";
 import { motion } from "motion/react";
 import { enterJudgeMode } from "@/server/judge";
 import { cn } from "@/lib/utils";
@@ -34,8 +34,8 @@ export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
   };
 
   const options = [
-    { role: "TALENT" as const, label: t("asTalent"), hint: t("talentHint"), icon: Sparkles },
-    { role: "EMPLOYER" as const, label: t("asEmployer"), hint: t("employerHint"), icon: Briefcase },
+    { role: "TALENT" as const, label: t("asTalent"), hint: t("talentHint"), icon: UserRound },
+    { role: "EMPLOYER" as const, label: t("asEmployer"), hint: t("employerHint"), icon: Building2 },
   ];
 
   return (
@@ -50,15 +50,19 @@ export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
             onClick={() => void go(o.role)}
             aria-busy={busy === o.role || undefined}
             className={cn(
-              "border-line bg-paper hover:border-graphite flex min-h-32 flex-col items-start gap-3 rounded-[20px] border p-5 text-left transition-colors disabled:opacity-60",
+              "group border-line bg-raised hover:border-graphite hover:bg-mist relative flex min-h-36 flex-col items-start gap-3 rounded-[20px] border p-5 pr-12 text-left transition-colors disabled:opacity-60",
               busy === o.role && "border-brand",
             )}
           >
             <span className="bg-mist flex size-10 items-center justify-center rounded-full">
               <o.icon className="size-5 stroke-[1.75]" aria-hidden />
             </span>
+            <ChevronRight
+              className="text-graphite absolute top-1/2 right-4 size-5 -translate-y-1/2 transition-transform group-hover:translate-x-0.5"
+              aria-hidden
+            />
             <span className="flex flex-col gap-0.5">
-              <span className="font-medium">{busy === o.role ? t("starting") : o.label}</span>
+              <span className="text-h3">{busy === o.role ? t("starting") : o.label}</span>
               <span className="text-small text-graphite">{o.hint}</span>
             </span>
           </motion.button>
