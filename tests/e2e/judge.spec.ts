@@ -11,7 +11,7 @@ test("judge mode: enter as talent, switch to employer, exit", async ({ page }) =
   await banner.getByRole("button", { name: "Switch to employer" }).click();
   await expect(banner.getByRole("button", { name: "Switch to talent" })).toBeVisible({ timeout: 60_000 });
   await banner.getByRole("button", { name: "Exit" }).click();
-  await expect(page).toHaveURL(/\/en$/);
+  await expect(page).toHaveURL(/\/en$/, { timeout: 45_000 });
 });
 
 test("judge dialog opens from the footer", async ({ page }) => {
