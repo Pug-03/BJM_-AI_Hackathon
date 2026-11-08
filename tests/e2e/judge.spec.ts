@@ -7,7 +7,7 @@ test("judge mode: enter as talent, switch to employer, exit", async ({ page }) =
   await expect(page).toHaveURL(/\/en\/feed/, { timeout: 60_000 });
   const banner = page.getByRole("region", { name: "Judge mode" });
   await expect(banner).toContainText("Judge mode — sample data.");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Your feed");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Opportunities for you");
   await banner.getByRole("button", { name: "Switch to employer" }).click();
   await expect(banner.getByRole("button", { name: "Switch to talent" })).toBeVisible({ timeout: 60_000 });
   await banner.getByRole("button", { name: "Exit" }).click();

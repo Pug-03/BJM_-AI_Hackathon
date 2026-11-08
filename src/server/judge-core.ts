@@ -1,6 +1,9 @@
 import "server-only";
 import { db } from "@/lib/db";
 import { createSandbox, deleteUserData } from "./seed-core";
+import { recomputeForNeed, recomputeForTalent } from "@/lib/match-jobs";
+import { recomputeNeed, recomputeTalent } from "@/lib/match-engine";
+import { log } from "@/lib/log";
 
 export const JUDGE_COOKIE = "able_judge_id";
 export const JUDGE_TTL_MS = 24 * 60 * 60 * 1000;
@@ -25,9 +28,26 @@ export async function ensureSandbox(judgeId: string) {
   }
   if (existing) await resetSandbox(existing);
   const sb = await createSandbox(db, judgeId);
+  await scoreSandbox(sb);
   return db.judgeSandbox.upsert({
     where: { id: judgeId },
     create: { id: judgeId, talentUserId: sb.talentUserId, employerUserId: sb.employerUserId },
     update: { talentUserId: sb.talentUserId, employerUserId: sb.employerUserId, seededAt: new Date() },
   });
+}
+
+/** Populate both sandbox feeds on entry (embeddings when available, lexical if that fails). */
+async function scoreSandbox(sb: { talentUserId: string; employerUserId: string }) {
+  const [talent, needs] = await Promise.all([
+    db.talentProfile.findUnique({ where: { userId: sb.talentUserId }, select: { id: true } }),
+    db.hiringNeed.findMany({ where: { org: { userId: sb.employerUserId } }, select: { id: true } }),
+  ]);
+  const jobs: Promise<unknown>[] = needs.map((n) =>
+    recomputeForNeed(n.id).catch((e) => {
+      log.warn("judge.score_fallback", { message: e instanceof Error ? e.message.slice(0, 80) : "unknown" });
+      return recomputeNeed(db, n.id);
+    }),
+  );
+  if (talent) jobs.push(recomputeForTalent(talent.id).catch(() => recomputeTalent(db, talent.id)));
+  await Promise.all(jobs);
 }

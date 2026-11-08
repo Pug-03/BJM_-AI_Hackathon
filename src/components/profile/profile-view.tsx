@@ -179,7 +179,12 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
               {starred ? t("starred") : t("star")}
             </Button>
           ) : (
-            <IconButton variant="soft" aria-label={t("share")} onClick={() => void share()} className="size-12 md:size-11">
+            <IconButton
+              variant="soft"
+              aria-label={t("share")}
+              onClick={() => void share()}
+              className="size-12 md:size-11"
+            >
               <Share2 aria-hidden />
             </IconButton>
           )}

@@ -12,6 +12,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChipInput } from "@/components/ui/chip-input";
+import { ToggleChips } from "@/components/ui/toggle-chips";
 import { toast } from "@/components/ui/toaster";
 import { AvatarUpload } from "@/components/able/avatar-upload";
 import { Link } from "@/i18n/navigation";
@@ -689,54 +690,6 @@ function StepBasics({
         </Field>
       </div>
     </div>
-  );
-}
-
-function ToggleChips<T extends string>({
-  legend,
-  options,
-  value,
-  onChange,
-  multiple,
-  label,
-}: {
-  legend: string;
-  options: readonly T[];
-  value: T[];
-  onChange: (v: T[]) => void;
-  multiple: boolean;
-  label: (v: T) => string;
-}) {
-  return (
-    <fieldset className="flex flex-col gap-2">
-      <legend className="text-small mb-2 font-medium">{legend}</legend>
-      <div className="flex flex-wrap gap-2">
-        {options.map((o) => {
-          const on = value.includes(o);
-          return (
-            <label
-              key={o}
-              className={cn(
-                "text-small has-[:focus-visible]:outline-brand flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
-                on ? "border-ink bg-ink text-paper" : "border-field-line hover:bg-mist",
-              )}
-            >
-              <input
-                type={multiple ? "checkbox" : "radio"}
-                className="sr-only"
-                checked={on}
-                name={legend}
-                onChange={() =>
-                  onChange(multiple ? (on ? value.filter((x) => x !== o) : [...value, o]) : [o])
-                }
-              />
-              {on ? <Check className="size-4" aria-hidden /> : null}
-              {label(o)}
-            </label>
-          );
-        })}
-      </div>
-    </fieldset>
   );
 }
 

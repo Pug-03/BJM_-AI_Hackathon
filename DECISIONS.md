@@ -73,3 +73,28 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **"Type instead" exists** for people who can't or prefer not to speak (accessibility).
 - **Without keys,** every mic and AI button opens a popover explaining the feature isn't set up here and suggesting typing. It is never a dead button.
 - **Mic placement:** dictation replaces the value in single-line inputs and appends in textareas. Mics are skipped on handle, year, URL, phone and contact values.
+
+## Stage 6: Employer onboarding, hiring needs, matched feed
+
+- **Scoring:** `src/lib/match.ts` (pure, unit-tested) implements the 0.55/0.25/0.10/0.10 formula.
+  - Skill overlap is a Jaccard index with whole-word fuzzy matching ("Excel" matches "Microsoft Excel", but "Excellent" does not).
+  - Age preference subtracts at most 0.05 from the sort key. It applies only to talent who show their age, and never removes anyone. The raw score is kept in `parts.raw`.
+- **Similarity:** cosine between pgvector embeddings (`text-embedding-3-small`) when an OpenAI key and the vector columns exist.
+  - Otherwise it uses character-trigram cosine, which works for Thai (no spaces) and English. `parts.method` records which one was used.
+  - The seed and judge-mode entry compute scores. Profile and need edits recompute in `after()`.
+- **Embedded text is public profile text only:** headline, bio, skills, education, special talents, languages and work preferences.
+  - Processing public profile text with OpenAI and Anthropic for matching is part of the core service. It will be disclosed in the privacy policy (Stage 8).
+- **"Why this match":** after the cards render, Claude writes one line per card, citing only the given facts. The line carries the "AI suggestion" label and is cached per need, talent and language.
+  - It is invalidated when the matched skills change.
+  - Without a key, or until the line arrives, a computed, non-AI summary shows instead ("Has 3 skills you need: … · Prefers remote work"). It is not labelled as AI because it isn't.
+- **Employer feeds never show judge-sandbox talent.** Sandbox talent are scored only against sample organizations, for their own feed.
+- **Filters reuse `talentFilterSchema` (strict)** for both the feed and `/explore`. Explore reads only whitelisted URL keys, so `?disability=…` is ignored.
+- **Employer onboarding saves each step on Continue,** not field by field.
+  - The registration number is private and sets `verifyRequestedAt`, which the Stage 9 admin queue will use.
+  - There is no salary field. A "You can agree pay in chat" note appears instead.
+- **Swipe** (right to star, left to skip) is enabled only on coarse pointers. Every swipe action has a visible button, and Skip offers Undo.
+- **Added beyond the minimum:**
+  - `/o/[handle]` employer page.
+  - `/saved` (starred and followed).
+  - `/needs` manager: create, edit, open or close, delete.
+- **`MatchScore` now has a relation to `TalentProfile`,** so the feed can filter in SQL. It needs `pnpm db:push` on Supabase.

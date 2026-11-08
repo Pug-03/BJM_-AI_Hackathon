@@ -29,12 +29,12 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  talent        TalentProfile?
-  org           OrgProfile?
-  sessions      Session[]
-  accounts      Account[]
-  consents      ConsentRecord[]
-  notifyPrefs   NotificationPrefs?
+  talent      TalentProfile?
+  org         OrgProfile?
+  sessions    Session[]
+  accounts    Account[]
+  consents    ConsentRecord[]
+  notifyPrefs NotificationPrefs?
 
   @@index([isSandbox])
   @@map("user")
@@ -137,6 +137,7 @@ model TalentProfile {
   contacts     ContactChannel[]
   reviews      Review[]         @relation("ReviewTarget")
   setupShares  SetupShare[]
+  matchScores  MatchScore[]
 
   embedding     Unsupported("vector(1536)")?
   embeddingHash String?
@@ -168,29 +169,29 @@ model SetupShare {
 // ───────────── Employers ─────────────
 
 model OrgProfile {
-  id             String           @id @default(cuid())
-  userId         String           @unique
-  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  handle         String           @unique
-  type           OrgType
-  name           String
-  logoUrl        String?
-  coverUrl       String?
-  description    String?
-  industry       String?
-  country        String           @default("TH")
-  province       String?
-  website        String?
-  employeeCount  Int?
-  currentHires   Int?
-  registrationNo String? // private, for verification
+  id                String           @id @default(cuid())
+  userId            String           @unique
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle            String           @unique
+  type              OrgType
+  name              String
+  logoUrl           String?
+  coverUrl          String?
+  description       String?
+  industry          String?
+  country           String           @default("TH")
+  province          String?
+  website           String?
+  employeeCount     Int?
+  currentHires      Int?
+  registrationNo    String? // private, for verification
   verifyRequestedAt DateTime?
-  verifyTier     Int              @default(1)
-  isSample       Boolean          @default(false)
-  contacts       ContactChannel[]
-  needs          HiringNeed[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  verifyTier        Int              @default(1)
+  isSample          Boolean          @default(false)
+  contacts          ContactChannel[]
+  needs             HiringNeed[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 enum OrgType {
@@ -216,9 +217,9 @@ enum Availability {
 }
 
 model HiringNeed {
-  id             String       @id @default(cuid())
+  id             String                       @id @default(cuid())
   orgId          String
-  org            OrgProfile   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  org            OrgProfile                   @relation(fields: [orgId], references: [id], onDelete: Cascade)
   title          String
   skills         String[]
   workMode       WorkMode
@@ -231,9 +232,9 @@ model HiringNeed {
   description    String?
   embedding      Unsupported("vector(1536)")?
   embeddingHash  String?
-  isOpen         Boolean      @default(true)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  isOpen         Boolean                      @default(true)
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
   scores         MatchScore[]
 
   @@index([orgId, isOpen])
@@ -242,13 +243,14 @@ model HiringNeed {
 /// Cached match scores per hiring need (recomputed on profile/need update).
 model MatchScore {
   needId     String
-  need       HiringNeed @relation(fields: [needId], references: [id], onDelete: Cascade)
+  need       HiringNeed    @relation(fields: [needId], references: [id], onDelete: Cascade)
   talentId   String
+  talent     TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
   score      Float
   parts      Json
   reason     String?
   reasonLang String?
-  updatedAt  DateTime   @updatedAt
+  updatedAt  DateTime      @updatedAt
 
   @@id([needId, talentId])
   @@index([needId, score(sort: Desc)])
@@ -289,16 +291,16 @@ model Education {
 }
 
 model Certificate {
-  id       String        @id @default(cuid())
-  talentId String
-  talent   TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
-  kind     CertKind
-  title    String
-  issuer   String?
-  issuedAt DateTime?
-  fileUrl  String
-  isPublic Boolean       @default(true)
-  createdAt DateTime     @default(now())
+  id        String        @id @default(cuid())
+  talentId  String
+  talent    TalentProfile @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  kind      CertKind
+  title     String
+  issuer    String?
+  issuedAt  DateTime?
+  fileUrl   String
+  isPublic  Boolean       @default(true)
+  createdAt DateTime      @default(now())
 
   @@index([talentId])
 }

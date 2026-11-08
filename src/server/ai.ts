@@ -45,6 +45,10 @@ export async function structureProfile(
 }
 
 const bioInput = z.object({
+  kind: z.enum(["talent", "org"]).optional(),
+  orgType: z.string().max(30).nullish(),
+  industry: z.string().max(80).nullish(),
+  province: z.string().max(80).nullish(),
   displayName: z.string().max(80).nullish(),
   headline: z.string().max(120).nullish(),
   bio: z.string().max(2000).nullish(),
@@ -72,7 +76,9 @@ export async function draftBio(input: unknown, locale: unknown): Promise<AiResul
   const parsed = bioInput.safeParse(input);
   if (!parsed.success) return { ok: false, error: "empty" };
   const c = parsed.data;
-  const hasFacts = Boolean(c.headline || c.bio || c.skills?.length || c.educations?.length || c.notes);
+  const hasFacts = Boolean(
+    c.headline || c.bio || c.skills?.length || c.educations?.length || c.notes || c.industry,
+  );
   if (!hasFacts) return { ok: false, error: "empty" };
   const user = await getCurrentUser();
   const gate = await aiGate(user?.id, "ai");

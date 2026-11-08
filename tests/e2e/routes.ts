@@ -9,16 +9,20 @@ export interface QaRoute {
 
 export const routes: QaRoute[] = [
   { path: "/", stage: 1, name: "landing" },
-  { path: "/explore", stage: 1, name: "explore" },
+  { path: "/explore", stage: 6, name: "explore" },
   { path: "/styleguide", stage: 1, name: "styleguide" },
   { path: "/login", stage: 2, name: "login" },
   { path: "/welcome", stage: 2, name: "welcome", auth: "new" },
   { path: "/judge", stage: 3, name: "judge" },
-  { path: "/feed", stage: 3, name: "feed-talent", auth: "judge-talent" },
+  { path: "/feed", stage: 6, name: "feed-talent", auth: "judge-talent" },
   { path: "/u/kittipong-design", stage: 4, name: "profile-public" },
   { path: "/me", stage: 5, name: "profile-me", auth: "judge-talent" },
   { path: "/onboarding/talent", stage: 5, name: "onboarding-talent", auth: "judge-talent" },
-  { path: "/feed", stage: 3, name: "feed-employer", auth: "judge-employer" },
+  { path: "/feed", stage: 6, name: "feed-employer", auth: "judge-employer" },
+  { path: "/needs", stage: 6, name: "needs", auth: "judge-employer" },
+  { path: "/saved", stage: 6, name: "saved-employer", auth: "judge-employer" },
+  { path: "/o/pims-bakery", stage: 6, name: "org-public" },
+  { path: "/onboarding/employer", stage: 6, name: "onboarding-employer", auth: "judge-employer" },
 ];
 
 export const viewports = [

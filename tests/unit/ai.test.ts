@@ -31,7 +31,11 @@ describe("profile draft schema", () => {
 
 describe("cleanDraft", () => {
   it("trims, dedupes and limits lists", () => {
-    const d = cleanDraft({ ...empty, skills: [" Excel ", "excel", "Canva", ""], languages: ["Thai", "thai"] });
+    const d = cleanDraft({
+      ...empty,
+      skills: [" Excel ", "excel", "Canva", ""],
+      languages: ["Thai", "thai"],
+    });
     expect(d.skills).toEqual(["Excel", "Canva"]);
     expect(d.languages).toEqual(["Thai"]);
   });
