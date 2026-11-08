@@ -24,7 +24,7 @@ export function HeaderShell({ children }: { children: React.ReactNode }) {
       <div
         aria-hidden
         className={cn(
-          "border-line bg-paper/60 absolute inset-0 border-b backdrop-blur-md transition-opacity duration-300",
+          "border-line bg-paper/90 absolute inset-0 border-b backdrop-blur-md transition-opacity duration-300",
           scrolled ? "opacity-0" : "opacity-100",
         )}
       />

@@ -68,9 +68,9 @@ export async function LandingSections() {
     <>
       <section aria-labelledby="safe-title" className="py-12 md:py-20">
         <div className={wrap}>
-          <div className="bg-warm rounded-[32px] px-6 py-12 md:px-12 md:py-16">
+          <div className="bg-mist rounded-[32px] px-6 py-12 md:px-12 md:py-16">
             <Reveal className="flex max-w-[680px] flex-col gap-3">
-              <p className="text-small text-warm-ink font-medium">{t("safe.eyebrow")}</p>
+              <p className="text-small text-graphite font-medium">{t("safe.eyebrow")}</p>
               <h2 id="safe-title" className="text-h1 tracking-display">
                 {t("safe.title")}
               </h2>
@@ -86,7 +86,7 @@ export async function LandingSections() {
                 ] as const
               ).map(([Icon, k]) => (
                 <RevealItem key={k} className="bg-paper flex flex-col gap-3 rounded-[24px] p-6">
-                  <span className="bg-warm-strong text-warm-ink flex size-12 items-center justify-center rounded-full">
+                  <span className="bg-brand-soft text-brand flex size-12 items-center justify-center rounded-full">
                     <Icon className="size-6 stroke-[1.75]" aria-hidden />
                   </span>
                   <h3 className="text-h3">{t(`safe.${k}.title`)}</h3>
