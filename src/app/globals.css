@@ -308,6 +308,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
 /* Sticky headers: keep anchored and keyboard-focused content from hiding under them (WCAG 2.4.11). */
 html {
   scroll-padding-top: 5rem;
+  /* In-page jumps glide; reduced motion turns this off (rule above). */
+  scroll-behavior: smooth;
 }
 
 /* Scroll reveals never hide content: reduced motion, focused content, and no-JS all show it as-is. */

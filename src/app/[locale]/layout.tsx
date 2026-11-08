@@ -62,7 +62,7 @@ export default async function LocaleLayout({
   const t = await getTranslations("common");
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${thai.variable}`}>
+    <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${thai.variable}`}>
       <body>
         <noscript>
           <style>{"[data-reveal],[data-reveal]>*{opacity:1!important;transform:none!important}"}</style>

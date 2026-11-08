@@ -62,6 +62,9 @@ export async function loadTalentProfile(
     bio: st(raw.bio, locale),
     specialTalents: st(raw.specialTalents, locale),
     languages: stList(raw.languages, locale),
+    disability: raw.disability
+      ? { ...raw.disability, note: st(raw.disability.note, locale) }
+      : raw.disability,
   };
 
   const [followers, following, starred, reviews, liked] = await Promise.all([

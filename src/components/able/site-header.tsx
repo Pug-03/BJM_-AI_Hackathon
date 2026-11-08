@@ -6,6 +6,7 @@ import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
 import { SiteMenu } from "./site-menu";
 import { HeaderShell } from "./header-shell";
+import { AnchorLink } from "./anchor-link";
 import { JudgeModeDialog } from "@/components/judge/judge-mode-dialog";
 
 /** Marketing header for public pages. */
@@ -23,17 +24,17 @@ export function SiteHeader() {
           <ul className="flex items-center gap-1">
             <li>
               <Button asChild variant="ghost" size="sm">
-                <Link href="/#how">{t("howItWorks")}</Link>
+                <AnchorLink hash="how">{t("howItWorks")}</AnchorLink>
               </Button>
             </li>
             <li>
               <Button asChild variant="ghost" size="sm">
-                <Link href="/#employers">{t("forEmployers")}</Link>
+                <AnchorLink hash="employers">{t("forEmployers")}</AnchorLink>
               </Button>
             </li>
             <li>
               <Button asChild variant="ghost" size="sm">
-                <Link href="/#faq">{t("faq")}</Link>
+                <AnchorLink hash="faq">{t("faq")}</AnchorLink>
               </Button>
             </li>
           </ul>

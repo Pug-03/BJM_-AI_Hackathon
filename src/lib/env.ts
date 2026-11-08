@@ -19,3 +19,11 @@ export function missingServices(): ServiceName[] {
 
 export const appUrl = () =>
   process.env.NEXT_PUBLIC_APP_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+
+/**
+ * Services listed in the public "not configured" notice. Off by default so visitors never see
+ * setup details; set SHOW_KEY_NOTICE=1 while setting up an environment.
+ */
+export function noticeServices(): ServiceName[] {
+  return process.env.SHOW_KEY_NOTICE === "1" ? missingServices() : [];
+}

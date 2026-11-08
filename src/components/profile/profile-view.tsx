@@ -9,6 +9,7 @@ import {
   Briefcase,
   ExternalLink,
   FileText,
+  Accessibility,
   AtSign,
   Globe,
   Languages,
@@ -250,6 +251,38 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
             <motion.p variants={variantsFor(staggerItem, reduced)} className="text-body font-medium">
               {p.headline}
             </motion.p>
+          ) : null}
+          {p.disability && (p.disability.types.length || p.disability.note) ? (
+            <motion.section
+              variants={variantsFor(staggerItem, reduced)}
+              aria-labelledby="profile-disability"
+              className="bg-brand-soft flex flex-col gap-2 rounded-2xl p-4"
+            >
+              <h2
+                id="profile-disability"
+                className="text-small flex flex-wrap items-center gap-2 font-semibold"
+              >
+                <Accessibility className="text-brand size-4" aria-hidden />
+                {t("aboutDisability")}
+                {owner && p.disability.visibility ? (
+                  <span className="text-caption text-graphite font-normal">
+                    · {t(`disabilityVisibleTo.${p.disability.visibility as "HIDDEN"}`)}
+                  </span>
+                ) : null}
+              </h2>
+              {p.disability.types.length ? (
+                <ul className="flex flex-wrap gap-2">
+                  {p.disability.types.map((d) => (
+                    <li key={d} className="bg-raised text-small rounded-full px-3 py-1 font-medium">
+                      {te(`disability.${d as "VISION"}`)}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {p.disability.note ? (
+                <p className="text-small text-graphite whitespace-pre-line">{p.disability.note}</p>
+              ) : null}
+            </motion.section>
           ) : null}
           <motion.ul
             variants={variantsFor(staggerItem, reduced)}
@@ -608,34 +641,6 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
             </TabPanel>
             <TabPanel value="about">
               <dl className="flex flex-col gap-6">
-                {p.disability && (p.disability.types.length || p.disability.note) ? (
-                  <div>
-                    <dt className="text-small mb-2 flex flex-wrap items-center gap-2 font-semibold">
-                      {t("aboutDisability")}
-                      {owner && p.disability.visibility ? (
-                        <span className="text-caption text-graphite font-normal">
-                          · {t(`disabilityVisibleTo.${p.disability.visibility as "HIDDEN"}`)}
-                        </span>
-                      ) : null}
-                    </dt>
-                    <dd className="flex flex-col gap-2">
-                      {p.disability.types.length ? (
-                        <ul className="flex flex-wrap gap-2">
-                          {p.disability.types.map((d) => (
-                            <li key={d} className="bg-mist text-small rounded-full px-3 py-1">
-                              {te(`disability.${d as "VISION"}`)}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                      {p.disability.note ? (
-                        <p className="measure text-small text-graphite whitespace-pre-line">
-                          {p.disability.note}
-                        </p>
-                      ) : null}
-                    </dd>
-                  </div>
-                ) : null}
                 {p.bio ? (
                   <div>
                     <dt className="text-small mb-1 font-semibold">{t("aboutBio")}</dt>

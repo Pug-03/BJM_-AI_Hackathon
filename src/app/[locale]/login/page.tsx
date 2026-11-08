@@ -6,7 +6,7 @@ import { LoginCard } from "@/components/auth/login-card";
 import { Logo } from "@/components/able/logo";
 import { LanguageSwitch } from "@/components/able/language-switch";
 import { ThemeSwitch } from "@/components/able/theme-switch";
-import { missingServices, services } from "@/lib/env";
+import { noticeServices, services } from "@/lib/env";
 import { KeyNotice } from "@/components/able/key-notice";
 import { JudgeChoices } from "@/components/judge/judge-choices";
 import { getCurrentUser, homeFor } from "@/lib/session";
@@ -78,7 +78,7 @@ export default async function LoginPage({
           </section>
         </div>
       </main>
-      <KeyNotice missing={missingServices()} />
+      <KeyNotice missing={noticeServices()} />
     </div>
   );
 }

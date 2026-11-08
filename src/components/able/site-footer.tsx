@@ -6,7 +6,7 @@ import { LanguageSwitch } from "./language-switch";
 import { SponsorStrip } from "./sponsor-strip";
 import { CookieSettingsLink } from "@/components/policy/cookie-banner";
 import { KeyNotice } from "./key-notice";
-import { missingServices } from "@/lib/env";
+import { noticeServices } from "@/lib/env";
 
 export function SiteFooter({ hideJudge = false }: { hideJudge?: boolean }) {
   const t = useTranslations("footer");
@@ -75,7 +75,7 @@ export function SiteFooter({ hideJudge = false }: { hideJudge?: boolean }) {
           {hideJudge ? null : <JudgeModeDialog />}
         </div>
       </div>
-      <KeyNotice missing={missingServices()} />
+      <KeyNotice missing={noticeServices()} />
     </footer>
   );
 }

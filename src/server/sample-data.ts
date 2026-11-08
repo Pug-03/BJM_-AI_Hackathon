@@ -1250,6 +1250,16 @@ export const sampleReviews: [string, string, number, string][] = [
   ["linmei", "gov-tourism", 4, "Careful work on our visitor guides."],
   ["arthit", "baan-ceramics", 4, "Skilled hands and good photos."],
   ["maya", "lumen", 5, "Patients understand our app now."],
+  ["ananya", "gov-health-data", 5, "Her clinic dashboards cut our monthly reporting from days to hours."],
+  ["ananya", "metro-retail", 4, "Sharp analysis and clear explanations for non-technical managers."],
+  ["kittipong", "pim-bakery", 5, "Our new labels look professional and friendly. Sales went up."],
+  ["nok", "inclusive-sports", 5, "Accurate subtitles in both languages, always on deadline."],
+  ["daniel", "payleaf", 5, "Our checkout now works fully with a keyboard. Excellent code reviews too."],
+  ["linmei", "siam-harbor", 5, "Our Chinese buyers finally understand our product sheets."],
+  ["arthit", "kanya-shop", 5, "Beautiful teak pieces and product photos that sell themselves."],
+  ["maya", "gov-digital", 5, "Our forms are shorter and far fewer people get stuck now."],
+  ["siriporn", "open-doors", 5, "She rebuilt our hiring process and made it inclusive from day one."],
+  ["siriporn", "silver-line", 5, "Organised, warm with candidates, and great with paperwork."],
 ];
 
 /** Labels for the "accessible workplace setup we can offer" checklist. */

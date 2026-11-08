@@ -11,7 +11,8 @@ test.describe("messages", () => {
     await enterJudge(context, baseURL!, "talent");
     await page.goto("/en/messages");
     const inbox = page.getByRole("list", { name: "Conversations" });
-    await expect(inbox.getByRole("link")).toHaveCount(3);
+    // 3 current threads + 3 past jobs with reviews.
+    await expect(inbox.getByRole("link")).toHaveCount(6);
     await inbox.getByRole("link").first().click();
     await expect(page).toHaveURL(/\/en\/messages\/.+/);
     const log = page.getByRole("log");

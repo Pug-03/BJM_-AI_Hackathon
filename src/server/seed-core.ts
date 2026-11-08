@@ -29,7 +29,7 @@ const sampleTrust: Record<
   mali: {
     types: ["VISION"],
     note: "I use a screen reader (NVDA) and prefer written instructions.",
-    vis: "CHAT_ONLY",
+    vis: "PUBLIC",
     identity: true,
     card: true,
   },
@@ -56,7 +56,7 @@ const sampleTrust: Record<
   nok: {
     types: ["AUTISM"],
     note: "Clear briefs and quiet focus time help me do my best work.",
-    vis: "CHAT_ONLY",
+    vis: "PUBLIC",
   },
   preeya: {
     types: ["HEARING"],
@@ -68,7 +68,39 @@ const sampleTrust: Record<
   siriporn: {
     types: ["CHRONIC"],
     note: "Flexible hours help on treatment days.",
-    vis: "HIDDEN",
+    vis: "PUBLIC",
+    identity: true,
+  },
+  ananya: {
+    types: ["CHRONIC"],
+    note: "Lupus — flexible hours and remote work help me stay at my best.",
+    vis: "PUBLIC",
+    identity: true,
+  },
+  daniel: {
+    types: ["MOBILITY"],
+    note: "Limited hand movement; I use voice control and a custom keyboard.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+  linmei: {
+    types: ["HEARING"],
+    note: "Hard of hearing in one ear; written messages work best for me.",
+    vis: "PUBLIC",
+    identity: true,
+  },
+  arthit: {
+    types: ["MOBILITY"],
+    note: "Below-knee amputee with a prosthetic leg; short standing breaks help.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+  maya: {
+    types: ["LEARNING"],
+    note: "Dyslexic — it's why I care so much about plain language.",
+    vis: "PUBLIC",
     identity: true,
   },
   "judge-talent": {
@@ -124,7 +156,12 @@ async function upsertTalent(
   });
   const avatarUrl = sampleAvatar(t.key);
   const existing = await db.talentProfile.findUnique({ where: { userId: user.id } });
-  if (existing && existing.disabilityTypes.length === 0 && sampleTrust[t.key]) {
+  const trust = sampleTrust[t.key];
+  if (
+    existing &&
+    trust &&
+    (existing.disabilityTypes.length === 0 || existing.disabilityVisibility !== trust.vis)
+  ) {
     // Backfill sample trust data on older seeds.
     await db.talentProfile.update({ where: { id: existing.id }, data: trustData(t.key) });
   }
@@ -595,6 +632,55 @@ export async function createSandbox(db: PrismaClient, judgeId: string): Promise<
       read: false,
     },
   ]);
+  // Past jobs with reviews, so the judge's own profile shows ratings too.
+  const pastJobs: [string, string, number, string][] = [
+    [
+      "pim-bakery",
+      "Online order support",
+      5,
+      "Ploy answered every customer kindly and quickly. Our reviews went up.",
+    ],
+    [
+      "kanya-shop",
+      "Chat support (Shopee and LINE)",
+      5,
+      "Reliable, calm and very organised. We would hire her again.",
+    ],
+    ["craftly", "Customer email support", 4, "Clear replies in Thai and English, always on time."],
+  ];
+  for (const [i, [ok, role, rating, text]] of pastJobs.entries()) {
+    const o = await sampleOrg(ok);
+    const convo = await conversation(db, tu.id, o.id, [
+      { from: "employer", text: "Hello Ploy! Are you free for a short project?", at: ago(90 + i * 20, 3) },
+      { from: "talent", text: "Hi, yes I am. Happy to hear more.", at: ago(90 + i * 20, 2) },
+      {
+        from: "employer",
+        kind: "OFFER",
+        offer: offerJson(role, 15000 + i * 2000, "ACCEPTED", -30),
+        at: ago(89 + i * 20),
+      },
+      { from: "talent", kind: "SYSTEM", text: "OFFER_ACCEPTED", at: ago(89 + i * 20, -1) },
+    ]);
+    await db.review.upsert({
+      where: {
+        authorUserId_targetId_conversationId: {
+          authorUserId: o.id,
+          targetId: tp.id,
+          conversationId: convo.id,
+        },
+      },
+      update: {},
+      create: {
+        authorUserId: o.id,
+        targetId: tp.id,
+        conversationId: convo.id,
+        rating,
+        text,
+        createdAt: ago(60 + i * 20),
+      },
+    });
+  }
+  await refreshRating(db, tp.id);
   for (const o of [payleaf, hotels, transport]) {
     await db.follow.upsert({
       where: { followerId_followeeUserId: { followerId: o.id, followeeUserId: tu.id } },

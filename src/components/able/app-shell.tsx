@@ -4,7 +4,7 @@ import { TopBar } from "./top-bar";
 import { PageTransition } from "./page-transition";
 import type { ShellUser } from "./nav-items";
 import { KeyNotice } from "./key-notice";
-import { missingServices } from "@/lib/env";
+import { noticeServices } from "@/lib/env";
 
 /** Signed-in / explore shell: icon rail ≥768px, top bar + floating bottom nav below. */
 export function AppShell({
@@ -31,7 +31,7 @@ export function AppShell({
         </main>
       </div>
       <BottomNav user={user} />
-      <KeyNotice missing={missingServices()} aboveBottomNav />
+      <KeyNotice missing={noticeServices()} aboveBottomNav />
     </div>
   );
 }

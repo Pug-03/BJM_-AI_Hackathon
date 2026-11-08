@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/dialog";
 import { IconButton } from "@/components/ui/icon-button";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitch } from "./language-switch";
+import { AnchorLink } from "./anchor-link";
 import { ThemeSwitch } from "./theme-switch";
 
 /** Header menu below 1024px: site links, sign-in, language and theme in a bottom sheet. */
@@ -34,13 +35,24 @@ export function SiteMenu() {
           <ul className="flex flex-col">
             {links.map((l) => (
               <li key={l.href}>
-                <Link
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="text-body hover:bg-mist flex min-h-12 items-center rounded-[14px] px-2 font-medium"
-                >
-                  {l.label}
-                </Link>
+                {l.href.startsWith("/#") ? (
+                  <AnchorLink
+                    hash={l.href.slice(2)}
+                    delay={260}
+                    onNavigate={() => setOpen(false)}
+                    className="text-body hover:bg-mist flex min-h-12 items-center rounded-[14px] px-2 font-medium"
+                  >
+                    {l.label}
+                  </AnchorLink>
+                ) : (
+                  <Link
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="text-body hover:bg-mist flex min-h-12 items-center rounded-[14px] px-2 font-medium"
+                  >
+                    {l.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

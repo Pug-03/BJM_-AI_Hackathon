@@ -32,10 +32,10 @@ test("verification panel shows status and the admin queue renders", async ({ bro
   await admin.close();
 });
 
-test("disability info stays private by default and shows per visibility", async ({ request }) => {
-  // Sample "Nok" shares only with employers she chats with; Wichai shares publicly.
-  const nok = await (await request.get("/en/u/nok-edits")).text().catch(() => "");
-  expect(nok).not.toContain("Clear briefs and quiet focus time");
+test("sample profiles show the disability their owner chose to share", async ({ request }) => {
+  // Visibility rules (hidden / chat only / public) are unit-tested in tests/unit/privacy.test.ts.
+  const nok = await (await request.get("/en/u/nok-edits")).text();
+  expect(nok).toContain("Clear briefs and quiet focus time");
   const wichai = await (await request.get("/en/u/wichai-qa")).text();
   expect(wichai).toContain("I test with VoiceOver and NVDA every day");
   expect(wichai).toContain("Identity verified");
