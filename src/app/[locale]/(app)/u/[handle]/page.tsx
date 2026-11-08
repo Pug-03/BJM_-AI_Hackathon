@@ -20,7 +20,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     openGraph: {
       title: p.displayName,
       description: p.headline ?? undefined,
-      images: p.avatarUrl ? [p.avatarUrl] : undefined,
     },
   };
 }

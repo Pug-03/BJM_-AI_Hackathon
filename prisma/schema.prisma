@@ -254,6 +254,7 @@ model MatchScore {
 
   @@id([needId, talentId])
   @@index([needId, score(sort: Desc)])
+  @@index([talentId, score(sort: Desc)])
 }
 
 model Skip {
@@ -263,6 +264,7 @@ model Skip {
   createdAt      DateTime @default(now())
 
   @@id([employerUserId, talentId, needId])
+  @@index([employerUserId, needId])
 }
 
 // ───────────── Profile content ─────────────
@@ -474,6 +476,7 @@ model Message {
   createdAt      DateTime     @default(now())
 
   @@index([conversationId, createdAt])
+  @@index([conversationId, senderUserId, readAt])
 }
 
 enum MsgKind {

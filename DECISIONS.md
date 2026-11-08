@@ -177,3 +177,29 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - Suspension ends sessions; `getCurrentUser` already refuses suspended users.
 - **`/built-vs-planned`** is an honest status list. Tier 3 identity verification is Phase 2.
 - **The Section 33 calculator** is public and is described under Stage 8.
+
+## Stage 10: Production hardening
+
+- **Boundaries:**
+  - `[locale]/error.tsx` is a friendly bilingual boundary that shows a reference digest and no stack trace.
+  - `global-error.tsx` is plain bilingual HTML.
+  - `loading.tsx` skeletons cover the app group and public routes.
+- **SEO:**
+  - Per-page metadata; `sitemap.ts` covers public pages and public non-sandbox profiles in EN and TH.
+  - `robots.ts` disallows private app routes.
+  - Per-profile Open Graph images come from `next/og`. They use Latin text only, because the OG font has no Thai glyphs; non-Latin names fall back to a neutral line.
+- **PWA:**
+  - `manifest.ts`, plus icons generated with `ImageResponse`, so no binary assets live in the repo.
+  - The middleware matcher excludes icon routes.
+- **Security headers** are in `next.config.ts`.
+  - The CSP allows `'unsafe-inline'` scripts, because the App Router injects inline bootstrap scripts and there is no nonce pipeline. Everything else is tight: frames are limited to Daily, and connections to self plus Supabase.
+  - HSTS preload, `X-Frame-Options: DENY`, `nosniff`, and a strict referrer policy.
+  - `Permissions-Policy` allows the mic for "Speak to fill" and delegates camera and mic to Daily.
+- **Error reporting** is in `instrumentation.ts#onRequestError`.
+  - It always writes a structured line with no PII.
+  - With `SENTRY_DSN`, it also sends a minimal store-API event (no SDK dependency).
+- **New indexes:** `MatchScore(talentId, score desc)` for the talent feed, `Message(conversationId, senderUserId, readAt)` for unread counts, and `Skip(employerUserId, needId)`.
+- **Images:**
+  - Bundled sample covers are inlined as SVG.
+  - User uploads are already resized to WebP (max 2560px) on the client and served as signed URLs, so they stay as `<img>` (there's no `next/image` loader for signed URLs). This is documented as a known trade-off.
+- **Rate limits verified** for OTP (Better Auth plus per-email), AI, uploads, messages, reports, comments, export, judge mode and "Why this match".

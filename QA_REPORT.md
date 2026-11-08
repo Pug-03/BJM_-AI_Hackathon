@@ -207,3 +207,4 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 - The employer feed is a single column on wide screens.
 - The mic capsule cross-fades instead of truly morphing into the text.
 - A few consistency items (the position of the Sample pill, Follow labels on mobile).
+| 10 | ✓ | ✓ | 50/50 | ✓ | 154/154 (4 skipped) | all 22 routes quick-shot, no overflow | sitemap, robots, manifest, generated icons and per-profile OG image verified over HTTP; CSP/HSTS/XFO/Referrer/Permissions headers present; error + loading boundaries; DB indexes added |
