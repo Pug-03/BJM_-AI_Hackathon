@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { matchedSkills } from "@/lib/match";
+import { st, stList } from "@/lib/sample-i18n";
 import { provinceLabel } from "@/config/th-provinces";
 import { VerifiedBadge } from "@/components/able/verified-badge";
 import { CoverArt } from "@/components/able/cover-art";
@@ -96,7 +97,7 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
             {o.industry ? (
               <li className="flex items-center gap-2">
                 <Building2 className="size-4" aria-hidden />
-                {o.industry}
+                {st(o.industry, locale)}
               </li>
             ) : null}
             {o.province ? (
@@ -157,7 +158,7 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
           {o.description ? (
             <section className="flex flex-col gap-2">
               <h2 className="text-h3">{t("about")}</h2>
-              <p className="measure text-ink whitespace-pre-line">{o.description}</p>
+              <p className="measure text-ink whitespace-pre-line">{st(o.description, locale)}</p>
             </section>
           ) : null}
           <section className="flex flex-col gap-4">
@@ -172,7 +173,10 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
                       sampleLabel={false}
                       n={{
                         ...n,
-                        matched: matchedSkills(mySkills, n.skills),
+                        title: st(n.title, locale),
+                        description: st(n.description, locale),
+                        skills: stList(n.skills, locale),
+                        matched: stList(matchedSkills(mySkills, n.skills), locale),
                         org: {
                           userId: o.userId,
                           handle: o.handle,

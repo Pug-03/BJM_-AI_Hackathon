@@ -1,6 +1,7 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
 import type { TalentFilter } from "./schemas/talent";
+import { st, stList } from "./sample-i18n";
 
 /**
  * Prisma filter for talent search (explore + feed). Built only from `talentFilterSchema`,
@@ -74,13 +75,13 @@ export interface TalentCard {
   skills: string[];
 }
 
-export function toCard(t: TalentCardRow): TalentCard {
+export function toCard(t: TalentCardRow, locale = "en"): TalentCard {
   return {
     talentId: t.id,
     userId: t.userId,
     handle: t.handle,
     name: t.displayName,
-    headline: t.headline,
+    headline: st(t.headline, locale),
     avatar: t.avatarUrl,
     cover: t.coverUrl,
     province: t.province,
@@ -91,6 +92,9 @@ export function toCard(t: TalentCardRow): TalentCard {
     rating: t.ratingAvg,
     ratingCount: t.ratingCount,
     sample: t.isSample,
-    skills: t.skills.map((s) => s.name),
+    skills: stList(
+      t.skills.map((s) => s.name),
+      locale,
+    ),
   };
 }

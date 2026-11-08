@@ -219,3 +219,12 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - The org cover is full-bleed on mobile, matching profiles.
 - **Copy:** the "(sample agency)" suffix was removed from names, because the Sample pill already labels them. The hero mock uses the illustrated avatar and a token-based cover.
 - **Not done:** Thai versions of sample content. Judges read English (section 0), and translating the dataset is out of scope.
+
+## Thai sample content and illustrated work scenes (owner request)
+
+- **Sample content is now Thai in the Thai UI.**
+  - `src/config/sample-th.json` maps every English sample string (316 of them) to Thai.
+  - `src/lib/sample-i18n.ts` (`st`, `stList`) applies it in the loaders when the locale is `th`: talent cards, the feed, "Why this match" skills, needs, the org page, profiles (headline, bio, skills, languages, education, certificates, portfolio, posts, reviews), and chats and offers.
+  - The lookup is exact-string, so real users' text is never altered. The data stays single-language in the database.
+- **Work/post images are now illustrated scenes of a person working** (`scripts/gen-sample-scenes.mjs`), replacing the abstract blocks. The avatars are drawn illustrations too.
+  - These are fictional people, never photos: using real people's photos to stand in for invented job seekers would misrepresent identifiable people.

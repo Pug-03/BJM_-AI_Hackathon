@@ -14,6 +14,13 @@ import { structured } from "@/lib/ai";
 import { log } from "@/lib/log";
 import { notify } from "@/lib/notify";
 import { reportReasons, sendSchema, type Attachment } from "@/lib/schemas/message";
+import { st } from "@/lib/sample-i18n";
+import { getLocale } from "next-intl/server";
+
+const loc = () => getLocale().catch(() => "en");
+function localizeOffer(o: NonNullable<ChatMessage["offer"]>, locale: string) {
+  return { ...o, role: st(o.role as string, locale), notes: st(o.notes as string | undefined, locale) };
+}
 
 export interface Party {
   userId: string;
@@ -107,15 +114,19 @@ async function parties(userIds: string[]): Promise<Map<string, Party>> {
   return m;
 }
 
-async function serialize(m: Prisma.MessageGetPayload<object>, me: string): Promise<ChatMessage> {
+async function serialize(
+  m: Prisma.MessageGetPayload<object>,
+  me: string,
+  locale = "en",
+): Promise<ChatMessage> {
   const atts = (Array.isArray(m.attachments) ? m.attachments : []) as Attachment[];
   return {
     id: m.id,
     mine: m.senderUserId === me,
     kind: m.kind,
-    text: m.text,
+    text: m.kind === "TEXT" || m.kind === "IMAGE" ? st(m.text, locale) : m.text,
     attachments: await Promise.all(atts.map(async (a) => ({ ...a, src: await resolveUrl(a.url) }))),
-    offer: (m.offer as ChatMessage["offer"]) ?? null,
+    offer: m.offer ? localizeOffer(m.offer as NonNullable<ChatMessage["offer"]>, locale) : null,
     callRoom: m.callRoom,
     createdAt: m.createdAt.toISOString(),
     deliveredAt: m.deliveredAt?.toISOString() ?? null,
@@ -142,6 +153,7 @@ export async function listConversations(): Promise<InboxItem[]> {
     include: { messages: { orderBy: { createdAt: "desc" }, take: 1 } },
   });
   const otherIds = convos.map((c) => (c.talentUserId === user.id ? c.employerUserId : c.talentUserId));
+  const locale = await loc();
   const [ps, unread] = await Promise.all([
     parties(otherIds),
     db.message.groupBy({
@@ -166,7 +178,7 @@ export async function listConversations(): Promise<InboxItem[]> {
         last: last
           ? {
               kind: last.kind,
-              text: last.text,
+              text: st(last.text, locale),
               mine: last.senderUserId === user.id,
               at: last.createdAt.toISOString(),
             }
@@ -196,6 +208,7 @@ export async function getThread(id: string, before?: string): Promise<Thread | n
   const p = await participant(id);
   if (!p) return null;
   const { user, convo, otherId } = p;
+  const lang = await loc();
   const rows = await db.message.findMany({
     where: { conversationId: id, ...(before ? { createdAt: { lt: new Date(before) } } : {}) },
     orderBy: { createdAt: "desc" },
@@ -217,7 +230,7 @@ export async function getThread(id: string, before?: string): Promise<Thread | n
       rows
         .slice(0, PAGE)
         .reverse()
-        .map((m) => serialize(m, user.id)),
+        .map((m) => serialize(m, user.id, lang)),
     ),
     hasMore: rows.length > PAGE,
     blockedBy: convo.blockedBy ? (convo.blockedBy === user.id ? "me" : "them") : null,
@@ -237,6 +250,7 @@ export async function pollThread(id: string, since: string) {
   const p = await participant(id);
   if (!p) return null;
   const sinceDate = new Date(since);
+  const lang = await loc();
   const [fresh, receipts] = await Promise.all([
     db.message.findMany({
       where: { conversationId: id, createdAt: { gt: sinceDate } },
@@ -266,7 +280,7 @@ export async function pollThread(id: string, since: string) {
     select: { id: true, offer: true },
   });
   return {
-    messages: await Promise.all(fresh.map((m) => serialize(m, p.user.id))),
+    messages: await Promise.all(fresh.map((m) => serialize(m, p.user.id, lang))),
     receipts: receipts.map((r) => ({
       id: r.id,
       readAt: r.readAt?.toISOString() ?? null,
@@ -354,7 +368,7 @@ export async function sendMessage(id: string, input: unknown): Promise<SendResul
     fromUserId: p.user.id,
     fromName: p.user.name,
   });
-  return { ok: true, message: await serialize(m, p.user.id) };
+  return { ok: true, message: await serialize(m, p.user.id, await loc()) };
 }
 
 /** Accept / decline an offer (only the person who received it). */

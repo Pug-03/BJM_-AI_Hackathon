@@ -2,9 +2,10 @@ import "server-only";
 import { db } from "@/lib/db";
 import type { SessionUser } from "@/lib/session";
 import type { NeedCardData } from "@/components/feed/need-card";
+import { st, stList } from "@/lib/sample-i18n";
 
 /** Talent feed data: matched open positions + employers who viewed or starred you. */
-export async function loadTalentFeed(user: SessionUser) {
+export async function loadTalentFeed(user: SessionUser, locale = "en") {
   const me = await db.talentProfile.findUnique({ where: { userId: user.id }, select: { id: true } });
   if (!me) return null;
   const scores = await db.matchScore.findMany({
@@ -102,15 +103,15 @@ export async function loadTalentFeed(user: SessionUser) {
   }
   const needs: NeedCardData[] = scores.map((s) => ({
     id: s.need.id,
-    title: s.need.title,
-    skills: s.need.skills,
-    matched: (s.parts as { matched?: string[] }).matched ?? [],
+    title: st(s.need.title, locale),
+    skills: stList(s.need.skills, locale),
+    matched: stList((s.parts as { matched?: string[] }).matched ?? [], locale),
     workMode: s.need.workMode,
     employmentType: s.need.employmentType,
     location: s.need.location,
     educationLevel: s.need.educationLevel,
     offeredSetup: s.need.offeredSetup,
-    description: s.need.description,
+    description: st(s.need.description, locale),
     org: s.need.org,
     following: followed.has(s.need.org.userId),
   }));

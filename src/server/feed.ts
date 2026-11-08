@@ -9,6 +9,7 @@ import { structured } from "@/lib/ai";
 import { talentFilterSchema } from "@/lib/schemas/talent";
 import { talentCardSelect, talentWhere, toCard, type TalentCard } from "@/lib/talent-query";
 import { log } from "@/lib/log";
+import { stList } from "@/lib/sample-i18n";
 
 export interface MatchCardData extends TalentCard {
   matched: string[];
@@ -71,8 +72,8 @@ export async function loadMatches(
     ok: true,
     next: rows.length > PAGE ? offset + PAGE : null,
     items: page.map((r) => ({
-      ...toCard(r.talent),
-      matched: (r.parts as { matched?: string[] }).matched ?? [],
+      ...toCard(r.talent, locale),
+      matched: stList((r.parts as { matched?: string[] }).matched ?? [], locale),
       reason: r.reason && r.reasonLang === locale ? r.reason : null,
       starred: starred.has(r.talent.id),
       following: followed.has(r.talent.userId),

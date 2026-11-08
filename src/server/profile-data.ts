@@ -2,6 +2,8 @@ import "server-only";
 import { db } from "@/lib/db";
 import { canViewProfile, serializeTalentForViewer, type ViewerContext } from "@/lib/privacy";
 import { resolveUrl } from "@/lib/storage";
+import { st, stList } from "@/lib/sample-i18n";
+import { getLocale } from "next-intl/server";
 import type { SessionUser } from "@/lib/session";
 
 /** Loads a talent profile as the given viewer may see it, or null if not visible. */
@@ -52,7 +54,15 @@ export async function loadTalentProfile(
   };
   if (!canViewProfile(p, ctx) || (blocked && ctx.userId !== p.userId)) return null;
   const owner = ctx.userId === p.userId;
-  const view = serializeTalentForViewer(p, ctx);
+  const locale = await getLocale().catch(() => "en");
+  const raw = serializeTalentForViewer(p, ctx);
+  const view = {
+    ...raw,
+    headline: st(raw.headline, locale),
+    bio: st(raw.bio, locale),
+    specialTalents: st(raw.specialTalents, locale),
+    languages: stList(raw.languages, locale),
+  };
 
   const [followers, following, starred, reviews, liked] = await Promise.all([
     db.follow.count({ where: { followeeUserId: p.userId } }),
@@ -91,8 +101,8 @@ export async function loadTalentProfile(
       .map(async (c) => ({
         id: c.id,
         kind: c.kind,
-        title: c.title,
-        issuer: c.issuer,
+        title: st(c.title, locale),
+        issuer: st(c.issuer, locale),
         issuedAt: c.issuedAt?.toISOString() ?? null,
         fileUrl: await resolveUrl(c.fileUrl),
         isPdf: /\.pdf($|\?)/i.test(c.fileUrl),
@@ -124,29 +134,32 @@ export async function loadTalentProfile(
 
   return {
     profile: view,
-    skills: p.skills.map((s) => s.name),
+    skills: stList(
+      p.skills.map((s) => s.name),
+      locale,
+    ),
     educations: p.educations.map((e) => ({
       id: e.id,
       level: e.level,
-      school: e.school,
-      field: e.field,
+      school: st(e.school, locale),
+      field: st(e.field, locale),
       yearEnd: e.yearEnd,
     })),
     certificates,
     portfolio: p.portfolio.map((x) => ({
       id: x.id,
-      title: x.title,
-      description: x.description,
+      title: st(x.title, locale),
+      description: st(x.description, locale),
       images: x.images,
-      imageAlts: x.imageAlts,
+      imageAlts: stList(x.imageAlts, locale),
       link: x.link,
     })),
     posts: p.posts.map((x) => ({
       id: x.id,
       kind: x.kind,
-      text: x.text,
+      text: st(x.text, locale),
       images: x.images,
-      imageAlts: x.imageAlts,
+      imageAlts: stList(x.imageAlts, locale),
       likeCount: x.likeCount,
       commentCount: x.commentCount,
       liked: likedSet.has(x.id),
@@ -157,7 +170,7 @@ export async function loadTalentProfile(
       return {
         id: r.id,
         rating: r.rating,
-        text: r.text,
+        text: st(r.text, locale),
         createdAt: r.createdAt.toISOString(),
         author: {
           name: a?.org?.name ?? a?.name ?? "",

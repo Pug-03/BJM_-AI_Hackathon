@@ -11,6 +11,7 @@ import { EmployerFeed } from "@/components/feed/employer-feed";
 import { NeedCard } from "@/components/feed/need-card";
 import { OrgActions } from "@/components/feed/org-actions";
 import { loadTalentFeed } from "@/server/talent-feed";
+import { st } from "@/lib/sample-i18n";
 
 export async function generateMetadata({
   params,
@@ -45,6 +46,7 @@ export default async function FeedPage({
       },
     });
     if (!org) return redirect({ href: "/onboarding/employer", locale });
+    const needs = org.needs.map((n) => ({ ...n, title: st(n.title, locale) }));
     const starred = await db.star.count({ where: { employerUserId: user.id } });
     return (
       <div className="grid w-full grid-cols-[minmax(0,1fr)] gap-10 xl:grid-cols-[minmax(0,680px)_300px] xl:justify-center">
@@ -56,7 +58,7 @@ export default async function FeedPage({
           </header>
           {org.needs.length ? (
             <EmployerFeed
-              needs={org.needs}
+              needs={needs}
               initialNeedId={org.needs.find((n) => n.id === need)?.id ?? org.needs[0]!.id}
               sampleLabel={!user.isSandbox}
             />
@@ -82,7 +84,7 @@ export default async function FeedPage({
             {t("sideTitle")}
           </h2>
           <ul className="border-line bg-raised divide-line divide-y rounded-[20px] border">
-            {org.needs.map((n) => (
+            {needs.map((n) => (
               <li key={n.id}>
                 <Link
                   href={`/feed?need=${n.id}`}
@@ -107,7 +109,7 @@ export default async function FeedPage({
     );
   }
 
-  const data = await loadTalentFeed(user);
+  const data = await loadTalentFeed(user, locale);
   if (!data) return redirect({ href: "/onboarding/talent", locale });
   return (
     <div className="grid w-full grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">

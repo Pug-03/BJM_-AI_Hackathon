@@ -60,7 +60,7 @@ export default async function SavedPage({ params }: { params: Promise<{ locale: 
           <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {rows.map((r) => (
               <li key={r.id}>
-                <TalentCard c={toCard(r)} sampleLabel={!user.isSandbox} />
+                <TalentCard c={toCard(r, locale)} sampleLabel={!user.isSandbox} />
               </li>
             ))}
           </ul>
