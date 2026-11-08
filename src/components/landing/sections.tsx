@@ -1,5 +1,16 @@
 import { getTranslations } from "next-intl/server";
-import { BadgeCheck, ExternalLink, Languages, LockKeyhole, MessagesSquare, Sparkles } from "lucide-react";
+import {
+  BadgeCheck,
+  ExternalLink,
+  Languages,
+  LockKeyhole,
+  MessagesSquare,
+  Sparkles,
+  Accessibility,
+  HandHeart,
+  ShieldAlert,
+  ShieldCheck,
+} from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Accordion } from "@/components/ui/accordion";
@@ -55,6 +66,38 @@ export async function LandingSections() {
   );
   return (
     <>
+      <section aria-labelledby="safe-title" className="py-12 md:py-20">
+        <div className={wrap}>
+          <div className="bg-warm rounded-[32px] px-6 py-12 md:px-12 md:py-16">
+            <Reveal className="flex max-w-[680px] flex-col gap-3">
+              <p className="text-small text-warm-ink font-medium">{t("safe.eyebrow")}</p>
+              <h2 id="safe-title" className="text-h1 tracking-display">
+                {t("safe.title")}
+              </h2>
+              <p className="text-graphite measure">{t("safe.body")}</p>
+            </Reveal>
+            <RevealList className="mt-10 grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {(
+                [
+                  [HandHeart, "choose"],
+                  [ShieldCheck, "fair"],
+                  [Accessibility, "tools"],
+                  [ShieldAlert, "safety"],
+                ] as const
+              ).map(([Icon, k]) => (
+                <RevealItem key={k} className="bg-paper flex flex-col gap-3 rounded-[24px] p-6">
+                  <span className="bg-warm-strong text-warm-ink flex size-12 items-center justify-center rounded-full">
+                    <Icon className="size-6 stroke-[1.75]" aria-hidden />
+                  </span>
+                  <h3 className="text-h3">{t(`safe.${k}.title`)}</h3>
+                  <p className="text-small text-graphite">{t(`safe.${k}.body`)}</p>
+                </RevealItem>
+              ))}
+            </RevealList>
+          </div>
+        </div>
+      </section>
+
       <section
         aria-labelledby="how-title"
         id="how"

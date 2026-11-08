@@ -13,6 +13,10 @@
   --muted: #8a8694;
   --brand: #6d28ff;
   --brand-soft: #f0eaff;
+  /* Warm "safe place" surfaces for the landing page and welcome moments. */
+  --warm: #fff7ef;
+  --warm-strong: #ffe9d6;
+  --warm-ink: #8a4b1f;
   --star: #e8a100;
   --success: #15803d;
   --danger: #dc2626;
@@ -41,6 +45,9 @@
   --muted: #7a7685;
   --brand: #9b7bff;
   --brand-soft: #241b45;
+  --warm: #1c1814;
+  --warm-strong: #2c231b;
+  --warm-ink: #f2c7a2;
   --star: #f5b731;
   --success: #4ade80;
   --danger: #f87171;
@@ -54,6 +61,9 @@
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-warm: var(--warm);
+  --color-warm-strong: var(--warm-strong);
+  --color-warm-ink: var(--warm-ink);
   --color-mist: var(--mist);
   --color-cloud: var(--cloud);
   --color-line: var(--line);

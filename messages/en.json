@@ -251,6 +251,33 @@
         "q": "How do I delete my account?",
         "a": "Settings → Your data → Delete my account. Your personal data is removed straight away."
       }
+    },
+    "forEveryone": "Built for people with disabilities — and everyone",
+    "trustLabel": "What you can count on",
+    "trustVoice": "Use it with your voice",
+    "trustScreenReader": "Works with screen readers",
+    "trustPrivate": "No need to disclose anything",
+    "trustFree": "Free for everyone",
+    "safe": {
+      "eyebrow": "A safe place to be yourself",
+      "title": "Your skills come first. Everything else is yours to share.",
+      "body": "ABLE was built with people with disabilities in mind, so you can look for work without explaining yourself first.",
+      "choose": {
+        "title": "You decide what to share",
+        "body": "Nothing asks about disability. Add a private note about the setup you need, and share it only with an employer you choose."
+      },
+      "fair": {
+        "title": "No one filters you out",
+        "body": "Employers can't filter or rank by disability, gender, religion, ethnicity or age. Pay is agreed between you."
+      },
+      "tools": {
+        "title": "Works the way you do",
+        "body": "Speak instead of typing, or use a screen reader, keyboard, zoom or large text. Voice notes can be read as text."
+      },
+      "safety": {
+        "title": "Help is one tap away",
+        "body": "Organizations are verified. Block or report anyone, anytime, and download or delete your data whenever you like."
+      }
     }
   },
   "styleguide": {

@@ -18,7 +18,7 @@ test.describe("landing, policies, cookies", () => {
     await page.getByRole("tab", { name: "For employers" }).click();
     await expect(page.getByRole("heading", { level: 3, name: /Browse your matches/ })).toBeVisible();
     await page.getByRole("button", { name: "Do I have to say I have a disability?" }).click();
-    await expect(page.getByText(/Nothing asks about disability/)).toBeVisible();
+    await expect(page.locator("#faq").getByText(/Nothing asks about disability/)).toBeVisible();
     // Sponsors are never in the header
     await expect(page.getByRole("banner").getByText("Sponsor logo")).toHaveCount(0);
   });

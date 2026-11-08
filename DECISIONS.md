@@ -238,3 +238,11 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - Transform and opacity only.
   - With reduced motion, everything shows immediately, with no movement.
   - No layout shift: the elements keep their space while hidden.
+
+## Warmer identity, "safe place" emphasis (owner request)
+
+- **New logo:** a rounded arch (a roof or doorway) with a person inside, meaning "a place where you're welcome and safe". It uses only curves, white and warm-peach on brand violet. The app icons and manifest are updated to match.
+- **Warm tokens** (`--warm`, `--warm-strong`, `--warm-ink`, with dark variants) for the landing hero wash, the eyebrow and the trust icons. The UI elsewhere stays quiet monochrome. `--warm-ink` on `--warm-strong` passes AA.
+- **The hero says who it's for:** an eyebrow reads "Built for people with disabilities — and everyone", with four trust points underneath: voice, screen readers, no need to disclose, free.
+- **New landing section, "A safe place to be yourself",** with four promises: you decide what to share; no one filters you out; it works the way you do; help is one tap away.
+- This emphasizes that ABLE is built for disabled people, without labelling anyone or requiring disclosure (principles 1 and 3 still hold).

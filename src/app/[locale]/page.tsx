@@ -12,7 +12,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
       <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
-        <Hero />
+        {/* Warm "safe place" wash behind the hero. */}
+        <div className="bg-[linear-gradient(180deg,var(--warm)_0%,var(--warm)_55%,var(--paper)_100%)]">
+          <Hero />
+        </div>
         <LandingSections />
       </main>
       <SiteFooter />

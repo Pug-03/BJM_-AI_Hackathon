@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from "motion/react";
-import { BadgeCheck, Mic, Star } from "lucide-react";
+import { AudioLines, BadgeCheck, Heart, Mic, ShieldCheck, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { durations, easeSmooth, useReducedMotion } from "@/lib/motion";
@@ -18,6 +18,10 @@ export function Hero() {
   return (
     <section className="mx-auto grid max-w-[1200px] items-center gap-12 px-4 py-12 md:px-8 md:py-16 lg:min-h-[calc(100dvh-112px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 lg:py-16">
       <div className="flex flex-col gap-6">
+        <p className="bg-warm-strong text-warm-ink text-small inline-flex w-fit animate-[able-rise-fade_320ms_var(--ease-smooth)_both] items-center gap-2 rounded-full px-4 py-1.5 font-medium">
+          <Heart className="size-4" aria-hidden fill="currentColor" />
+          {t("forEveryone")}
+        </p>
         <h1 className="text-display tracking-display max-w-[14ch] animate-[able-rise_320ms_var(--ease-smooth)_both]">
           {t.rich("headline", { nb: (c) => <span className="whitespace-nowrap">{c}</span> })}
         </h1>
@@ -32,6 +36,24 @@ export function Hero() {
             <Link href="/login?next=/welcome%3Fintent%3Dhire">{t("ctaSecondary")}</Link>
           </Button>
         </div>
+        <ul
+          className="text-small text-graphite flex animate-[able-rise-fade_320ms_var(--ease-smooth)_320ms_both] flex-wrap gap-x-5 gap-y-2"
+          aria-label={t("trustLabel")}
+        >
+          {(
+            [
+              [Mic, "trustVoice"],
+              [AudioLines, "trustScreenReader"],
+              [ShieldCheck, "trustPrivate"],
+              [Heart, "trustFree"],
+            ] as const
+          ).map(([Icon, k]) => (
+            <li key={k} className="inline-flex items-center gap-1.5">
+              <Icon className="text-warm-ink size-4" aria-hidden />
+              {t(k)}
+            </li>
+          ))}
+        </ul>
       </div>
       <div className="min-w-0 animate-[able-rise_320ms_var(--ease-smooth)_120ms_both]">
         <Parallax>
@@ -74,7 +96,7 @@ function HeroMock() {
           {/* Decorative cover as CSS (not an <img>), so the headline text is the page's LCP element. */}
           <div
             aria-hidden
-            className="bg-mist h-24 w-full bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--line)_44px_68px)] sm:h-28"
+            className="bg-warm h-24 w-full bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--warm-strong)_44px_68px)] sm:h-28"
           />
           <div className="flex flex-col gap-4 px-6 pb-6">
             {/* Illustrated sample avatar (fictional person, not a photo). */}
