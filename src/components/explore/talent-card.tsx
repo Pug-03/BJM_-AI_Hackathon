@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { MapPin, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Avatar } from "@/components/ui/avatar";
+import { CoverArt } from "@/components/able/cover-art";
 import { VerifiedBadge } from "@/components/able/verified-badge";
 import { provinceLabel } from "@/config/th-provinces";
 import type { TalentCard as Card } from "@/lib/talent-query";
@@ -22,16 +23,7 @@ export async function TalentCard({
   return (
     <article className="border-line bg-raised group hover:shadow-float relative flex h-full flex-col overflow-hidden rounded-[20px] border transition-shadow duration-200">
       <div className="bg-mist relative h-16">
-        {c.cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={c.cover}
-            alt=""
-            loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : "auto"}
-            className="size-full object-cover dark:brightness-75 dark:saturate-75"
-          />
-        ) : null}
+        {c.cover ? <CoverArt src={c.cover} eager={eager} /> : null}
         {sampleLabel && c.sample ? (
           <span className="bg-paper/90 text-caption text-graphite absolute top-2 right-2 rounded-full px-2.5 py-0.5">
             {t("sample")}
@@ -39,14 +31,7 @@ export async function TalentCard({
         ) : null}
       </div>
       <div className="flex flex-1 flex-col gap-3 px-4 pb-4">
-        <div className="-mt-7 flex items-end justify-between">
-          <Avatar src={c.avatar} name={c.name} size="md" className="border-raised size-14 border-4" />
-          {sampleLabel && c.sample ? (
-            <span className="bg-mist text-caption text-graphite rounded-full px-2.5 py-0.5">
-              {t("sample")}
-            </span>
-          ) : null}
-        </div>
+        <Avatar src={c.avatar} name={c.name} size="md" className="border-raised -mt-7 size-14 border-4" />
         <div className="flex min-w-0 flex-col gap-0.5">
           <h2 className="text-body flex items-center gap-1.5 font-semibold">
             <Link
@@ -66,7 +51,12 @@ export async function TalentCard({
               {provinceLabel(c.province, locale)}
             </span>
           ) : null}
-          {c.workMode !== "ANY" ? <span>{te(`workMode.${c.workMode as "REMOTE"}`)}</span> : null}
+          {c.workMode !== "ANY" ? (
+            <span>
+              {c.province ? <span aria-hidden>· </span> : null}
+              {te(`workMode.${c.workMode as "REMOTE"}`)}
+            </span>
+          ) : null}
           {c.ratingCount ? (
             <span className="inline-flex items-center gap-1">
               <Star className="text-star size-3.5" fill="currentColor" strokeWidth={0} aria-hidden />
@@ -81,8 +71,8 @@ export async function TalentCard({
                 {s}
               </li>
             ))}
-            {c.skills.length > 3 ? (
-              <li className="text-caption text-graphite px-1 py-1">+{c.skills.length - 3}</li>
+            {c.skills.length > 2 ? (
+              <li className="text-caption text-graphite shrink-0 px-1 py-1">+{c.skills.length - 2}</li>
             ) : null}
           </ul>
         ) : null}

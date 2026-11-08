@@ -50,7 +50,7 @@ export function Thumb({
         layoutId={reduced ? undefined : layoutId}
         src={src}
         alt={alt}
-        className="size-full rounded-[16px] object-cover"
+        className="size-full rounded-[16px] object-cover dark:brightness-90"
         loading="lazy"
       />
     </button>

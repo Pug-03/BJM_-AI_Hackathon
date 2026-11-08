@@ -162,3 +162,28 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 - **Loop 2** runs as part of the Stage 8 full check, which re-shoots and re-scores every page, including all Stage 7 pages.
 
 | 8 | ✓ | ✓ | 50/50 | ✓ | 135/136 (1 flaky under load, passes on rerun; wait raised) | landing, privacy, settings, quota — no overflow | Cookie banner, policies, settings export/delete covered by `stage8.spec.ts` |
+
+## Stage 8 full QA loop
+
+| Stage | Loop | Polish | Type | Spacing | Colour | Responsive | Motion | UX | Copy | Consistency | Delight | Avg | Tests | axe | Lighthouse |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 8 | 1 | 7 | 7 | 7 | 6.5 | 7 | 7 | 6 | 8 | 6 | 6 | 6.8 | 136/136 | 0 violations in 208 scans (160 page + 48 interactive states) | /en 100, explore 86, org 88, privacy 100, quota 100, login/judge 100 (SEO 60 = intentional noindex); A 100, BP 100; CLS 0 |
+
+**Loop 1 fixes.**
+
+- Design:
+  - The duplicate "Sample" pill and the "+N" off-by-one were left over from a Stage 7 fix that only partly applied; both are fixed now.
+  - A debug profile is now sandboxed.
+  - The landing quota block uses a dark-mode surface.
+  - The messages height accounts for the judge banner (`--banner-h`).
+  - Meta rows have separators.
+  - The starred state is softer, and Follow is labelled.
+  - Post thumbnails are dimmed in dark mode.
+  - "Step x of y" is hidden on desktop.
+  - Org page: every meta row has an icon, and a zero follower count is hidden.
+  - The mic capsule now grows by clip-path, so the end caps aren't squashed, and the hero replays when you scroll back to it.
+  - New closing headline.
+  - Quota shows "—" before input.
+  - Settings shows "Demo account" and a chevron on the consent history.
+- Accessibility: in the cookie banner, "Choose" moves focus to the analytics switch, and closing returns focus to the opener or `#main`.
+- Performance: bundled sample covers are inlined as SVG (`CoverArt`), so they're never the LCP image. Re-measured: explore 100, org 100.

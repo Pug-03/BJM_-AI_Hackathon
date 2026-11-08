@@ -58,9 +58,10 @@ export function SpeakDemo() {
               exit={{ opacity: 0, transition: { duration: durations.fast } }}
             >
               <motion.span
-                className="bg-brand-soft absolute inset-0 origin-right rounded-full"
-                initial={{ scaleX: 0.1 }}
-                animate={{ scaleX: 1 }}
+                className="bg-brand-soft absolute inset-0 rounded-full"
+                // Grows out of the mic as a pill (clip-path keeps the round end caps; no squash).
+                initial={{ clipPath: "inset(0 0 0 calc(100% - 48px) round 999px)" }}
+                animate={{ clipPath: "inset(0 0 0 0px round 999px)" }}
                 transition={{ duration: durations.slow, ease: easeSmooth }}
               />
               <span className="relative flex flex-1 items-center gap-[3px] overflow-hidden pr-16 pl-5">

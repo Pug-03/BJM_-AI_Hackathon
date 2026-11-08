@@ -6,12 +6,13 @@ import { db } from "@/lib/db";
 import { getCurrentUser, type SessionUser } from "@/lib/session";
 import { limits, rateLimit } from "@/lib/rate-limit";
 import { resolveUrl } from "@/lib/storage";
-import { convoTopic, nudge, userTopic } from "@/lib/realtime";
+import { convoTopic, nudge } from "@/lib/realtime";
 import { ensureRoom, meetingToken, roomName } from "@/lib/daily";
 import { services } from "@/lib/env";
 import { aiGate } from "@/lib/ai/guard";
 import { structured } from "@/lib/ai";
 import { log } from "@/lib/log";
+import { notify } from "@/lib/notify";
 import { reportReasons, sendSchema, type Attachment } from "@/lib/schemas/message";
 
 export interface Party {
@@ -347,14 +348,12 @@ export async function sendMessage(id: string, input: unknown): Promise<SendResul
   });
   await db.conversation.update({ where: { id }, data: { lastMessageAt: m.createdAt } });
   await db.typingState.deleteMany({ where: { conversationId: id, userId: p.user.id } });
-  await db.notification.create({
-    data: {
-      userId: p.otherId,
-      kind: d.kind === "OFFER" ? "OFFER" : "MESSAGE",
-      payload: { conversationId: id, fromUserId: p.user.id, fromName: p.user.name },
-    },
+  void nudge([convoTopic(id)]);
+  await notify(p.otherId, d.kind === "OFFER" ? "OFFER" : "MESSAGE", {
+    conversationId: id,
+    fromUserId: p.user.id,
+    fromName: p.user.name,
   });
-  void nudge([convoTopic(id), userTopic(p.otherId)]);
   return { ok: true, message: await serialize(m, p.user.id) };
 }
 
@@ -385,14 +384,11 @@ export async function respondOffer(messageId: string, action: "ACCEPTED" | "DECL
   await db.auditLog.create({
     data: { actorUserId: user.id, action: `offer.${action.toLowerCase()}`, meta: { messageId: m.id } },
   });
-  await db.notification.create({
-    data: {
-      userId: m.senderUserId,
-      kind: action === "ACCEPTED" ? "OFFER_ACCEPTED" : "OFFER_DECLINED",
-      payload: { conversationId: c.id, fromName: user.name },
-    },
+  void nudge([convoTopic(c.id)]);
+  await notify(m.senderUserId, action === "ACCEPTED" ? "OFFER_ACCEPTED" : "OFFER_DECLINED", {
+    conversationId: c.id,
+    fromName: user.name,
   });
-  void nudge([convoTopic(c.id), userTopic(m.senderUserId)]);
   return { ok: true };
 }
 
@@ -453,14 +449,8 @@ export async function startCall(id: string, video: boolean, messageId?: string) 
         },
       });
       await db.conversation.update({ where: { id }, data: { lastMessageAt: new Date(), callRoom: room } });
-      await db.notification.create({
-        data: {
-          userId: p.otherId,
-          kind: "CALL",
-          payload: { conversationId: id, fromName: p.user.name, video },
-        },
-      });
-      void nudge([convoTopic(id), userTopic(p.otherId)]);
+      void nudge([convoTopic(id)]);
+      await notify(p.otherId, "CALL", { conversationId: id, fromName: p.user.name, video });
     }
   }
   return { ok: true as const, url: `${url}?t=${encodeURIComponent(token)}` };

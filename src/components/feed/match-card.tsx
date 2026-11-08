@@ -127,9 +127,13 @@ export function MatchCard({
                 {provinceLabel(c.province, locale)}
               </span>
             ) : null}
-            <span>{te(`workMode.${c.workMode}`)}</span>
+            <span>
+              {c.province ? <span aria-hidden>· </span> : null}
+              {te(`workMode.${c.workMode}`)}
+            </span>
             {c.ratingCount ? (
               <span className="inline-flex items-center gap-1">
+                <span aria-hidden>·</span>
                 <Star className="text-star size-3.5" fill="currentColor" strokeWidth={0} aria-hidden />
                 <span className="text-ink font-medium">{c.rating.toFixed(1)}</span>
                 <span>({c.ratingCount})</span>
@@ -183,7 +187,8 @@ export function MatchCard({
           </Button>
           <Tooltip content={c.starred ? t("unstar") : t("star")}>
             <IconButton
-              variant={c.starred ? "brand" : "soft"}
+              variant="soft"
+              className={c.starred ? "bg-brand-soft text-brand hover:bg-brand-soft" : undefined}
               aria-label={c.starred ? t("unstar") : t("star")}
               aria-pressed={c.starred}
               onClick={onStar}
@@ -191,16 +196,16 @@ export function MatchCard({
               <Star aria-hidden fill={c.starred ? "currentColor" : "none"} />
             </IconButton>
           </Tooltip>
-          <Tooltip content={c.following ? t("unfollow") : t("follow")}>
-            <IconButton
-              variant="soft"
-              aria-label={c.following ? t("unfollow") : t("follow")}
-              aria-pressed={c.following}
-              onClick={onFollow}
-            >
-              {c.following ? <UserCheck aria-hidden /> : <UserPlus aria-hidden />}
-            </IconButton>
-          </Tooltip>
+          <Button
+            type="button"
+            variant="secondary"
+            aria-pressed={c.following}
+            onClick={onFollow}
+            className="max-sm:w-12 max-sm:px-0"
+          >
+            {c.following ? <UserCheck aria-hidden /> : <UserPlus aria-hidden />}
+            <span className="max-sm:sr-only">{c.following ? t("following") : t("follow")}</span>
+          </Button>
           <Button type="button" variant="ghost" className="ml-auto" onClick={onSkip}>
             {t("skip")}
           </Button>

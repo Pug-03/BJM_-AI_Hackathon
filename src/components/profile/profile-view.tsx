@@ -9,7 +9,6 @@ import {
   FileText,
   AtSign,
   Globe,
-  Heart,
   Languages,
   Mail,
   MapPin,
@@ -42,6 +41,8 @@ import { deletePost, toggleFollow, toggleStar } from "@/server/talent";
 import { startConversation } from "@/server/conversations";
 import type { TalentProfileData } from "@/server/profile-data";
 import { PostComposer } from "./post-composer";
+import { PostActions } from "./post-actions";
+import { ReviewForm } from "./review-form";
 
 const contactIcon: Record<string, React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>> = {
   PHONE: Phone,
@@ -401,16 +402,19 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
                           </div>
                         ) : null}
                         {post.text ? <p className="text-small whitespace-pre-line">{post.text}</p> : null}
-                        <div className="text-caption text-graphite flex items-center justify-between gap-2">
-                          <span className="flex items-center gap-3">
-                            <span className="flex items-center gap-1">
-                              <Heart className="size-4" aria-hidden />
-                              {t("likes", { count: post.likeCount })}
-                            </span>
+                        <div className="text-caption text-graphite flex items-start justify-between gap-2">
+                          <div className="flex min-w-0 flex-1 flex-col gap-1">
                             <time dateTime={post.createdAt}>
                               {fmt.relativeTime(new Date(post.createdAt))}
                             </time>
-                          </span>
+                            <PostActions
+                              postId={post.id}
+                              liked={post.liked}
+                              likeCount={post.likeCount}
+                              commentCount={post.commentCount}
+                              signedIn={data.viewerSignedIn}
+                            />
+                          </div>
                           {owner ? (
                             <button
                               type="button"
@@ -518,6 +522,9 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
             </TabPanel>
             <TabPanel value="reviews">
               <div className="flex flex-col gap-6">
+                {data.viewerRole === "EMPLOYER" && !owner ? (
+                  <ReviewForm talentId={p.id} name={p.displayName} />
+                ) : null}
                 {p.ratingCount ? (
                   <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
                     <div className="flex flex-col gap-1">

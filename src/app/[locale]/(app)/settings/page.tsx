@@ -43,6 +43,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
         d={{
           name: user.name ?? "",
           email: user.email,
+          isSandbox: user.isSandbox,
           role: user.role,
           google: Boolean(google),
           handle: talent?.handle ?? org?.handle ?? null,

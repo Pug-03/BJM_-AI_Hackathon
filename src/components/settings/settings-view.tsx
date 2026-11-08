@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Download, Trash2 } from "lucide-react";
+import { ChevronDown, Download, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -17,6 +17,7 @@ import { deleteAccount, savePrefs, setConsent, setProfileVisibility, updateName 
 export interface SettingsData {
   name: string;
   email: string;
+  isSandbox: boolean;
   role: string | null;
   google: boolean;
   handle: string | null;
@@ -138,7 +139,7 @@ export function SettingsView({ d }: { d: SettingsData }) {
         </form>
         <div className="flex flex-col gap-0.5 py-4">
           <p className="text-small font-medium">{t("email")}</p>
-          <p className="text-small text-graphite">{d.email}</p>
+          <p className="text-small text-graphite break-all">{d.isSandbox ? t("demoAccount") : d.email}</p>
         </div>
         <div className="flex flex-col gap-0.5 py-4">
           <p className="text-small font-medium">{t("signIn")}</p>
@@ -248,7 +249,13 @@ export function SettingsView({ d }: { d: SettingsData }) {
           </Row>
         ) : null}
         <details className="group py-4">
-          <summary className="text-small cursor-pointer font-medium">{t("history")}</summary>
+          <summary className="text-small flex min-h-11 cursor-pointer list-none items-center justify-between font-medium [&::-webkit-details-marker]:hidden">
+            {t("history")}
+            <ChevronDown
+              className="text-graphite size-4 transition-transform duration-200 group-open:rotate-180"
+              aria-hidden
+            />
+          </summary>
           <ul className="mt-3 flex flex-col gap-2">
             {d.history.map((h) => (
               <li key={h.id} className="text-caption text-graphite flex flex-wrap justify-between gap-2">

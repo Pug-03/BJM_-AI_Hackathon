@@ -9,7 +9,7 @@ export function MessagesShell({ inbox, children }: { inbox: React.ReactNode; chi
   const t = useTranslations("messages");
   const inThread = /^\/messages\/.+/.test(usePathname());
   return (
-    <div className="border-line md:bg-raised -mx-4 flex md:mx-0 md:h-[calc(100dvh-9rem)] md:min-h-[480px] md:overflow-hidden md:rounded-[20px] md:border">
+    <div className="border-line md:bg-raised -mx-4 flex md:mx-0 md:h-[calc(100dvh-9rem-var(--banner-h,0px))] md:min-h-[480px] md:overflow-hidden md:rounded-[20px] md:border">
       <section
         aria-label={t("inbox")}
         className={cn(

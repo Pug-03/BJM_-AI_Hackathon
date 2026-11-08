@@ -116,7 +116,7 @@
     "mockSkill3": "Excel",
     "mockJustNow": "Just now",
     "newTab": "(opens in a new tab)",
-    "ctaTitle": "Show what you can do.",
+    "ctaTitle": "Your next job starts with what you can do.",
     "ctaExplore": "Browse talent",
     "thanks": "Thank you to our supporters for making ABLE possible.",
     "paths": {
@@ -1228,9 +1228,7 @@
         },
         {
           "h": "Your choice",
-          "p": [
-            "You can change your choice at any time with the “Cookie settings” link in the footer."
-          ]
+          "p": ["You can change your choice at any time with the “Cookie settings” link in the footer."]
         }
       ]
     },
@@ -1240,9 +1238,7 @@
       "sections": [
         {
           "h": "See and correct",
-          "p": [
-            "Everything you entered is visible and editable in your profile and Settings."
-          ]
+          "p": ["Everything you entered is visible and editable in your profile and Settings."]
         },
         {
           "h": "Download",
@@ -1270,9 +1266,7 @@
         },
         {
           "h": "Complain",
-          "p": [
-            "You can complain to the Personal Data Protection Committee (PDPC), Thailand."
-          ]
+          "p": ["You can complain to the Personal Data Protection Committee (PDPC), Thailand."]
         }
       ]
     },
@@ -1385,7 +1379,8 @@
     "deleteTitle": "Delete your account?",
     "deleteBody": "Your profile, posts, conversations and files are deleted now. We keep only anonymous counts.",
     "deleteType": "Type {text} to confirm",
-    "deleteConfirm": "Delete my account"
+    "deleteConfirm": "Delete my account",
+    "demoAccount": "Demo account (judge mode)"
   },
   "quota": {
     "title": "Section 33 calculator",
@@ -1405,5 +1400,101 @@
     "verify": "This page is a guide, not legal advice. Rules and amounts change — confirm with the department before deciding.",
     "source": "Department of Empowerment of Persons with Disabilities",
     "cta": "Find matched talent"
+  },
+  "social": {
+    "likes": "{count, plural, =0 {Like} one {# like} other {# likes}}",
+    "like": "Like this post",
+    "unlike": "Remove like",
+    "comments": "{count, plural, =0 {Comment} one {# comment} other {# comments}}",
+    "loading": "Loading…",
+    "noComments": "No comments yet.",
+    "writeComment": "Write a comment",
+    "post": "Post",
+    "commentFailed": "Couldn’t post your comment. Please try again.",
+    "deleteComment": "Delete comment",
+    "signInToLike": "Sign in to like posts.",
+    "signInToComment": "Sign in to comment",
+    "reviewTitle": "Review your work with {name}",
+    "reviewHint": "You can leave one review per conversation, after an accepted offer.",
+    "rating": "Rating",
+    "stars": "{n, plural, one {# star} other {# stars}}",
+    "reviewText": "What was it like working together? (optional)",
+    "submitReview": "Post review",
+    "pickRating": "Choose a star rating first.",
+    "reviewThanks": "Thanks — your review is posted.",
+    "reviewFailed": "Couldn’t post the review. Please try again."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "emptyTitle": "You’re all caught up",
+    "emptyBody": "Messages, offers, follows and reviews will show up here.",
+    "unread": "{count, plural, =0 {No unread notifications} one {# unread} other {# unread}}",
+    "markAll": "Mark all as read",
+    "new": "New",
+    "someone": "Someone",
+    "kinds": {
+      "MESSAGE": "{name} sent you a message",
+      "OFFER": "{name} sent you an offer",
+      "OFFER_ACCEPTED": "{name} accepted your offer",
+      "OFFER_DECLINED": "{name} declined your offer",
+      "CALL": "{name} started a call",
+      "FOLLOW": "{name} followed you",
+      "STAR": "{name} starred your profile",
+      "REVIEW": "{name} left you a review",
+      "COMMENT": "{name} commented on your post",
+      "LIKE": "{name} liked your post",
+      "VERIFIED": "Your organization is now verified"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "failed": "That didn’t work. Please try again.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "Approved — badge added.",
+    "rejected": "Request rejected.",
+    "resolve": "Mark resolved",
+    "resolved": "Resolved.",
+    "suspend": "Suspend account",
+    "suspendedDone": "Account suspended.",
+    "restore": "Restore",
+    "restored": "Account restored.",
+    "verifications": "Organization verification ({count})",
+    "regNo": "Registration no.",
+    "noneVerifications": "No requests waiting.",
+    "reports": "Reports ({count})",
+    "reportedBy": "Reported by {name}",
+    "noneReports": "No open reports.",
+    "suspended": "Suspended accounts ({count})",
+    "noneSuspended": "No suspended accounts."
+  },
+  "built": {
+    "title": "Built vs planned",
+    "lead": "What works in ABLE today, and what comes next. No pretending.",
+    "builtTitle": "Working now",
+    "plannedTitle": "Coming next",
+    "built": [
+      "Sign in with Google or a 6-digit email code",
+      "Talent profile builder with autosave, photos, certificates and portfolio",
+      "“Speak to fill”: mic on every text field, and “Fill my profile by voice” with review",
+      "“Write with AI” for bios and organization descriptions",
+      "Employer onboarding with hiring needs",
+      "AI matching (embeddings + skills + work fit) with “Why this match”",
+      "Matched feed with star, follow, skip, filters and swipe",
+      "Messages with photos, files, voice notes, offers, translation, read receipts",
+      "Voice and video calls (Daily.co)",
+      "Notifications, emails for messages and offers",
+      "Reviews after an accepted offer, likes and comments",
+      "Privacy controls, consent records, data export and account deletion",
+      "Section 33 quota calculator",
+      "Judge mode with sample data, English and Thai, light and dark"
+    ],
+    "planned": [
+      "Identity verification (Tier 3, government ID) — Phase 2; ABLE collects no ID numbers today",
+      "Native mobile apps (the web app is installable now)",
+      "Job boards import and calendar scheduling for interviews",
+      "Sign-language video profiles",
+      "More languages beyond English and Thai"
+    ]
   }
 }

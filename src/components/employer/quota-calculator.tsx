@@ -56,11 +56,11 @@ export function QuotaCalculator({
       >
         <div>
           <p className="text-small text-graphite">{t("required")}</p>
-          <p className="text-display tracking-display tabular-nums">{fmt(required)}</p>
+          <p className="text-display tracking-display tabular-nums">{n ? fmt(required) : "—"}</p>
         </div>
         <div className="border-line border-t pt-4">
           <p className="text-small text-graphite">{t("gap")}</p>
-          <p className="text-h1 tabular-nums">{fmt(gap)}</p>
+          <p className="text-h1 tabular-nums">{n ? fmt(gap) : "—"}</p>
         </div>
         <p className="text-small text-graphite">
           {est != null ? t("levyEstimate", { amount: fmt(est) }) : t("levyUnset")}

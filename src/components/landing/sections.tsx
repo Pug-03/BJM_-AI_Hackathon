@@ -74,7 +74,9 @@ export async function LandingSections() {
       </section>
 
       <section aria-labelledby="speak-title" className={`${section} bg-mist`}>
-        <div className={`${wrap} grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-2 lg:gap-16`}>
+        <div
+          className={`${wrap} grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-2 lg:gap-16`}
+        >
           <div className="flex flex-col gap-6">
             <SectionHead
               id="speak-title"
@@ -92,7 +94,9 @@ export async function LandingSections() {
       </section>
 
       <section aria-labelledby="why-title" className={section}>
-        <div className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}>
+        <div
+          className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
+        >
           <SectionHead id="why-title" title={t("why.title")} body={t("why.body")} />
           <ul className="divide-line border-line divide-y border-y">
             {why.map(({ icon: Icon, k }) => (
@@ -114,7 +118,7 @@ export async function LandingSections() {
         className={`${section} scroll-mt-20 pt-0 md:pt-0`}
       >
         <div className={wrap}>
-          <div className="bg-ink text-paper grid grid-cols-[minmax(0,1fr)] gap-8 rounded-[28px] p-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:p-12">
+          <div className="bg-ink text-paper dark:bg-raised dark:text-ink dark:border-line grid grid-cols-[minmax(0,1fr)] gap-8 rounded-[28px] p-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:p-12 dark:border">
             <div className="flex max-w-[640px] flex-col gap-3">
               <p className="text-small font-medium opacity-70">{t("quota.eyebrow")}</p>
               <h2 id="employers-title" className="text-h1 tracking-display">
@@ -133,13 +137,22 @@ export async function LandingSections() {
               </a>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
-              <Button asChild size="lg" className="bg-paper text-ink hover:opacity-90">
+              <Button
+                asChild
+                size="lg"
+                className="bg-paper text-ink dark:bg-ink dark:text-paper hover:opacity-90"
+              >
                 <Link href="/employer/quota">
                   {t("quota.cta")}
                   <ArrowRight aria-hidden />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="ghost" className="text-paper hover:bg-white/10">
+              <Button
+                asChild
+                size="lg"
+                variant="ghost"
+                className="text-paper dark:text-ink dark:hover:bg-mist hover:bg-white/10"
+              >
                 <Link href="/login?next=/welcome%3Fintent%3Dhire">{t("ctaSecondary")}</Link>
               </Button>
             </div>
@@ -148,7 +161,9 @@ export async function LandingSections() {
       </section>
 
       <section aria-labelledby="guide-title" className={`${section} border-line border-t`}>
-        <div className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}>
+        <div
+          className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
+        >
           <SectionHead id="guide-title" title={t("howTo.title")} body={t("howTo.body")} />
           <Accordion items={howTo} />
         </div>
@@ -159,7 +174,9 @@ export async function LandingSections() {
         id="faq"
         className={`${section} border-line scroll-mt-20 border-t`}
       >
-        <div className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}>
+        <div
+          className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
+        >
           <SectionHead id="faq-title" title={t("faq.title")} />
           <Accordion items={faq} />
         </div>

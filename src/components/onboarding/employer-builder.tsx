@@ -168,7 +168,9 @@ export function EmployerBuilder({ initial, hasOrg }: { initial: EmployerData; ha
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-4">
-        <p className="text-small text-graphite">{to("stepOf", { current: step + 1, total: STEPS.length })}</p>
+        <p className="text-small text-graphite md:sr-only">
+          {to("stepOf", { current: step + 1, total: STEPS.length })}
+        </p>
         <div
           role="progressbar"
           aria-label={to("progress")}

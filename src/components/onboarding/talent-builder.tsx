@@ -355,7 +355,7 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
       <header className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-4">
           <p className="text-small text-graphite">
-            {t("stepOf", { current: step + 1, total: STEPS.length })}
+            <span className="md:sr-only">{t("stepOf", { current: step + 1, total: STEPS.length })}</span>
           </p>
           <p className="text-caption text-graphite flex items-center gap-1.5" aria-live="polite">
             {save === "saving" ? (

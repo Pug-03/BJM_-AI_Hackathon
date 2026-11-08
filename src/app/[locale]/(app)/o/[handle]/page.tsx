@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Building2, Globe, MapPin, Users } from "lucide-react";
+import { Building2, Globe, Heart, MapPin, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { matchedSkills } from "@/lib/match";
 import { provinceLabel } from "@/config/th-provinces";
 import { VerifiedBadge } from "@/components/able/verified-badge";
+import { CoverArt } from "@/components/able/cover-art";
 import { NeedCard } from "@/components/feed/need-card";
 import { OrgActions } from "@/components/feed/org-actions";
 import { Button } from "@/components/ui/button";
@@ -70,15 +71,7 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
   return (
     <div className="flex flex-col gap-8">
       <div className="bg-mist relative aspect-[16/7] w-full overflow-hidden sm:aspect-[16/5] md:rounded-[20px]">
-        {o.coverUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={o.coverUrl}
-            alt=""
-            className="size-full object-cover dark:brightness-75 dark:saturate-75"
-            fetchPriority="high"
-          />
-        ) : null}
+        {o.coverUrl ? <CoverArt src={o.coverUrl} eager /> : null}
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-12">
         <section className="relative z-10 -mt-16 flex flex-col gap-4 sm:-mt-20">
@@ -100,7 +93,12 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
             </p>
           </div>
           <ul className="text-small text-graphite flex flex-col gap-2">
-            {o.industry ? <li>{o.industry}</li> : null}
+            {o.industry ? (
+              <li className="flex items-center gap-2">
+                <Building2 className="size-4" aria-hidden />
+                {o.industry}
+              </li>
+            ) : null}
             {o.province ? (
               <li className="flex items-center gap-2">
                 <MapPin className="size-4" aria-hidden />
@@ -113,7 +111,12 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
                 {t("employees", { count: o.employeeCount })}
               </li>
             ) : null}
-            <li>{t("followers", { count: followers })}</li>
+            {followers ? (
+              <li className="flex items-center gap-2">
+                <Heart className="size-4" aria-hidden />
+                {t("followers", { count: followers })}
+              </li>
+            ) : null}
             {contacts.map((c) => (
               <li key={c.id} className="flex items-center gap-2">
                 <Globe className="size-4" aria-hidden />
@@ -145,7 +148,7 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
           ) : viewer?.role === "TALENT" ? (
             <OrgActions orgUserId={o.userId} following={Boolean(follow)} size="md" />
           ) : !viewer ? (
-            <Button asChild>
+            <Button asChild className="self-start">
               <Link href={`/login?next=/o/${o.handle}`}>{t("signInToMessage")}</Link>
             </Button>
           ) : null}

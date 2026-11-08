@@ -18,6 +18,7 @@ import {
   suggestHandle,
 } from "@/lib/schemas/talent";
 import { onTalentChanged } from "./hooks";
+import { notify } from "@/lib/notify";
 
 export type ActionResult<T = undefined> =
   { ok: true; data?: T } | { ok: false; error: string; field?: string };
@@ -344,9 +345,7 @@ export async function toggleFollow(followeeUserId: string, on: boolean): Promise
       update: {},
       create: { followerId: user.id, followeeUserId },
     });
-    await db.notification.create({
-      data: { userId: followeeUserId, kind: "FOLLOW", payload: { fromUserId: user.id, fromName: user.name } },
-    });
+    await notify(followeeUserId, "FOLLOW", { fromUserId: user.id, fromName: user.name });
   } else {
     await db.follow.deleteMany({ where: { followerId: user.id, followeeUserId } });
   }
@@ -362,6 +361,8 @@ export async function toggleStar(talentId: string, on: boolean, needId?: string)
       update: { needId: needId ?? null },
       create: { employerUserId: user.id, talentId, needId: needId ?? null },
     });
+    const t = await db.talentProfile.findUnique({ where: { id: talentId }, select: { userId: true } });
+    if (t) await notify(t.userId, "STAR", { fromUserId: user.id, fromName: user.name });
   } else {
     await db.star.deleteMany({ where: { employerUserId: user.id, talentId } });
   }

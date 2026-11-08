@@ -279,3 +279,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Judge banner height, so full-height views (messages) don't overflow when it shows. */
+:root:has([data-judge-banner]) {
+  --banner-h: 44px;
+}

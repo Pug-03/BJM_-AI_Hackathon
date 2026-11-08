@@ -33,6 +33,7 @@ export function CookieBanner() {
   const [choose, setChoose] = React.useState(false);
   const [analytics, setAnalytics] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const opener = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
     let qa = false;
@@ -41,6 +42,7 @@ export function CookieBanner() {
     } catch {}
     if (!qa && !read()) setOpen(true);
     const reopen = () => {
+      opener.current = document.activeElement as HTMLElement | null;
       setAnalytics(read() === "all");
       setChoose(true);
       setOpen(true);
@@ -55,6 +57,9 @@ export function CookieBanner() {
     write(c);
     setOpen(false);
     setChoose(false);
+    // Never drop focus to <body>: back to the footer link that reopened it, or to main content.
+    const back = opener.current?.isConnected ? opener.current : document.getElementById("main");
+    requestAnimationFrame(() => back?.focus());
   };
   return (
     <div
@@ -106,7 +111,14 @@ export function CookieBanner() {
             <Button size="sm" variant="secondary" onClick={() => done("necessary")}>
               {t("reject")}
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => setChoose(true)}>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setChoose(true);
+                requestAnimationFrame(() => document.getElementById("ck-analytics")?.focus());
+              }}
+            >
               {t("choose")}
             </Button>
           </>

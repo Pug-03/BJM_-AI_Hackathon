@@ -45,12 +45,12 @@ function HeroMock() {
   const reduced = useReducedMotion();
   const skills = [t("mockSkill1"), t("mockSkill2"), t("mockSkill3")];
   const micRef = React.useRef<HTMLDivElement>(null);
-  const inView = useInView(micRef, { once: true, amount: 0.6 });
+  const inView = useInView(micRef, { amount: 0.6 });
   // Mic demo (section 4.1's one bold moment): listening → filled. Starts when the field is on screen.
   const [phase, setPhase] = React.useState<"idle" | "listening" | "filled">("idle");
   React.useEffect(() => {
     if (reduced) return setPhase("filled");
-    if (!inView) return;
+    if (!inView) return setPhase("idle");
     const a = setTimeout(() => setPhase("listening"), 400);
     const b = setTimeout(() => setPhase("filled"), 2800);
     return () => {
@@ -121,9 +121,10 @@ function HeroMock() {
                   >
                     {/* Background expands from the mic (origin right); content fades in after, never squashed. */}
                     <motion.span
-                      className="bg-brand-soft absolute inset-0 origin-right rounded-full"
-                      initial={{ scaleX: 0.12 }}
-                      animate={{ scaleX: 1 }}
+                      className="bg-brand-soft absolute inset-0 rounded-full"
+                      // Grows out of the mic as a pill (clip-path keeps the round end caps; no squash).
+                      initial={{ clipPath: "inset(0 0 0 calc(100% - 48px) round 999px)" }}
+                      animate={{ clipPath: "inset(0 0 0 0px round 999px)" }}
                       transition={{ duration: durations.slow, ease: easeSmooth }}
                     />
                     <motion.span
