@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from "motion/react";
 import { BadgeCheck, Mic, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,9 @@ export function Hero() {
         </div>
       </div>
       <div className="min-w-0 animate-[able-rise_320ms_var(--ease-smooth)_120ms_both]">
-        <HeroMock />
+        <Parallax>
+          <HeroMock />
+        </Parallax>
       </div>
     </section>
   );
@@ -190,4 +192,12 @@ function HeroMock() {
       </div>
     </figure>
   );
+}
+
+/** The example card drifts up a little slower than the page as you scroll (transform only). */
+function Parallax({ children }: { children: React.ReactNode }) {
+  const reduced = useReducedMotion();
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 700], [0, -56]);
+  return <motion.div style={reduced ? undefined : { y }}>{children}</motion.div>;
 }

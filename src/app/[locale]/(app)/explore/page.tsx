@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/lib/session";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/able/empty-state";
 import { TalentCard } from "@/components/explore/talent-card";
+import { RevealItem, RevealList } from "@/components/able/reveal";
 import { ExploreControls } from "@/components/explore/explore-controls";
 import { filterToQuery } from "@/lib/filter-query";
 import { talentFilterSchema, type TalentFilter } from "@/lib/schemas/talent";
@@ -82,13 +83,16 @@ export default async function ExplorePage({
         {t("resultCount", { count: total })}
       </p>
       {rows.length ? (
-        <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealList
+          className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          stagger={0.05}
+        >
           {rows.map((r, i) => (
-            <li key={r.id}>
+            <RevealItem key={r.id}>
               <TalentCard c={toCard(r, locale)} sampleLabel={!user?.isSandbox} eager={i < 3} />
-            </li>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealList>
       ) : (
         <EmptyState
           icon={SearchX}

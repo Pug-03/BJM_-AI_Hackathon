@@ -6,6 +6,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { SponsorStrip } from "@/components/able/sponsor-strip";
 import { TwoPaths } from "./two-paths";
 import { SpeakDemo } from "./speak-demo";
+import { Reveal, RevealItem, RevealList } from "@/components/able/reveal";
 
 const wrap = "mx-auto w-full max-w-[1200px] px-4 md:px-8";
 const section = "py-16 md:py-24";
@@ -22,13 +23,13 @@ function SectionHead({
   body?: string;
 }) {
   return (
-    <div className="flex max-w-[640px] flex-col gap-3">
+    <Reveal className="flex max-w-[640px] flex-col gap-3">
       {eyebrow ? <p className="text-small text-graphite font-medium">{eyebrow}</p> : null}
       <h2 id={id} className="text-h1 tracking-display">
         {title}
       </h2>
       {body ? <p className="text-graphite text-body measure">{body}</p> : null}
-    </div>
+    </Reveal>
   );
 }
 
@@ -61,7 +62,9 @@ export async function LandingSections() {
       >
         <div className={`${wrap} flex flex-col gap-10`}>
           <SectionHead id="how-title" title={t("paths.title")} body={t("paths.body")} />
-          <TwoPaths />
+          <Reveal delay={0.1}>
+            <TwoPaths />
+          </Reveal>
         </div>
       </section>
 
@@ -81,7 +84,9 @@ export async function LandingSections() {
               {t("speak.languages")}
             </p>
           </div>
-          <SpeakDemo />
+          <Reveal dir="right" delay={0.1}>
+            <SpeakDemo />
+          </Reveal>
         </div>
       </section>
 
@@ -90,17 +95,17 @@ export async function LandingSections() {
           className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
         >
           <SectionHead id="why-title" title={t("why.title")} body={t("why.body")} />
-          <ul className="divide-line border-line divide-y border-y">
+          <RevealList className="divide-line border-line divide-y border-y">
             {why.map(({ icon: Icon, k }) => (
-              <li key={k} className="flex gap-4 py-6">
+              <RevealItem key={k} className="flex gap-4 py-6">
                 <Icon className="text-ink mt-0.5 size-6 shrink-0 stroke-[1.5]" aria-hidden />
                 <div className="flex flex-col gap-1">
                   <h3 className="text-h3">{t(`why.${k}.title`)}</h3>
                   <p className="text-graphite">{t(`why.${k}.body`)}</p>
                 </div>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealList>
         </div>
       </section>
 
@@ -110,7 +115,10 @@ export async function LandingSections() {
         className={`${section} scroll-mt-20 pt-0 md:pt-0`}
       >
         <div className={wrap}>
-          <div className="bg-ink text-paper dark:bg-raised dark:text-ink dark:border-line grid grid-cols-[minmax(0,1fr)] gap-8 rounded-[28px] p-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:p-12 dark:border">
+          <Reveal
+            dir="scale"
+            className="bg-ink text-paper dark:bg-raised dark:text-ink dark:border-line grid grid-cols-[minmax(0,1fr)] gap-8 rounded-[28px] p-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:p-12 dark:border"
+          >
             <div className="flex max-w-[640px] flex-col gap-3">
               <p className="text-small font-medium opacity-70">{t("quota.eyebrow")}</p>
               <h2 id="employers-title" className="text-h1 tracking-display">
@@ -145,7 +153,7 @@ export async function LandingSections() {
                 <Link href="/login?next=/welcome%3Fintent%3Dhire">{t("ctaSecondary")}</Link>
               </Button>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -154,7 +162,9 @@ export async function LandingSections() {
           className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
         >
           <SectionHead id="guide-title" title={t("howTo.title")} body={t("howTo.body")} />
-          <Accordion items={howTo} />
+          <Reveal delay={0.1}>
+            <Accordion items={howTo} />
+          </Reveal>
         </div>
       </section>
 
@@ -167,32 +177,40 @@ export async function LandingSections() {
           className={`${wrap} grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16`}
         >
           <SectionHead id="faq-title" title={t("faq.title")} />
-          <Accordion items={faq} />
+          <Reveal delay={0.1}>
+            <Accordion items={faq} />
+          </Reveal>
         </div>
       </section>
 
       <section aria-labelledby="thanks-title" className={`${section} bg-mist`}>
         <div className={`${wrap} flex flex-col items-center gap-8 text-center`}>
-          <h2 id="thanks-title" className="text-h2 tracking-display max-w-[28ch]">
-            {t("thanks")}
-          </h2>
-          <SponsorStrip size="lg" className="justify-center" />
+          <Reveal>
+            <h2 id="thanks-title" className="text-h2 tracking-display max-w-[28ch]">
+              {t("thanks")}
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <SponsorStrip size="lg" className="justify-center" />
+          </Reveal>
         </div>
       </section>
 
       <section aria-labelledby="cta-title" className={section}>
         <div className={`${wrap} flex flex-col items-center gap-6 text-center`}>
-          <h2 id="cta-title" className="text-display tracking-display max-w-[16ch]">
-            {t("ctaTitle")}
-          </h2>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <Reveal dir="scale">
+            <h2 id="cta-title" className="text-display tracking-display max-w-[16ch]">
+              {t("ctaTitle")}
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12} className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
               <Link href="/login">{t("ctaPrimary")}</Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
               <Link href="/explore">{t("ctaExplore")}</Link>
             </Button>
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

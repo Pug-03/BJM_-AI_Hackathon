@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const iconButtonVariants = cva(
   [
     "inline-flex size-11 shrink-0 items-center justify-center rounded-full",
-    "transition-[transform,background-color,color] duration-200 ease-smooth active:scale-[0.94]",
+    "transition-[transform,background-color,color] duration-200 ease-smooth active:scale-[0.9] motion-safe:hover:scale-105",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:size-5 [&_svg]:stroke-[1.75]",
   ],

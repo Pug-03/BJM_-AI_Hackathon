@@ -228,3 +228,13 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - The lookup is exact-string, so real users' text is never altered. The data stays single-language in the database.
 - **Work/post images are now illustrated scenes of a person working** (`scripts/gen-sample-scenes.mjs`), replacing the abstract blocks. The avatars are drawn illustrations too.
   - These are fictional people, never photos: using real people's photos to stand in for invented job seekers would misrepresent identifiable people.
+
+## More motion (owner request)
+
+- **Buttons:** a gentle lift on hover and a press-in on tap. Icon buttons scale. Background and colour changes now transition too.
+- **Landing:** every section head, the steps, the "Why ABLE" items (staggered), the demo, the quota block, the FAQ, the thanks section and the CTA rise into place once, as they scroll into view (`src/components/able/reveal.tsx`). The hero example card has a subtle parallax.
+- **Explore:** the grid staggers in. Cards lift slightly on hover.
+- **Rules:**
+  - Transform and opacity only.
+  - With reduced motion, everything shows immediately, with no movement.
+  - No layout shift: the elements keep their space while hidden.

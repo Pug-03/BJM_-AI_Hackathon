@@ -21,7 +21,7 @@ export async function TalentCard({
   const te = await getTranslations("enums");
   const locale = await getLocale();
   return (
-    <article className="border-line bg-raised group hover:shadow-float relative flex h-full flex-col overflow-hidden rounded-[20px] border transition-shadow duration-200">
+    <article className="border-line bg-raised group ease-smooth relative flex h-full flex-col overflow-hidden rounded-[20px] border transition-transform duration-300 motion-safe:hover:-translate-y-1">
       <div className="bg-mist relative h-16">
         {c.cover ? <CoverArt src={c.cover} eager={eager} /> : null}
         {sampleLabel && c.sample ? (

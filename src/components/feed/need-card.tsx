@@ -52,7 +52,7 @@ export async function NeedCard({
     : null;
   return (
     <article
-      className="border-line bg-raised flex flex-col gap-4 rounded-[20px] border p-5"
+      className="border-line bg-raised ease-smooth flex flex-col gap-4 rounded-[20px] border p-5 transition-transform duration-300 motion-safe:hover:-translate-y-0.5"
       aria-labelledby={`need-${n.id}`}
     >
       {showOrg ? (

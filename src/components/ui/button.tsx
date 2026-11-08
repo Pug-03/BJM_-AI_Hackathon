@@ -7,7 +7,9 @@ import { cn } from "@/lib/utils";
 export const buttonVariants = cva(
   [
     "inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none",
-    "transition-[transform,opacity] duration-200 ease-smooth",
+    "transition-[transform,opacity,background-color,color] duration-200 ease-smooth",
+    // Gentle lift on hover, press-in on tap (transform only; skipped with reduced motion).
+    "motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0",
     // Disabled = quiet solid surface (not a faded ink slab); loading keeps the variant's fill.
     "active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 aria-busy:opacity-100",
     "[&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:stroke-[1.75]",
@@ -19,7 +21,7 @@ export const buttonVariants = cva(
           "bg-ink text-paper hover:opacity-90 disabled:bg-cloud disabled:text-graphite disabled:opacity-100 aria-busy:bg-ink aria-busy:text-paper",
         secondary: "bg-mist text-ink hover:bg-cloud dark:bg-line dark:hover:bg-avatar",
         ghost: "text-ink hover:bg-mist",
-        link: "h-auto px-0 text-brand underline-offset-4 hover:underline",
+        link: "h-auto px-0 text-brand underline-offset-4 hover:underline motion-safe:hover:translate-y-0",
         destructive: "border border-danger text-danger hover:bg-danger/10",
         brand: "bg-brand-soft text-brand hover:bg-brand-soft/80",
       },
