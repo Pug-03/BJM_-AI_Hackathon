@@ -525,7 +525,11 @@
     "skillsNeeded": "Skills needed",
     "youHaveThis": "you have this skill",
     "setupOffered": "Workplace setup offered",
-    "showMorePositions": "Show more positions"
+    "showMorePositions": "Show more positions",
+    "sideTitle": "Your positions",
+    "sideSaved": "{count, plural, =0 {No starred people yet} one {# starred person} other {# starred people}}",
+    "sideQuota": "Section 33 calculator",
+    "sideFair": "Matches use skills, education, work mode and profile completeness only — never disability, gender, religion, ethnicity or age."
   },
   "enums": {
     "workMode": {
@@ -925,7 +929,9 @@
     "noNeeds": "No positions yet",
     "noNeedsBody": "Add a position to start getting matched talent.",
     "logoUpload": "Upload logo",
-    "logoChange": "Change logo"
+    "logoChange": "Change logo",
+    "moreFor": "More options for {title}",
+    "edit": "Edit"
   },
   "filters": {
     "title": "Filters",

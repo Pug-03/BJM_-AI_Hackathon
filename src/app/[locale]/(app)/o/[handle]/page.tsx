@@ -70,7 +70,7 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
   const mySkills = talent?.skills.map((s) => s.name) ?? [];
   return (
     <div className="flex flex-col gap-8">
-      <div className="bg-mist relative aspect-[16/7] w-full overflow-hidden sm:aspect-[16/5] md:rounded-[20px]">
+      <div className="bg-mist relative -mx-4 -mt-6 aspect-[16/7] overflow-hidden sm:aspect-[16/5] md:mx-0 md:mt-0 md:rounded-[20px]">
         {o.coverUrl ? <CoverArt src={o.coverUrl} eager /> : null}
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-12">

@@ -285,3 +285,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
 :root:has([data-judge-banner]) {
   --banner-h: 44px;
 }
+
+@keyframes able-wash {
+  from {
+    opacity: 0.95;
+  }
+  to {
+    opacity: 0;
+  }
+}

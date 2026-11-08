@@ -181,7 +181,7 @@ export function MatchCard({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <Button type="button" onClick={onMessage} className="flex-1 sm:flex-none">
+          <Button type="button" onClick={onMessage} className="sm:flex-none">
             <MessageCircle aria-hidden />
             {t("message")}
           </Button>
@@ -196,18 +196,19 @@ export function MatchCard({
               <Star aria-hidden fill={c.starred ? "currentColor" : "none"} />
             </IconButton>
           </Tooltip>
+          <Button type="button" variant="secondary" aria-pressed={c.following} onClick={onFollow}>
+            {c.following ? <UserCheck aria-hidden /> : <UserPlus aria-hidden />}
+            {c.following ? t("following") : t("follow")}
+          </Button>
           <Button
             type="button"
-            variant="secondary"
-            aria-pressed={c.following}
-            onClick={onFollow}
-            className="max-sm:w-12 max-sm:px-0"
+            variant="ghost"
+            className="ml-auto max-[380px]:w-11 max-[380px]:px-0"
+            onClick={onSkip}
+            aria-label={t("skip")}
           >
-            {c.following ? <UserCheck aria-hidden /> : <UserPlus aria-hidden />}
-            <span className="max-sm:sr-only">{c.following ? t("following") : t("follow")}</span>
-          </Button>
-          <Button type="button" variant="ghost" className="ml-auto" onClick={onSkip}>
-            {t("skip")}
+            <X aria-hidden className="min-[381px]:hidden" />
+            <span className="max-[380px]:sr-only">{t("skip")}</span>
           </Button>
         </div>
       </div>

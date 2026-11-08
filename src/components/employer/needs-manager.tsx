@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { MapPin, Pencil, Plus, Trash2, Users } from "lucide-react";
+import { EllipsisVertical, MapPin, Pencil, Plus, Trash2, Users } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
@@ -123,12 +129,23 @@ export function NeedsManager({
                     </Link>
                   </Button>
                 ) : null}
-                <IconButton aria-label={t("editNeed", { title: n.title })} onClick={() => setEditing(n)}>
-                  <Pencil aria-hidden />
-                </IconButton>
-                <IconButton aria-label={t("deleteNeed", { title: n.title })} onClick={() => setConfirm(n)}>
-                  <Trash2 aria-hidden />
-                </IconButton>
+                <DropdownMenu modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <IconButton aria-label={t("moreFor", { title: n.title })} className="ml-auto lg:ml-0">
+                      <EllipsisVertical aria-hidden />
+                    </IconButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => setEditing(n)}>
+                      <Pencil aria-hidden />
+                      {t("edit")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setConfirm(n)}>
+                      <Trash2 aria-hidden />
+                      {t("delete")}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </li>
           ))}

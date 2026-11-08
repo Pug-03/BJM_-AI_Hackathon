@@ -45,31 +45,64 @@ export default async function FeedPage({
       },
     });
     if (!org) return redirect({ href: "/onboarding/employer", locale });
+    const starred = await db.star.count({ where: { employerUserId: user.id } });
     return (
-      <div className="mx-auto flex w-full max-w-[680px] flex-col gap-6">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-h1 tracking-display">{t("employerTitle")}</h1>
-          <p className="text-graphite">{t("employerIntro")}</p>
-          {!user.isSandbox ? <p className="text-caption text-graphite">{t("sampleNote")}</p> : null}
-        </header>
-        {org.needs.length ? (
-          <EmployerFeed
-            needs={org.needs}
-            initialNeedId={org.needs.find((n) => n.id === need)?.id ?? org.needs[0]!.id}
-            sampleLabel={!user.isSandbox}
-          />
-        ) : (
-          <EmptyState
-            icon={Briefcase}
-            title={t("noPositions")}
-            body={t("noPositionsBody")}
-            action={
-              <Button asChild>
-                <Link href="/needs?new=1">{t("addPosition")}</Link>
-              </Button>
-            }
-          />
-        )}
+      <div className="grid w-full grid-cols-[minmax(0,1fr)] gap-10 xl:grid-cols-[minmax(0,680px)_300px] xl:justify-center">
+        <div className="mx-auto flex w-full max-w-[680px] flex-col gap-6">
+          <header className="flex flex-col gap-2">
+            <h1 className="text-h1 tracking-display">{t("employerTitle")}</h1>
+            <p className="text-graphite">{t("employerIntro")}</p>
+            {!user.isSandbox ? <p className="text-caption text-graphite">{t("sampleNote")}</p> : null}
+          </header>
+          {org.needs.length ? (
+            <EmployerFeed
+              needs={org.needs}
+              initialNeedId={org.needs.find((n) => n.id === need)?.id ?? org.needs[0]!.id}
+              sampleLabel={!user.isSandbox}
+            />
+          ) : (
+            <EmptyState
+              icon={Briefcase}
+              title={t("noPositions")}
+              body={t("noPositionsBody")}
+              action={
+                <Button asChild>
+                  <Link href="/needs?new=1">{t("addPosition")}</Link>
+                </Button>
+              }
+            />
+          )}
+        </div>
+        {/* Wide screens: a quiet side panel so the feed doesn't float in empty space. */}
+        <aside
+          aria-labelledby="feed-side"
+          className="hidden flex-col gap-4 xl:sticky xl:top-8 xl:flex xl:self-start"
+        >
+          <h2 id="feed-side" className="text-h3">
+            {t("sideTitle")}
+          </h2>
+          <ul className="border-line bg-raised divide-line divide-y rounded-[20px] border">
+            {org.needs.map((n) => (
+              <li key={n.id}>
+                <Link
+                  href={`/feed?need=${n.id}`}
+                  className="text-small hover:bg-mist/60 flex min-h-12 items-center px-4 py-3 font-medium"
+                >
+                  {n.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-col gap-2">
+            <Button asChild variant="secondary">
+              <Link href="/saved">{t("sideSaved", { count: starred })}</Link>
+            </Button>
+            <Button asChild variant="ghost">
+              <Link href="/employer/quota">{t("sideQuota")}</Link>
+            </Button>
+          </div>
+          <p className="text-caption text-graphite">{t("sideFair")}</p>
+        </aside>
       </div>
     );
   }

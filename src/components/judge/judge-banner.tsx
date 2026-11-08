@@ -28,7 +28,7 @@ export function JudgeBanner({ role }: { role: "TALENT" | "EMPLOYER" | "ADMIN" | 
       role="region"
       aria-label={t("pageTitle")}
       data-judge-banner
-      className="bg-ink text-small text-paper dark:bg-cloud dark:text-ink flex items-center justify-center gap-x-2 px-4"
+      className="bg-ink text-caption sm:text-small text-paper dark:bg-cloud dark:text-ink flex items-center justify-center gap-x-2 px-4"
     >
       <Gavel className="size-4 shrink-0" aria-hidden />
       <span className="hidden sm:inline">{t("banner")}</span>

@@ -207,7 +207,8 @@ export function ThreadView({ initial, callsAvailable }: { initial: Thread; calls
           </p>
         </div>
         {callButton(false)}
-        {callButton(true)}
+        {/* Below 380px the video button moves into "More options", so the name stays readable. */}
+        <span className="max-[380px]:hidden">{callButton(true)}</span>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <IconButton aria-label={t("more")}>
@@ -223,6 +224,17 @@ export function ThreadView({ initial, callsAvailable }: { initial: Thread; calls
                 </Link>
               </DropdownMenuItem>
             ) : null}
+            <DropdownMenuItem
+              className="min-[381px]:hidden"
+              onSelect={() =>
+                callsAvailable
+                  ? void call(true)
+                  : toast.message(t("callsUnavailableTitle"), { description: t("callsUnavailable") })
+              }
+            >
+              <Video aria-hidden />
+              {t("videoCall")}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             {blockedBy === "me" ? (
               <DropdownMenuItem

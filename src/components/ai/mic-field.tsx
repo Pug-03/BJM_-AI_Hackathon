@@ -32,17 +32,27 @@ const fit = (v: string, max?: number) => (max && max > 0 ? v.slice(0, max) : v);
 
 function useSuggestion(p: MicProps, maxLength?: number) {
   const [prev, setPrev] = React.useState<string | null>(null);
+  // The capsule hands over to the text: a brief brand-soft wash over the filled field (opacity only).
+  const [flash, setFlash] = React.useState(0);
   const shown = prev !== null || Boolean(p.aiSuggested);
   const resolve = () => {
     setPrev(null);
     p.onSuggestionResolved?.();
   };
   return {
+    wash: flash ? (
+      <span
+        key={flash}
+        aria-hidden
+        className="bg-brand-soft pointer-events-none absolute inset-0 animate-[able-wash_1100ms_var(--ease-smooth)_forwards] rounded-[14px] mix-blend-multiply dark:mix-blend-screen"
+      />
+    ) : null,
     shown,
     fill: (text: string, mode: "replace" | "append") => {
       const next = mode === "append" && p.value.trim() ? `${p.value.trimEnd()} ${text}` : text;
       setPrev(p.value);
       p.onValueChange(fit(next, maxLength));
+      setFlash((n) => n + 1);
     },
     edit: (v: string) => {
       p.onValueChange(v);
@@ -83,6 +93,7 @@ export const MicInput = React.forwardRef<HTMLInputElement, InputProps>(function 
           className={cn("pr-14", className)}
         />
         <MicButton kind="input" label={label} onText={(t) => s.fill(t, mode)} disabled={rest.disabled} />
+        {s.wash}
       </div>
       {s.note}
     </>
@@ -128,6 +139,7 @@ export const MicTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           maxMs={120_000}
           disabled={rest.disabled}
         />
+        {s.wash}
       </div>
       {s.note}
       {writeWithAi ? (

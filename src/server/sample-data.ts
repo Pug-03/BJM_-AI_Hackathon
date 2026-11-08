@@ -1116,7 +1116,7 @@ export const sampleOrgs: SampleOrg[] = [
   {
     key: "gov-digital",
     type: "GOVERNMENT",
-    name: "Office of Digital Public Services (sample agency)",
+    name: "Office of Digital Public Services",
     handle: "digital-services-office",
     description: "A fictional agency used for demo purposes: building online public services.",
     industry: "Government",
@@ -1140,7 +1140,7 @@ export const sampleOrgs: SampleOrg[] = [
   {
     key: "gov-library",
     type: "GOVERNMENT",
-    name: "Municipal Library Network (sample agency)",
+    name: "Municipal Library Network",
     handle: "library-network",
     description: "A fictional city library network for demo purposes.",
     industry: "Government",
@@ -1163,7 +1163,7 @@ export const sampleOrgs: SampleOrg[] = [
   {
     key: "gov-tourism",
     type: "GOVERNMENT",
-    name: "Provincial Tourism Office (sample agency)",
+    name: "Provincial Tourism Office",
     handle: "tourism-office",
     description: "A fictional provincial tourism office for demo purposes.",
     industry: "Government",
@@ -1185,7 +1185,7 @@ export const sampleOrgs: SampleOrg[] = [
   {
     key: "gov-health-data",
     type: "GOVERNMENT",
-    name: "Public Health Data Center (sample agency)",
+    name: "Public Health Data Center",
     handle: "health-data-center",
     description: "A fictional public health data unit for demo purposes.",
     industry: "Government",
@@ -1208,7 +1208,7 @@ export const sampleOrgs: SampleOrg[] = [
   {
     key: "gov-transport",
     type: "GOVERNMENT",
-    name: "City Transport Authority (sample agency)",
+    name: "City Transport Authority",
     handle: "city-transport",
     description: "A fictional city transport authority for demo purposes.",
     industry: "Government",

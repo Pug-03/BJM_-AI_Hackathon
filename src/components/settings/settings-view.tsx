@@ -10,7 +10,7 @@ import { Select } from "@/components/ui/select";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { toast } from "@/components/ui/toaster";
 import { LanguageSwitch } from "@/components/able/language-switch";
-import { ThemeSwitch } from "@/components/able/theme-switch";
+import { useTheme } from "next-themes";
 import { useAi } from "@/components/ai/ai-provider";
 import { deleteAccount, savePrefs, setConsent, setProfileVisibility, updateName } from "@/server/settings";
 
@@ -74,7 +74,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section aria-labelledby={id} className="grid gap-4 md:grid-cols-[240px_minmax(0,1fr)] md:gap-10">
+    <section aria-labelledby={id} className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[240px_minmax(0,1fr)] md:gap-10">
       <div className="flex flex-col gap-1">
         <h2 id={id} className="text-h3">
           {title}
@@ -152,9 +152,9 @@ export function SettingsView({ d }: { d: SettingsData }) {
           <p className="text-small font-medium">{t("language")}</p>
           <LanguageSwitch compact={false} />
         </div>
-        <div className="flex items-center justify-between gap-6 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3">
           <p className="text-small font-medium">{t("theme")}</p>
-          <ThemeSwitch />
+          <ThemeChoice />
         </div>
       </Section>
 
@@ -317,6 +317,31 @@ export function SettingsView({ d }: { d: SettingsData }) {
           }
         }}
       />
+    </div>
+  );
+}
+
+/** Light / Dark / System as a visible segmented control (the current value is always shown as text). */
+function ThemeChoice() {
+  const t = useTranslations("theme");
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+  const current = mounted ? (theme ?? "system") : "system";
+  return (
+    <div role="radiogroup" aria-label={t("label")} className="bg-mist flex rounded-full p-1">
+      {(["light", "dark", "system"] as const).map((v) => (
+        <button
+          key={v}
+          type="button"
+          role="radio"
+          aria-checked={current === v}
+          onClick={() => setTheme(v)}
+          className={`text-small min-h-10 rounded-full px-3 transition-colors ${current === v ? "bg-paper text-ink font-medium shadow-sm" : "text-graphite hover:text-ink"}`}
+        >
+          {t(v)}
+        </button>
+      ))}
     </div>
   );
 }

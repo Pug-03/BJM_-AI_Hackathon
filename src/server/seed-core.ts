@@ -25,12 +25,22 @@ async function upsertTalent(
       email: opts.email,
       emailVerified: true,
       name: t.displayName,
+      image: `/sample/avatar-${t.key}.svg`,
       role: "TALENT",
       isSandbox: opts.isSandbox,
     },
   });
+  const avatarUrl = `/sample/avatar-${t.key}.svg`;
   const existing = await db.talentProfile.findUnique({ where: { userId: user.id } });
-  if (existing) return { user, profile: existing };
+  if (existing) {
+    // Backfill the illustrated avatar on older seeds (never overwrites a photo someone uploaded).
+    if (!existing.avatarUrl) {
+      const profile = await db.talentProfile.update({ where: { id: existing.id }, data: { avatarUrl } });
+      await db.user.update({ where: { id: user.id }, data: { image: avatarUrl } });
+      return { user, profile };
+    }
+    return { user, profile: existing };
+  }
 
   const profile = await db.talentProfile.create({
     data: {
@@ -40,6 +50,7 @@ async function upsertTalent(
       lastName: t.lastName,
       displayName: t.displayName,
       coverUrl: `/sample/cover-${t.cover}.svg`,
+      avatarUrl,
       headline: t.headline,
       bio: t.bio,
       dob: new Date(`${t.dobYear}-06-15`),

@@ -203,3 +203,19 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - Bundled sample covers are inlined as SVG.
   - User uploads are already resized to WebP (max 2560px) on the client and served as signed URLs, so they stay as `<img>` (there's no `next/image` loader for signed URLs). This is documented as a known trade-off.
 - **Rate limits verified** for OTP (Better Auth plus per-email), AI, uploads, messages, reports, comments, export, judge mode and "Why this match".
+
+## Design pass after Stage 8 loop 2 (owner: "apply the critic's scores")
+
+- **Sample people have fictional illustrated avatars** (`scripts/gen-sample-people.mjs`). They have varied skin tones, hair and head coverings, and are flat illustrations, not photos of anyone. Real photos of real people are never used.
+  - The seed backfills them, without overwriting uploads.
+- **Covers are calm:** a neutral ground with one muted tone and quiet geometry, replacing the repeated blob pattern.
+- **Mic hand-off:** after dictation, a brand-soft wash fades over the filled field (opacity only), so the capsule visibly "becomes" the text.
+- **Employer feed (xl):** a side panel with positions, starred count, quota link and a fairness note.
+- **Match card:** Follow is labelled at every size; on very narrow screens Skip becomes an icon with a label for screen readers.
+- **Layout fixes:**
+  - Position edit/delete moved into a "More" menu.
+  - In threads below 380px, video call moves into "More options".
+  - Settings theme is a Light/Dark/System segmented control.
+  - The org cover is full-bleed on mobile, matching profiles.
+- **Copy:** the "(sample agency)" suffix was removed from names, because the Sample pill already labels them. The hero mock uses the illustrated avatar and a token-based cover.
+- **Not done:** Thai versions of sample content. Judges read English (section 0), and translating the dataset is out of scope.

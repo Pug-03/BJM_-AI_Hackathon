@@ -72,12 +72,18 @@ function HeroMock() {
           {/* Decorative cover as CSS (not an <img>), so the headline text is the page's LCP element. */}
           <div
             aria-hidden
-            className="h-24 w-full bg-[radial-gradient(circle_at_20%_120%,#D9DCE1_0_38%,transparent_39%),radial-gradient(circle_at_70%_10%,#E6E8EC_0_30%,transparent_31%),linear-gradient(#F2F3F5,#F2F3F5)] sm:h-28 dark:bg-[radial-gradient(circle_at_20%_120%,#2A2930_0_38%,transparent_39%),radial-gradient(circle_at_70%_10%,#24232A_0_30%,transparent_31%),linear-gradient(#1C1B21,#1C1B21)]"
+            className="bg-mist h-24 w-full bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--line)_44px_68px)] sm:h-28"
           />
           <div className="flex flex-col gap-4 px-6 pb-6">
-            <span className="border-raised bg-avatar text-h3 text-graphite -mt-9 flex size-[72px] items-center justify-center rounded-full border-4 font-semibold">
-              PJ
-            </span>
+            {/* Illustrated sample avatar (fictional person, not a photo). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sample/avatar-judge-talent.svg"
+              alt=""
+              width={72}
+              height={72}
+              className="border-raised bg-avatar -mt-9 size-[72px] rounded-full border-4"
+            />
             <div className="flex flex-col gap-1">
               <p className="text-h3 flex items-center gap-2">
                 {t("mockName")}
