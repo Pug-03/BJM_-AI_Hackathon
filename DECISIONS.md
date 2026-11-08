@@ -246,3 +246,11 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **The hero says who it's for:** an eyebrow reads "Built for people with disabilities — and everyone", with four trust points underneath: voice, screen readers, no need to disclose, free.
 - **New landing section, "A safe place to be yourself",** with four promises: you decide what to share; no one filters you out; it works the way you do; help is one tap away.
 - This emphasizes that ABLE is built for disabled people, without labelling anyone or requiring disclosure (principles 1 and 3 still hold).
+
+## Photo avatars for sample people (owner request)
+
+- The owner generated photorealistic headshots of **fictional people** with an AI image tool (Gemini/ChatGPT). They are not real individuals.
+- The photos are cropped to head and shoulders, resized to 480px JPEG (about 40 KB each) and stored as `public/sample/people/<key>.jpg`.
+- `seedSamples` picks them up automatically, falling back to the illustration.
+- One generated shirt carried an invented company logo. The crop removes it.
+- The hero example card uses the judge persona's photo.

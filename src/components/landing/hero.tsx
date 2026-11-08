@@ -99,10 +99,10 @@ function HeroMock() {
             className="bg-mist h-24 w-full bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--line)_44px_68px)] sm:h-28"
           />
           <div className="flex flex-col gap-4 px-6 pb-6">
-            {/* Illustrated sample avatar (fictional person, not a photo). */}
+            {/* AI-generated photo of a fictional person (not a real individual). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/sample/avatar-judge-talent.svg"
+              src="/sample/people/judge-talent.jpg"
               alt=""
               width={72}
               height={72}
