@@ -13,4 +13,3 @@ export function filterToQuery(f: TalentFilter) {
   if (f.minRating) p.set("rating", String(f.minRating));
   return p.toString();
 }
-

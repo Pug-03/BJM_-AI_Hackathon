@@ -98,3 +98,40 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - `/saved` (starred and followed).
   - `/needs` manager: create, edit, open or close, delete.
 - **`MatchScore` now has a relation to `TalentProfile`,** so the feed can filter in SQL. It needs `pnpm db:push` on Supabase.
+
+## Stage 7: Messages and calls
+
+- **Realtime uses Supabase broadcast "nudges".**
+  - `POST /realtime/v1/api/broadcast` with the service key sends a nudge on `able-convo-{id}` or `able-user-{id}`.
+  - The payload is empty: clients re-fetch through authorized server actions, so no message content travels over the public channel.
+  - Without keys, clients poll every 5 s (10 s for the inbox). While subscribed, a slow 30 s safety poll keeps running.
+  - This avoids exposing the `Message` table to Postgres-changes RLS.
+- **Delivery states:**
+  - Optimistic "sending" shows a clock icon.
+  - "Sent" shows one check.
+  - "Delivered" (the recipient's client fetched the thread) shows two checks.
+  - "Read" shows two checks in violet with the text "Read" for screen readers.
+  - A failed send shows "Not sent · Try again".
+- **Typing indicator:** a `TypingState` row, touched at most every 3 s while typing and shown for 6 s.
+- **Attachments:**
+  - Must be `chat` bucket refs under the conversation's folder, which is enforced in `sendSchema` and `sendMessage`.
+  - Images are converted to WebP on the client.
+  - The private bucket is served through signed URLs or the local authorized route.
+- **Voice notes:** record, stop, send, with a live waveform. They are stored like other chat files, since a voice note is a message the person chose to send.
+  - "Show as text" transcribes on request, for deaf and hard-of-hearing users.
+- **Translate** (Claude, TH↔EN) shows the original plus a translation labelled "Translated by AI". It passes through `aiGate`, which checks the viewer's AI consent.
+- **Offers:**
+  - Accept and Decline are available only to the recipient.
+  - Counter sends a new offer and marks the original as COUNTERED.
+  - Every response posts a system line.
+  - The offer dialog states that ABLE never suggests a rate.
+- **Calls:** Daily Prebuilt runs in a full-screen iframe layer.
+  - Each conversation gets one private room (`able-{conversationId}`), recreated after it expires (2 h).
+  - Meeting tokens are per user; voice calls start with the camera off.
+  - Each call posts a card, and Join is available for 2 h.
+  - Without `DAILY_API_KEY`, the call buttons open a popover explaining why.
+- **Safety:**
+  - Block works per conversation and is also written to `Block` (feeds and profile views respect it).
+  - Reports go to `Report` for the Stage 9 admin queue.
+  - The first message from an unverified organization shows a calm safety tip.
+- **`/messages/latest`** redirects to the newest conversation. It is used for notification deep links and QA screenshots.

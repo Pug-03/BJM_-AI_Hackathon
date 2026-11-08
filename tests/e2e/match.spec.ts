@@ -2,7 +2,11 @@ import { test, expect } from "@playwright/test";
 import { enterJudge, signInFresh } from "./helpers";
 
 test.describe("employer onboarding + matched feed", () => {
-  test("builds an organization, publishes a position and sees matches", async ({ page, baseURL, context }) => {
+  test("builds an organization, publishes a position and sees matches", async ({
+    page,
+    baseURL,
+    context,
+  }) => {
     test.setTimeout(150_000);
     await signInFresh(context, baseURL!, "employer");
     await page.goto("/en/welcome");

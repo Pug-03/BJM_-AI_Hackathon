@@ -21,6 +21,8 @@ export const routes: QaRoute[] = [
   { path: "/feed", stage: 6, name: "feed-employer", auth: "judge-employer" },
   { path: "/needs", stage: 6, name: "needs", auth: "judge-employer" },
   { path: "/saved", stage: 6, name: "saved-employer", auth: "judge-employer" },
+  { path: "/messages", stage: 7, name: "messages-inbox", auth: "judge-talent" },
+  { path: "/messages/latest", stage: 7, name: "messages-thread", auth: "judge-employer" },
   { path: "/o/pims-bakery", stage: 6, name: "org-public" },
   { path: "/onboarding/employer", stage: 6, name: "onboarding-employer", auth: "judge-employer" },
 ];
