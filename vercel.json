@@ -1,4 +1,5 @@
 {
+  "regions": ["sin1"],
   "buildCommand": "bash scripts/vercel-build.sh",
   "crons": [{ "path": "/api/cron/judge-reset", "schedule": "0 3 * * *" }]
 }

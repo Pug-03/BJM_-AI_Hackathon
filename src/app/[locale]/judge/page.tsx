@@ -4,6 +4,9 @@ import { SiteHeader } from "@/components/able/site-header";
 import { SiteFooter } from "@/components/able/site-footer";
 import { JudgeChoices } from "@/components/judge/judge-choices";
 
+// Creating a judge sandbox writes a lot of sample data; give it room.
+export const maxDuration = 60;
+
 export async function generateMetadata({
   params,
 }: {

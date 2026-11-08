@@ -11,6 +11,9 @@ import { KeyNotice } from "@/components/able/key-notice";
 import { JudgeChoices } from "@/components/judge/judge-choices";
 import { getCurrentUser, homeFor } from "@/lib/session";
 
+// Creating a judge sandbox writes a lot of sample data; give it room.
+export const maxDuration = 60;
+
 export async function generateMetadata({
   params,
 }: {
