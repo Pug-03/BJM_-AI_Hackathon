@@ -76,8 +76,9 @@ test.describe("social and trust", () => {
     const ctx = await browser.newContext();
     await enterJudge(ctx, baseURL!, "talent");
     const p = await ctx.newPage();
-    const res = await p.goto(`${baseURL}/en/admin`);
-    expect(res?.status()).toBe(404);
+    await p.goto(`${baseURL}/en/admin`);
+    // With route-level loading UI the status streams as 200; the not-found page is what matters.
+    await expect(p.getByRole("heading", { level: 1, name: "We can’t find that page" })).toBeVisible();
     await ctx.close();
 
     const admin = await browser.newContext();

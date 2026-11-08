@@ -243,6 +243,8 @@ export function EmployerBuilder({ initial, hasOrg }: { initial: EmployerData; ha
                   value={d.logoUrl}
                   name={d.name || "?"}
                   onChange={(url) => set("logoUrl", url)}
+                  uploadLabel={t("logoUpload")}
+                  changeLabel={t("logoChange")}
                 />
               </section>
               <div className="grid gap-6 md:grid-cols-2">

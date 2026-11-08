@@ -16,10 +16,19 @@ test("judge mode: enter as talent, switch to employer, exit", async ({ page }) =
 
 test("judge dialog opens from the footer", async ({ page }) => {
   await page.goto("/en");
-  await page.getByRole("button", { name: "Judge mode" }).click();
+  await page.getByRole("contentinfo").getByRole("button", { name: "Judge mode" }).click();
   const dialog = page.getByRole("dialog", { name: "Try ABLE with sample data" });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("button", { name: /Try as an employer/ })).toBeVisible();
   await dialog.getByRole("button", { name: "Cancel" }).click();
   await expect(dialog).toBeHidden();
+});
+
+test("judge mode is reachable from the header and the sign-in page", async ({ page }) => {
+  await page.goto("/en");
+  await page.getByRole("banner").getByRole("button", { name: "Judge mode" }).click();
+  await expect(page.getByRole("dialog", { name: "Try ABLE with sample data" })).toBeVisible();
+  await page.goto("/en/login");
+  await expect(page.getByRole("heading", { name: "Judging ABLE?" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Try as talent/ })).toBeVisible();
 });

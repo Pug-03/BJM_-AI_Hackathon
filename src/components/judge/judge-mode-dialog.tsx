@@ -8,21 +8,28 @@ import { Button } from "@/components/ui/button";
 import { JudgeChoices } from "./judge-choices";
 
 /** Footer "Judge mode" button + dialog. */
-export function JudgeModeDialog() {
+export function JudgeModeDialog({ variant = "footer" }: { variant?: "footer" | "header" }) {
   const t = useTranslations("judge");
   const tc = useTranslations("common");
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="bg-paper border-line hover:bg-cloud dark:bg-paper border"
-        >
-          <Gavel aria-hidden />
-          {t("button")}
-        </Button>
+        {variant === "header" ? (
+          <Button variant="ghost" size="sm" aria-label={t("button")} className="max-sm:w-11 max-sm:px-0">
+            <Gavel aria-hidden />
+            <span className="max-sm:sr-only">{t("button")}</span>
+          </Button>
+        ) : (
+          <Button
+            variant="secondary"
+            size="sm"
+            className="bg-paper border-line hover:bg-cloud dark:bg-paper border"
+          >
+            <Gavel aria-hidden />
+            {t("button")}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         title={t("title")}

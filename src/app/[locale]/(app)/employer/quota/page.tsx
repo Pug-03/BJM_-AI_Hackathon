@@ -34,7 +34,7 @@ export default async function QuotaPage({ params }: { params: Promise<{ locale: 
   return (
     <div className="mx-auto flex w-full max-w-[880px] flex-col gap-10">
       <header className="flex flex-col gap-2">
-        <p className="text-small text-brand font-medium">{t("eyebrow")}</p>
+        <p className="text-small text-graphite font-medium">{t("eyebrow")}</p>
         <h1 className="text-h1 tracking-display">{t("title")}</h1>
         <p className="text-graphite measure">{t("intro")}</p>
       </header>

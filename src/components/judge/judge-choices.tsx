@@ -10,7 +10,7 @@ import { pressable } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 
 /** The two judge-mode choices; used by the dialog and the /judge page. */
-export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
+export function JudgeChoices({ onCancel, stacked = false }: { onCancel?: () => void; stacked?: boolean }) {
   const t = useTranslations("judge");
   const locale = useLocale();
   const [busy, setBusy] = React.useState<"TALENT" | "EMPLOYER" | null>(null);
@@ -41,7 +41,7 @@ export function JudgeChoices({ onCancel }: { onCancel?: () => void }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className={cn("grid gap-3", !stacked && "sm:grid-cols-2")}>
         {options.map((o) => (
           <motion.button
             key={o.role}

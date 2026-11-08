@@ -92,9 +92,12 @@ test.describe("explore", () => {
     await page.goto("/en/explore");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByRole("article").first()).toBeVisible();
-    await page.getByRole("searchbox", { name: "Search talent" }).fill("design");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
-    await expect(page).toHaveURL(/q=design/);
+    // Retry until hydrated: typing before hydration is reset by React.
+    await expect(async () => {
+      await page.getByRole("searchbox", { name: "Search talent" }).fill("design");
+      await page.getByRole("button", { name: "Search", exact: true }).click();
+      await expect(page).toHaveURL(/q=design/, { timeout: 3000 });
+    }).toPass({ timeout: 30_000 });
     await expect(page.getByRole("link", { name: "Kittipong Wongsa" })).toBeVisible();
     // Unknown filter keys in the URL are ignored (strict schema), never applied.
     await page.goto("/en/explore?disability=blind&gender=female");

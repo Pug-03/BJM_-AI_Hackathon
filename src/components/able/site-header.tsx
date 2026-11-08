@@ -5,6 +5,7 @@ import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { ThemeSwitch } from "./theme-switch";
 import { SiteMenu } from "./site-menu";
+import { JudgeModeDialog } from "@/components/judge/judge-mode-dialog";
 
 /** Marketing header for public pages. */
 export function SiteHeader() {
@@ -42,6 +43,8 @@ export function SiteHeader() {
               <LanguageSwitch />
               <ThemeSwitch />
             </div>
+            {/* Judges reach the demo from the top of every public page, no scrolling. */}
+            <JudgeModeDialog variant="header" />
             <Button asChild variant="ghost" size="sm">
               <Link href="/login">{tn("login")}</Link>
             </Button>

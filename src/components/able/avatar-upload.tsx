@@ -15,11 +15,15 @@ export function AvatarUpload({
   value,
   name,
   onChange,
+  uploadLabel,
+  changeLabel,
   size = "xl",
 }: {
   value: string | null;
   name: string;
   onChange: (url: string | null) => Promise<void> | void;
+  uploadLabel?: string;
+  changeLabel?: string;
   size?: "lg" | "xl";
 }) {
   const t = useTranslations("onboard");
@@ -65,7 +69,7 @@ export function AvatarUpload({
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="secondary" size="sm" onClick={() => inputRef.current?.click()}>
           <Camera aria-hidden />
-          {value ? t("photoChange") : t("photoUpload")}
+          {value ? (changeLabel ?? t("photoChange")) : (uploadLabel ?? t("photoUpload"))}
         </Button>
         {value ? (
           <Button type="button" variant="ghost" size="sm" onClick={() => void onChange(null)}>

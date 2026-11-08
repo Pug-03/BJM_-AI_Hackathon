@@ -8,6 +8,7 @@ import { LanguageSwitch } from "@/components/able/language-switch";
 import { ThemeSwitch } from "@/components/able/theme-switch";
 import { missingServices, services } from "@/lib/env";
 import { KeyNotice } from "@/components/able/key-notice";
+import { JudgeChoices } from "@/components/judge/judge-choices";
 import { getCurrentUser, homeFor } from "@/lib/session";
 
 export async function generateMetadata({
@@ -37,6 +38,7 @@ export default async function LoginPage({
   const user = await getCurrentUser();
   if (user) redirect({ href: safeNext(next) ?? homeFor(user), locale });
   const tb = await getTranslations("brand");
+  const tj = await getTranslations("judge");
 
   return (
     <div className="bg-mist flex min-h-dvh flex-col">
@@ -54,12 +56,27 @@ export default async function LoginPage({
         tabIndex={-1}
         className="flex flex-1 items-start justify-center px-4 pt-4 pb-16 focus:outline-none sm:items-center sm:pt-0 sm:pb-[10vh]"
       >
-        <LoginCard
-          googleEnabled={services.google()}
-          devOtpInLog={process.env.NODE_ENV !== "production" && !services.email()}
-          available={services.database()}
-          next={safeNext(next)}
-        />
+        <div className="flex w-full max-w-[440px] flex-col gap-6">
+          <LoginCard
+            googleEnabled={services.google()}
+            devOtpInLog={process.env.NODE_ENV !== "production" && !services.email()}
+            available={services.database()}
+            next={safeNext(next)}
+          />
+          {/* Judge mode right on the sign-in page (owner request): no sign-up, no scrolling. */}
+          <section
+            aria-labelledby="judge-login"
+            className="border-line bg-paper flex flex-col gap-4 rounded-[20px] border p-6"
+          >
+            <div className="flex flex-col gap-1">
+              <h2 id="judge-login" className="text-h3">
+                {tj("loginTitle")}
+              </h2>
+              <p className="text-small text-graphite">{tj("loginBody")}</p>
+            </div>
+            <JudgeChoices stacked />
+          </section>
+        </div>
       </main>
       <KeyNotice missing={missingServices()} />
     </div>

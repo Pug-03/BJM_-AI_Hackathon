@@ -1,13 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import {
-  ArrowRight,
-  BadgeCheck,
-  ExternalLink,
-  Languages,
-  LockKeyhole,
-  MessagesSquare,
-  Sparkles,
-} from "lucide-react";
+import { BadgeCheck, ExternalLink, Languages, LockKeyhole, MessagesSquare, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Accordion } from "@/components/ui/accordion";
@@ -31,7 +23,7 @@ function SectionHead({
 }) {
   return (
     <div className="flex max-w-[640px] flex-col gap-3">
-      {eyebrow ? <p className="text-small text-brand font-medium">{eyebrow}</p> : null}
+      {eyebrow ? <p className="text-small text-graphite font-medium">{eyebrow}</p> : null}
       <h2 id={id} className="text-h1 tracking-display">
         {title}
       </h2>
@@ -142,10 +134,7 @@ export async function LandingSections() {
                 size="lg"
                 className="bg-paper text-ink dark:bg-ink dark:text-paper hover:opacity-90"
               >
-                <Link href="/employer/quota">
-                  {t("quota.cta")}
-                  <ArrowRight aria-hidden />
-                </Link>
+                <Link href="/employer/quota">{t("quota.cta")}</Link>
               </Button>
               <Button
                 asChild

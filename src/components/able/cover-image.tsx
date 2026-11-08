@@ -85,7 +85,7 @@ export function CoverImage({
         />
       ) : null}
       {editable ? (
-        <div className="absolute right-3 bottom-3 flex flex-wrap items-center justify-end gap-2">
+        <div className="absolute top-3 right-3 flex flex-wrap items-center justify-end gap-2 sm:top-auto sm:bottom-3">
           {moving ? (
             <>
               <span

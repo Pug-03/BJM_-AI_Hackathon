@@ -188,3 +188,22 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 - Accessibility: in the cookie banner, "Choose" moves focus to the analytics switch, and closing returns focus to the opener or `#main`.
 - Performance: bundled sample covers are inlined as SVG (`CoverArt`), so they're never the LCP image. Re-measured: explore 100, org 100.
 | 9 | ✓ | ✓ | 50/50 | ✓ | 151/152 + rerun 8/8 (case-sensitive selector fixed) | quota, notifications, built-vs-planned — no overflow | Review flow tested end to end across two browsers (offer → accept → one review → notification); admin 404 for non-admins; likes/comments |
+
+| 8 | 2 | 7 | 7.5 | 7 | 7 | 6.5 | 7.5 | 6.5 | 7.5 | 6.5 | 6 | 6.9 | 136/136 | 0 (loop 1 scan, unchanged code paths) | explore 100, org 100 after CoverArt |
+
+**Loop 2 fixes:**
+- The cover controls no longer collide with the avatar on mobile.
+- Quota placeholder copy, and a plainer levy note.
+- Employer onboarding says "Upload logo".
+- Brand-coloured eyebrows are now graphite, and the arrow on the CTA is gone.
+
+**Owner request (mid-loop):**
+- Judge mode is now reachable without scrolling: a "Judge mode" button in every public header, and a "Judging ABLE?" panel with both choices on the sign-in page.
+- Readability for low-vision users: secondary text is now 15px and captions 14px. All routes were re-shot with no overflow.
+
+**Remaining issues (logged honestly, to address in the final loop):**
+- No photographic sample content. We must not invent real people's photos, so avatars are initials.
+- Sample data is English inside the Thai UI.
+- The employer feed is a single column on wide screens.
+- The mic capsule cross-fades instead of truly morphing into the text.
+- A few consistency items (the position of the Sample pill, Follow labels on mobile).

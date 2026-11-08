@@ -422,7 +422,12 @@
   "errors": {
     "notFoundTitle": "We can’t find that page",
     "notFoundBody": "It may have moved, or the link may be wrong.",
-    "home": "Go to the home page"
+    "home": "Go to the home page",
+    "errorCode": "Error",
+    "errorTitle": "Something went wrong",
+    "errorBody": "It’s not you — something broke on our side. Please try again.",
+    "errorRef": "Reference: {id}",
+    "tryAgain": "Try again"
   },
   "judge": {
     "button": "Judge mode",
@@ -446,7 +451,9 @@
     "bannerShort": "Judge mode",
     "toEmployer": "Switch to employer",
     "toTalent": "Switch to talent",
-    "reassure": "No sign-up needed. Your demo accounts are private to this browser and reset every 24 hours."
+    "reassure": "No sign-up needed. Your demo accounts are private to this browser and reset every 24 hours.",
+    "loginTitle": "Judging ABLE?",
+    "loginBody": "Try it right now with sample data — no sign-up. Nothing you do affects real people."
   },
   "footer": {
     "rights": "© 2026 ABLE",
@@ -916,7 +923,9 @@
     "cancel": "Cancel",
     "close": "Close",
     "noNeeds": "No positions yet",
-    "noNeedsBody": "Add a position to start getting matched talent."
+    "noNeedsBody": "Add a position to start getting matched talent.",
+    "logoUpload": "Upload logo",
+    "logoChange": "Change logo"
   },
   "filters": {
     "title": "Filters",
@@ -1393,13 +1402,14 @@
     "required": "Required under Section 33",
     "gap": "Still to hire",
     "levyEstimate": "Estimated Section 34 contribution if the gap isn’t filled: {amount} THB per year (from the configured rate — check with the authority).",
-    "levyUnset": "The Section 34 contribution rate isn’t configured here. Check the current amount with the authority.",
+    "levyUnset": "Section 34 contribution amounts change yearly. Check the current rate with the department.",
     "otherTitle": "Other ways to meet the law",
     "s34": "Section 34: organizations that don’t hire enough people contribute to the Empowerment of Persons with Disabilities Fund instead.",
     "s35": "Section 35: organizations can instead provide concessions, such as space to sell goods, job training, or contracted work.",
     "verify": "This page is a guide, not legal advice. Rules and amounts change — confirm with the department before deciding.",
     "source": "Department of Empowerment of Persons with Disabilities",
-    "cta": "Find matched talent"
+    "cta": "Find matched talent",
+    "enterHeadcount": "Enter your headcount"
   },
   "social": {
     "likes": "{count, plural, =0 {Like} one {# like} other {# likes}}",
