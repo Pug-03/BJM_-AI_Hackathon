@@ -17,7 +17,7 @@ export const sampleOrgEmail = (key: string) => `org-${key}@${SAMPLE_DOMAIN}`;
 
 /** A provided photo in public/sample/people/<key>.(jpg|png|webp) wins over the illustration. */
 function sampleAvatar(key: string): string {
-  for (const ext of ["jpg", "jpeg", "png", "webp"]) {
+  for (const ext of ["webp", "jpg", "jpeg", "png"]) {
     try {
       if (fs.existsSync(path.join(process.cwd(), "public", "sample", "people", `${key}.${ext}`)))
         return `/sample/people/${key}.${ext}`;

@@ -18,7 +18,8 @@
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "prepare": "husky || true",
-    "qa:quick": "QA_QUICK=1 ABLE_E2E_OTP=424242 playwright test --project=screens"
+    "qa:quick": "QA_QUICK=1 ABLE_E2E_OTP=424242 playwright test --project=screens",
+    "people:ai": "node scripts/gen-people-ai.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

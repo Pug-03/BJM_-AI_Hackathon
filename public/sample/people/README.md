@@ -9,3 +9,10 @@ mali · kittipong · ananya · somchai · nok · daniel · preeya · wichai · l
 
 e.g. `mali.jpg`. Then run `pnpm db:seed`; profiles switch to the photo automatically. Any person
 without a photo keeps the illustrated avatar.
+
+## Generate AI faces automatically
+
+    OPENAI_API_KEY=sk-... pnpm people:ai
+
+This creates `<key>.webp` for every sample person (photorealistic, fictional — not real people) with
+OpenAI's image model, then run `pnpm db:seed`.
