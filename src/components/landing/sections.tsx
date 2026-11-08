@@ -84,7 +84,7 @@ export async function LandingSections() {
               {t("speak.languages")}
             </p>
           </div>
-          <Reveal dir="right" delay={0.1}>
+          <Reveal delay={0.1}>
             <SpeakDemo />
           </Reveal>
         </div>

@@ -313,3 +313,10 @@ html {
   opacity: 1 !important;
   transform: none !important;
 }
+
+/* Safety net: nothing (e.g. an element mid-animation) can make the page scroll sideways.
+   `clip` (not `hidden`) keeps sticky headers working. */
+html,
+body {
+  overflow-x: clip;
+}
