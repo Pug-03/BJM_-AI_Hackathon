@@ -23,6 +23,7 @@ import {
   availabilities,
   certKinds,
   contactKinds,
+  disabilityTypes,
   educationLevels,
   visibilities,
   workModes,
@@ -81,6 +82,10 @@ export interface BuilderData {
   isPublic: boolean;
   consentAi: boolean;
   consentWorkSetup: boolean;
+  disabilityTypes: string[];
+  disabilityNote: string;
+  disabilityVisibility: string;
+  consentDisability: boolean;
   email: string;
 }
 
@@ -244,6 +249,10 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
       isPublic: d.isPublic,
       consentAi: d.consentAi,
       consentWorkSetup: d.consentWorkSetup,
+      disabilityTypes: d.disabilityTypes,
+      disabilityNote: d.disabilityNote,
+      disabilityVisibility: d.disabilityVisibility,
+      consentDisability: d.consentDisability,
     },
     savePrivacy,
     created,
@@ -298,6 +307,10 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
           isPublic: d.isPublic,
           consentAi: d.consentAi,
           consentWorkSetup: d.consentWorkSetup,
+          disabilityTypes: d.disabilityTypes,
+          disabilityNote: d.disabilityNote,
+          disabilityVisibility: d.disabilityVisibility,
+          consentDisability: d.consentDisability,
         })
       ).ok;
     return true;
@@ -1344,6 +1357,65 @@ function StepContact({ d, set, onAiConsent }: StepProps & { onAiConsent: (v: boo
             />
           )}
         </Field>
+      </section>
+
+      <section
+        aria-labelledby="ob-dis-title"
+        className="border-line bg-raised flex flex-col gap-4 rounded-[20px] border p-5"
+      >
+        <div className="flex flex-col gap-1">
+          <h2 id="ob-dis-title" className="text-h3">
+            {t("disabilityTitle")}{" "}
+            <span className="text-caption text-graphite font-normal">({t("optional")})</span>
+          </h2>
+          <p className="measure text-small text-graphite flex gap-2">
+            <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
+            {t("disabilityHint")}
+          </p>
+        </div>
+        <label className="text-small flex items-start gap-3">
+          <Checkbox
+            checked={d.consentDisability}
+            onCheckedChange={(v) => set("consentDisability", v === true)}
+          />
+          <span>{t("consentDisability")}</span>
+        </label>
+        <fieldset disabled={!d.consentDisability} className="flex flex-col gap-4 disabled:opacity-60">
+          <ToggleChips
+            legend={t("disabilityTypes")}
+            name="ob-dis"
+            options={disabilityTypes}
+            value={d.disabilityTypes as (typeof disabilityTypes)[number][]}
+            onChange={(v) => set("disabilityTypes", v)}
+            multiple
+            label={(v) => te(`disability.${v}`)}
+          />
+          <Field id="ob-dis-note" label={t("disabilityNote")} optionalLabel={t("optional")}>
+            {(a) => (
+              <Textarea
+                {...a}
+                rows={2}
+                maxLength={300}
+                placeholder={t("disabilityNotePlaceholder")}
+                value={d.disabilityNote}
+                onChange={(e) => set("disabilityNote", e.target.value)}
+              />
+            )}
+          </Field>
+          <Field id="ob-dis-vis" label={t("disabilityVisibility")} hint={t("disabilityVisibilityHint")}>
+            {(a) => (
+              <Select
+                {...a}
+                value={d.disabilityVisibility}
+                onValueChange={(v) => set("disabilityVisibility", v)}
+                options={(["HIDDEN", "CHAT_ONLY", "PUBLIC"] as const).map((v) => ({
+                  value: v,
+                  label: t(`disabilityVis.${v}`),
+                }))}
+              />
+            )}
+          </Field>
+        </fieldset>
       </section>
 
       <section className="flex flex-col gap-4">

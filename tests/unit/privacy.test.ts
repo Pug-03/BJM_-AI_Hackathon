@@ -120,3 +120,34 @@ describe("talent privacy", () => {
     expect(canViewProfile(priv, owner)).toBe(true);
   });
 });
+
+describe("disability information (sensitive, PDPA s.26)", () => {
+  const withDis = { ...base, disabilityTypes: ["VISION"], disabilityNote: "Uses a screen reader", disabilityVisibility: "HIDDEN", disabilityCardVerifiedAt: new Date() };
+
+  it("hidden by default from everyone but the owner", () => {
+    for (const v of [anon, employer, chatting]) {
+      const out = serializeTalentForViewer(withDis, v);
+      expect(out.disability).toBeNull();
+      expect(JSON.stringify(out)).not.toContain("screen reader");
+    }
+    expect(serializeTalentForViewer(withDis, owner).disability?.types).toEqual(["VISION"]);
+  });
+
+  it("CHAT_ONLY shows it only to employers in a conversation", () => {
+    const p = { ...withDis, disabilityVisibility: "CHAT_ONLY" };
+    expect(serializeTalentForViewer(p, employer).disability).toBeNull();
+    expect(serializeTalentForViewer(p, chatting).disability?.note).toBe("Uses a screen reader");
+  });
+
+  it("PUBLIC shows it to everyone; the owner also sees the visibility setting", () => {
+    const p = { ...withDis, disabilityVisibility: "PUBLIC" };
+    expect(serializeTalentForViewer(p, anon).disability?.cardVerified).toBe(true);
+    expect(serializeTalentForViewer(p, anon).disability).not.toHaveProperty("visibility");
+    expect(serializeTalentForViewer(p, owner).disability?.visibility).toBe("PUBLIC");
+  });
+
+  it("identity verification raises the badge to tier 3", () => {
+    expect(serializeTalentForViewer({ ...base, identityVerifiedAt: new Date() }, anon).verifyTier).toBe(3);
+    expect(serializeTalentForViewer({ ...base, verifyTier: 3 }, anon).verifyTier).toBeLessThanOrEqual(2);
+  });
+});

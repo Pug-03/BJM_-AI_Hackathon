@@ -15,6 +15,83 @@ const ago = (days: number, hours = 0) => new Date(Date.now() - days * day - hour
 export const sampleTalentEmail = (key: string) => `talent-${key}@${SAMPLE_DOMAIN}`;
 export const sampleOrgEmail = (key: string) => `org-${key}@${SAMPLE_DOMAIN}`;
 
+/** Sample self-described disability info and verifications (fictional, labelled Sample). */
+const sampleTrust: Record<
+  string,
+  {
+    types: string[];
+    note: string;
+    vis: "HIDDEN" | "CHAT_ONLY" | "PUBLIC";
+    identity?: boolean;
+    card?: boolean;
+  }
+> = {
+  mali: {
+    types: ["VISION"],
+    note: "I use a screen reader (NVDA) and prefer written instructions.",
+    vis: "CHAT_ONLY",
+    identity: true,
+    card: true,
+  },
+  kittipong: {
+    types: ["HEARING"],
+    note: "Hard of hearing — chat and video with captions work best.",
+    vis: "PUBLIC",
+    identity: true,
+  },
+  somchai: {
+    types: ["MOBILITY"],
+    note: "Wheelchair user; remote or step-free office.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+  wichai: {
+    types: ["VISION"],
+    note: "Blind; I test with VoiceOver and NVDA every day.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+  nok: {
+    types: ["AUTISM"],
+    note: "Clear briefs and quiet focus time help me do my best work.",
+    vis: "CHAT_ONLY",
+  },
+  preeya: {
+    types: ["HEARING"],
+    note: "Deaf; Thai Sign Language is my first language.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+  siriporn: {
+    types: ["CHRONIC"],
+    note: "Flexible hours help on treatment days.",
+    vis: "HIDDEN",
+    identity: true,
+  },
+  "judge-talent": {
+    types: ["VISION"],
+    note: "Low vision — I use a screen magnifier and work best remotely.",
+    vis: "PUBLIC",
+    identity: true,
+    card: true,
+  },
+};
+function trustData(key: string) {
+  const d = sampleTrust[key];
+  if (!d) return {};
+  return {
+    disabilityTypes: d.types,
+    disabilityNote: d.note,
+    disabilityVisibility: d.vis,
+    identityVerifiedAt: d.identity ? new Date() : null,
+    disabilityCardVerifiedAt: d.card ? new Date() : null,
+    ...(d.identity ? { verifyTier: 3 } : {}),
+  };
+}
+
 /** A provided photo in public/sample/people/<key>.(jpg|png|webp) wins over the illustration. */
 function sampleAvatar(key: string): string {
   for (const ext of ["webp", "jpg", "jpeg", "png"]) {
@@ -47,6 +124,10 @@ async function upsertTalent(
   });
   const avatarUrl = sampleAvatar(t.key);
   const existing = await db.talentProfile.findUnique({ where: { userId: user.id } });
+  if (existing && existing.disabilityTypes.length === 0 && sampleTrust[t.key]) {
+    // Backfill sample trust data on older seeds.
+    await db.talentProfile.update({ where: { id: existing.id }, data: trustData(t.key) });
+  }
   if (existing) {
     // Backfill the illustrated avatar on older seeds (never overwrites a photo someone uploaded).
     // Backfill, or upgrade an illustrated avatar to a provided photo (never touches real uploads).
@@ -70,6 +151,7 @@ async function upsertTalent(
       displayName: t.displayName,
       coverUrl: `/sample/cover-${t.cover}.svg`,
       avatarUrl,
+      ...trustData(t.key),
       headline: t.headline,
       bio: t.bio,
       dob: new Date(`${t.dobYear}-06-15`),

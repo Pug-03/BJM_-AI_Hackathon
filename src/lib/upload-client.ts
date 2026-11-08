@@ -45,7 +45,7 @@ export async function cropToWebp(
 export type UploadErr = "too_large" | "bad_type" | "unavailable" | "rate_limited" | "auth" | "failed";
 
 export async function uploadFile(
-  bucket: "avatars" | "covers" | "posts" | "certificates" | "chat",
+  bucket: "avatars" | "covers" | "posts" | "certificates" | "chat" | "verification",
   file: Blob,
   opts: { conversationId?: string; name?: string } = {},
 ): Promise<{ ok: true; url: string } | { ok: false; error: UploadErr }> {

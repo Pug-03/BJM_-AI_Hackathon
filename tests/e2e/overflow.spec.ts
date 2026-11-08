@@ -18,3 +18,17 @@ test.describe("no horizontal scroll with motion on", () => {
     });
   }
 });
+
+test("header pill stays clickable after scrolling (desktop and phone)", async ({ browser, baseURL }) => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 393, height: 852 }]) {
+    const ctx = await browser.newContext({ viewport });
+    await ctx.addCookies([{ name: "able-cookies", value: "necessary", url: baseURL! }]);
+    const page = await ctx.newPage();
+    await page.goto("/en");
+    await page.mouse.wheel(0, 1500);
+    await page.waitForTimeout(700);
+    await page.getByRole("banner").getByRole("link", { name: "Log in" }).click();
+    await expect(page).toHaveURL(/\/en\/login/);
+    await ctx.close();
+  }
+});

@@ -11,9 +11,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  * - Local development without Supabase keys: files go to `.uploads/` and are served by
  *   /api/files (private buckets still require an authorized request).
  */
-export const buckets = ["avatars", "covers", "posts", "certificates", "chat"] as const;
+export const buckets = ["avatars", "covers", "posts", "certificates", "chat", "verification"] as const;
 export type Bucket = (typeof buckets)[number];
-export const privateBuckets: Bucket[] = ["certificates", "chat"];
+export const privateBuckets: Bucket[] = ["certificates", "chat", "verification"];
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
@@ -22,6 +22,8 @@ const allowed: Record<Bucket, string[]> = {
   covers: ["image/webp", "image/jpeg", "image/png"],
   posts: ["image/webp", "image/jpeg", "image/png"],
   certificates: ["image/webp", "image/jpeg", "image/png", "application/pdf"],
+  // ID card / selfie / disability card: reviewed by an admin, then deleted.
+  verification: ["image/webp", "image/jpeg", "image/png", "application/pdf"],
   chat: [
     "image/webp",
     "image/jpeg",

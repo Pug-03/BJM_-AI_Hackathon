@@ -83,7 +83,7 @@
     "identity": "Identity verified",
     "emailDetail": "This person confirmed they own their email address.",
     "orgDetail": "ABLE checked this organization’s registration number with official records.",
-    "identityDetail": "Government ID check. Coming next — ABLE doesn’t collect ID numbers yet.",
+    "identityDetail": "ID card and a selfie were checked by the ABLE team. The documents were deleted after review.",
     "legend": "What the badge means",
     "badgeLabel": "Verified: {tier}"
   },
@@ -278,7 +278,9 @@
         "title": "Help is one tap away",
         "body": "Organizations are verified. Block or report anyone, anytime, and download or delete your data whenever you like."
       }
-    }
+    },
+    "voiceSignupTitle": "Sign up by voice",
+    "voiceSignupBody": "Tap the mic, say who you are and what you do in Thai or English — AI fills in your profile. You just check it."
   },
   "styleguide": {
     "title": "ABLE design system",
@@ -623,6 +625,18 @@
       "STEP_FREE": "Step-free access",
       "SIGN_LANGUAGE": "Sign-language-friendly communication",
       "OTHER": "Other support on request"
+    },
+    "disability": {
+      "VISION": "Vision",
+      "HEARING": "Hearing",
+      "MOBILITY": "Mobility / physical",
+      "LEARNING": "Learning",
+      "INTELLECTUAL": "Intellectual",
+      "PSYCHOSOCIAL": "Psychosocial / mental health",
+      "AUTISM": "Autism",
+      "SPEECH": "Speech",
+      "CHRONIC": "Chronic condition",
+      "OTHER": "Other"
     }
   },
   "countries": {
@@ -745,7 +759,20 @@
     "fixErrors": "Please fix the highlighted fields.",
     "doneTitle": "Your profile is ready",
     "doneBody": "Employers can now find you. You can add more any time.",
-    "viewProfile": "View my profile"
+    "viewProfile": "View my profile",
+    "disabilityTitle": "Disability",
+    "disabilityHint": "Only if you want to. It helps employers prepare the right setup. It's never used to filter or rank you, and you choose who can see it.",
+    "consentDisability": "I agree that ABLE stores this disability information (sensitive personal data) to show it as I choose. I can delete it anytime.",
+    "disabilityTypes": "Type (choose any)",
+    "disabilityNote": "In your own words",
+    "disabilityNotePlaceholder": "e.g. I use a screen reader and work best with written instructions.",
+    "disabilityVisibility": "Who can see this",
+    "disabilityVisibilityHint": "You can change this anytime.",
+    "disabilityVis": {
+      "HIDDEN": "Only me",
+      "CHAT_ONLY": "Employers I'm chatting with",
+      "PUBLIC": "Everyone who sees my profile"
+    }
   },
   "profile": {
     "followers": "{count, plural, one {# follower} other {# followers}}",
@@ -820,7 +847,16 @@
       "post": "Share your first post"
     },
     "prevImage": "Previous image",
-    "nextImage": "Next image"
+    "nextImage": "Next image",
+    "verifications": "Verifications",
+    "identityVerified": "Identity verified",
+    "disabilityCardVerified": "Disability card verified",
+    "aboutDisability": "Disability (shared by them)",
+    "disabilityVisibleTo": {
+      "HIDDEN": "visible only to you",
+      "CHAT_ONLY": "visible to employers you chat with",
+      "PUBLIC": "visible to everyone"
+    }
   },
   "ai": {
     "consentTitle": "Use AI to help fill this in?",
@@ -1271,7 +1307,9 @@
         },
         {
           "h": "Your choice",
-          "p": ["You can change your choice at any time with the “Cookie settings” link in the footer."]
+          "p": [
+            "You can change your choice at any time with the “Cookie settings” link in the footer."
+          ]
         }
       ]
     },
@@ -1281,7 +1319,9 @@
       "sections": [
         {
           "h": "See and correct",
-          "p": ["Everything you entered is visible and editable in your profile and Settings."]
+          "p": [
+            "Everything you entered is visible and editable in your profile and Settings."
+          ]
         },
         {
           "h": "Download",
@@ -1309,7 +1349,9 @@
         },
         {
           "h": "Complain",
-          "p": ["You can complain to the Personal Data Protection Committee (PDPC), Thailand."]
+          "p": [
+            "You can complain to the Personal Data Protection Committee (PDPC), Thailand."
+          ]
         }
       ]
     },
@@ -1409,7 +1451,8 @@
       "TERMS_PRIVACY": "Terms and privacy",
       "AI_PROCESSING": "AI help",
       "WORK_SETUP": "Work setup note",
-      "EMAIL_NOTIFICATIONS": "Email notifications"
+      "EMAIL_NOTIFICATIONS": "Email notifications",
+      "DISABILITY_INFO": "Disability information"
     },
     "data": "Your data",
     "dataBody": "Download a copy or delete everything.",
@@ -1487,7 +1530,8 @@
       "REVIEW": "{name} left you a review",
       "COMMENT": "{name} commented on your post",
       "LIKE": "{name} liked your post",
-      "VERIFIED": "Your organization is now verified"
+      "VERIFIED": "You're verified",
+      "VERIFY_REJECTED": "Your verification needs another try"
     }
   },
   "admin": {
@@ -1510,7 +1554,16 @@
     "reportedBy": "Reported by {name}",
     "noneReports": "No open reports.",
     "suspended": "Suspended accounts ({count})",
-    "noneSuspended": "No suspended accounts."
+    "noneSuspended": "No suspended accounts.",
+    "verifyQueue": "Identity and disability card checks ({count})",
+    "verifyNote": "Documents are deleted automatically when you approve or reject.",
+    "verifyKind": {
+      "IDENTITY": "Identity",
+      "DISABILITY_CARD": "Disability card"
+    },
+    "viewDoc": "Document {n}",
+    "rejectReason": "Reason if rejecting (sent to the person)",
+    "noneVerify": "No checks waiting."
   },
   "built": {
     "title": "Built vs planned",
@@ -1531,14 +1584,56 @@
       "Reviews after an accepted offer, likes and comments",
       "Privacy controls, consent records, data export and account deletion",
       "Section 33 quota calculator",
-      "Judge mode with sample data, English and Thai, light and dark"
+      "Judge mode with sample data, English and Thai, light and dark",
+      "Identity and disability-card verification (blue check), documents deleted after review"
     ],
     "planned": [
-      "Identity verification (Tier 3, government ID) — Phase 2; ABLE collects no ID numbers today",
       "Native mobile apps (the web app is installable now)",
       "Job boards import and calendar scheduling for interviews",
       "Sign-language video profiles",
       "More languages beyond English and Thai"
     ]
+  },
+  "verify": {
+    "title": "Get verified",
+    "intro": "A blue check tells employers you're a real person. Optional, free, and reviewed by our team.",
+    "privacy": "Your documents are stored privately and deleted as soon as we've reviewed them. We keep only the result and the date — never your ID number.",
+    "IDENTITY": {
+      "title": "Identity verified (blue check)",
+      "body": "A photo of your ID card and a selfie holding it."
+    },
+    "DISABILITY_CARD": {
+      "title": "Disability card verified",
+      "body": "A photo of your disability ID card. Employers can count you toward Section 33."
+    },
+    "state": {
+      "NONE": "Not started",
+      "PENDING": "In review",
+      "APPROVED": "Verified",
+      "REJECTED": "Not approved"
+    },
+    "slot": {
+      "idCard": "ID card (front)",
+      "selfie": "Selfie holding your ID card",
+      "disabilityCard": "Disability ID card"
+    },
+    "slotHint": {
+      "idCard": "Photo or PDF, all four corners visible",
+      "selfie": "Face and card both clear",
+      "disabilityCard": "Photo or PDF, name and card number visible"
+    },
+    "uploaded": "Uploaded",
+    "remove": "Remove file",
+    "submit": "Send for review",
+    "submitted": "Sent. We'll review it soon.",
+    "rejectedReason": "Reason: {reason}. You can try again.",
+    "errors": {
+      "invalid": "Something's missing. Please check your files.",
+      "need_two": "Please add both your ID card and a selfie.",
+      "pending": "A request is already in review.",
+      "rate_limited": "Too many attempts today. Please try again tomorrow.",
+      "no_profile": "Create your profile first.",
+      "auth": "Please sign in again."
+    }
   }
 }

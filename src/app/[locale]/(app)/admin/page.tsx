@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
-import { OrgReview, ReportActions, RestoreUser } from "@/components/admin/admin-actions";
+import { OrgReview, ReportActions, RestoreUser, VerificationReview } from "@/components/admin/admin-actions";
+import { resolveUrl } from "@/lib/storage";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 
@@ -16,7 +17,12 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   const t = await getTranslations("admin");
   const te = await getTranslations("enums");
   const fmt = await getFormatter();
-  const [orgs, reports, suspended] = await Promise.all([
+  const [verifs, orgs, reports, suspended] = await Promise.all([
+    db.verificationRequest.findMany({
+      where: { status: "PENDING" },
+      orderBy: { createdAt: "asc" },
+      take: 50,
+    }),
     db.orgProfile.findMany({
       where: { verifyRequestedAt: { not: null }, verifyTier: { lt: 2 } },
       orderBy: { verifyRequestedAt: "asc" },
@@ -36,6 +42,14 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
       select: { id: true, name: true, email: true, suspendedAt: true },
     }),
   ]);
+  const verifUsers = new Map(
+    (
+      await db.user.findMany({
+        where: { id: { in: verifs.map((v) => v.userId) } },
+        select: { id: true, name: true, email: true },
+      })
+    ).map((u) => [u.id, u]),
+  );
   const ids = [...new Set(reports.flatMap((r) => [r.reporterUserId, r.targetUserId]))];
   const people = new Map(
     (
@@ -50,6 +64,48 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   return (
     <div className="mx-auto flex w-full max-w-[880px] flex-col gap-12">
       <h1 className="text-h1 tracking-display">{t("title")}</h1>
+      <section aria-labelledby="a-verify" className="flex flex-col gap-4">
+        <h2 id="a-verify" className="text-h3">
+          {t("verifyQueue", { count: verifs.length })}
+        </h2>
+        <p className="text-caption text-graphite">{t("verifyNote")}</p>
+        {verifs.length ? (
+          <ul className="flex flex-col gap-3">
+            {await Promise.all(
+              verifs.map(async (v) => {
+                const who = verifUsers.get(v.userId);
+                const links = await Promise.all(v.files.map((f) => resolveUrl(f)));
+                return (
+                  <li key={v.id} className={card}>
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <p className="font-medium">
+                        {who?.name ?? who?.email} · {t(`verifyKind.${v.kind as "IDENTITY"}`)}
+                      </p>
+                      <p className="text-small flex flex-wrap gap-3">
+                        {links.map((href, i) => (
+                          <a
+                            key={i}
+                            href={href}
+                            target="_blank"
+                            rel="noopener"
+                            className="text-brand underline underline-offset-4"
+                          >
+                            {t("viewDoc", { n: i + 1 })}
+                          </a>
+                        ))}
+                      </p>
+                      <p className="text-caption text-graphite">{fmt.relativeTime(v.createdAt)}</p>
+                    </div>
+                    <VerificationReview requestId={v.id} />
+                  </li>
+                );
+              }),
+            )}
+          </ul>
+        ) : (
+          <p className="text-small text-graphite">{t("noneVerify")}</p>
+        )}
+      </section>
       <section aria-labelledby="a-orgs" className="flex flex-col gap-4">
         <h2 id="a-orgs" className="text-h3">
           {t("verifications", { count: orgs.length })}

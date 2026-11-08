@@ -4,6 +4,8 @@ import * as React from "react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { motion } from "motion/react";
 import {
+  BadgeCheck,
+  IdCard,
   Briefcase,
   ExternalLink,
   FileText,
@@ -227,6 +229,22 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
             <p className="text-small text-graphite">
               @{p.handle} · {t("followers", { count: followers })}
             </p>
+            {p.identityVerified || p.disability?.cardVerified ? (
+              <ul className="mt-1 flex flex-wrap gap-2" aria-label={t("verifications")}>
+                {p.identityVerified ? (
+                  <li className="text-caption inline-flex items-center gap-1 rounded-full bg-[#1D9BF0]/10 px-2.5 py-1 font-medium text-[#0B6BB0] dark:text-[#7CC4F7]">
+                    <BadgeCheck className="size-3.5" aria-hidden />
+                    {t("identityVerified")}
+                  </li>
+                ) : null}
+                {p.disability?.cardVerified ? (
+                  <li className="text-caption inline-flex items-center gap-1 rounded-full bg-[#1D9BF0]/10 px-2.5 py-1 font-medium text-[#0B6BB0] dark:text-[#7CC4F7]">
+                    <IdCard className="size-3.5" aria-hidden />
+                    {t("disabilityCardVerified")}
+                  </li>
+                ) : null}
+              </ul>
+            ) : null}
           </motion.div>
           {p.headline ? (
             <motion.p variants={variantsFor(staggerItem, reduced)} className="text-body font-medium">
@@ -590,6 +608,34 @@ export function ProfileView({ data }: { data: TalentProfileData }) {
             </TabPanel>
             <TabPanel value="about">
               <dl className="flex flex-col gap-6">
+                {p.disability && (p.disability.types.length || p.disability.note) ? (
+                  <div>
+                    <dt className="text-small mb-2 flex flex-wrap items-center gap-2 font-semibold">
+                      {t("aboutDisability")}
+                      {owner && p.disability.visibility ? (
+                        <span className="text-caption text-graphite font-normal">
+                          · {t(`disabilityVisibleTo.${p.disability.visibility as "HIDDEN"}`)}
+                        </span>
+                      ) : null}
+                    </dt>
+                    <dd className="flex flex-col gap-2">
+                      {p.disability.types.length ? (
+                        <ul className="flex flex-wrap gap-2">
+                          {p.disability.types.map((d) => (
+                            <li key={d} className="bg-mist text-small rounded-full px-3 py-1">
+                              {te(`disability.${d as "VISION"}`)}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                      {p.disability.note ? (
+                        <p className="measure text-small text-graphite whitespace-pre-line">
+                          {p.disability.note}
+                        </p>
+                      ) : null}
+                    </dd>
+                  </div>
+                ) : null}
                 {p.bio ? (
                   <div>
                     <dt className="text-small mb-1 font-semibold">{t("aboutBio")}</dt>

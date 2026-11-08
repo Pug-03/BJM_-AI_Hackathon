@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toaster";
 import { resolveReport, reviewOrg, setSuspended } from "@/server/admin";
+import { reviewVerification } from "@/server/verification";
 
 function useAct() {
   const t = useTranslations("admin");
@@ -107,5 +108,48 @@ export function RestoreUser({ userId }: { userId: string }) {
     >
       {t("restore")}
     </Button>
+  );
+}
+
+export function VerificationReview({ requestId }: { requestId: string }) {
+  const { t, done, busy, run } = useAct();
+  const [reason, setReason] = React.useState("");
+  if (done)
+    return (
+      <p className="text-small text-graphite" role="status">
+        {done}
+      </p>
+    );
+  return (
+    <div className="flex flex-col gap-2 sm:items-end">
+      <div className="flex gap-2">
+        <Button
+          size="sm"
+          loading={busy}
+          onClick={() => void run(() => reviewVerification(requestId, true), t("approved"))}
+        >
+          {t("approve")}
+        </Button>
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={busy}
+          onClick={() => void run(() => reviewVerification(requestId, false, reason), t("rejected"))}
+        >
+          {t("reject")}
+        </Button>
+      </div>
+      <label className="sr-only" htmlFor={`rr-${requestId}`}>
+        {t("rejectReason")}
+      </label>
+      <input
+        id={`rr-${requestId}`}
+        value={reason}
+        onChange={(e) => setReason(e.target.value)}
+        placeholder={t("rejectReason")}
+        maxLength={300}
+        className="border-field-line text-small h-10 w-full rounded-full border px-4 sm:w-64"
+      />
+    </div>
   );
 }

@@ -16,7 +16,8 @@ export type NotifyKind =
   | "REVIEW"
   | "COMMENT"
   | "LIKE"
-  | "VERIFIED";
+  | "VERIFIED"
+  | "VERIFY_REJECTED";
 
 const COPY: Partial<Record<NotifyKind, { en: [string, string]; th: [string, string] }>> = {
   MESSAGE: {

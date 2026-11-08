@@ -120,9 +120,27 @@ export const contactSchema = z.object({
   visibility: z.enum(visibilities),
 });
 
+/** Self-described, optional categories (sensitive data; never a filter or ranking input). */
+export const disabilityTypes = [
+  "VISION",
+  "HEARING",
+  "MOBILITY",
+  "LEARNING",
+  "INTELLECTUAL",
+  "PSYCHOSOCIAL",
+  "AUTISM",
+  "SPEECH",
+  "CHRONIC",
+  "OTHER",
+] as const;
+
 export const privacySchema = z.object({
   contacts: z.array(contactSchema).max(contactKinds.length),
   workSetupNeeds: optText(500),
+  disabilityTypes: z.array(z.enum(disabilityTypes)).max(disabilityTypes.length).default([]),
+  disabilityNote: optText(300),
+  disabilityVisibility: z.enum(visibilities).default("HIDDEN"),
+  consentDisability: z.boolean().default(false),
   isPublic: z.boolean(),
   consentAi: z.boolean(),
   consentWorkSetup: z.boolean(),

@@ -12,6 +12,8 @@ import { toast } from "@/components/ui/toaster";
 import { LanguageSwitch } from "@/components/able/language-switch";
 import { useTheme } from "next-themes";
 import { useAi } from "@/components/ai/ai-provider";
+import { VerificationPanel } from "./verification-panel";
+import type { VerificationStatus } from "@/server/verification";
 import { deleteAccount, savePrefs, setConsent, setProfileVisibility, updateName } from "@/server/settings";
 
 export interface SettingsData {
@@ -89,8 +91,15 @@ function Section({
   );
 }
 
-export function SettingsView({ d }: { d: SettingsData }) {
+export function SettingsView({
+  d,
+  verification,
+}: {
+  d: SettingsData;
+  verification?: VerificationStatus[] | null;
+}) {
   const t = useTranslations("settings");
+  const tv = useTranslations("verify");
   const locale = useLocale();
   const ai = useAi();
   const [name, setName] = React.useState(d.name);
@@ -149,6 +158,12 @@ export function SettingsView({ d }: { d: SettingsData }) {
           <p className="text-small text-graphite">{d.google ? t("googleConnected") : t("emailCode")}</p>
         </div>
       </Section>
+
+      {verification ? (
+        <Section id="s-verify" title={tv("title")} body={tv("intro")}>
+          <VerificationPanel initial={verification} />
+        </Section>
+      ) : null}
 
       <Section id="s-display" title={t("display")}>
         <div className="flex items-center justify-between gap-6 py-3">

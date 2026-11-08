@@ -80,6 +80,10 @@ export default async function TalentOnboarding({ params }: { params: Promise<{ l
     isPublic: p?.isPublic ?? true,
     consentAi: latest("AI_PROCESSING"),
     consentWorkSetup: latest("WORK_SETUP"),
+    disabilityTypes: p?.disabilityTypes ?? [],
+    disabilityNote: p?.disabilityNote ?? "",
+    disabilityVisibility: p?.disabilityVisibility ?? "HIDDEN",
+    consentDisability: latest("DISABILITY_INFO"),
     email: user.email,
   };
 

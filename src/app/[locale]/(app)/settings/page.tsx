@@ -4,6 +4,7 @@ import { redirect } from "@/i18n/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { SettingsView } from "@/components/settings/settings-view";
+import { myVerifications } from "@/server/verification";
 
 export async function generateMetadata({
   params,
@@ -40,6 +41,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
         <p className="text-graphite">{t("intro")}</p>
       </header>
       <SettingsView
+        verification={talent ? await myVerifications() : null}
         d={{
           name: user.name ?? "",
           email: user.email,

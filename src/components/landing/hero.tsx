@@ -28,7 +28,27 @@ export function Hero() {
         <p className="measure text-h3 text-graphite animate-[able-rise-fade_320ms_var(--ease-smooth)_60ms_both] font-normal">
           {t("subline")}
         </p>
-        <div className="mt-2 flex animate-[able-rise-fade_320ms_var(--ease-smooth)_240ms_both] flex-col gap-3 sm:flex-row">
+        {/* Voice sign-up callout: the standout feature, right where people decide to join. */}
+        <a
+          href="#speak"
+          className="bg-brand-soft/60 hover:bg-brand-soft group flex animate-[able-rise-fade_320ms_var(--ease-smooth)_160ms_both] items-center gap-4 rounded-[20px] p-4 transition-colors"
+        >
+          <span className="relative flex size-12 shrink-0 items-center justify-center">
+            <span
+              aria-hidden
+              className="bg-brand/25 absolute inset-0 rounded-full motion-safe:animate-ping"
+            />
+            <span className="bg-brand relative flex size-12 items-center justify-center rounded-full text-white">
+              <Mic className="size-6 stroke-[1.75]" aria-hidden />
+            </span>
+          </span>
+          <span className="flex min-w-0 flex-col">
+            <span className="text-ink font-semibold">{t("voiceSignupTitle")}</span>
+            <span className="text-small text-graphite">{t("voiceSignupBody")}</span>
+          </span>
+        </a>
+        {/* On phones these move to the sticky bottom bar. */}
+        <div className="mt-2 flex animate-[able-rise-fade_320ms_var(--ease-smooth)_240ms_both] flex-col gap-3 max-md:hidden sm:flex-row">
           <Button asChild size="lg">
             <Link href="/login">{t("ctaPrimary")}</Link>
           </Button>
@@ -55,7 +75,8 @@ export function Hero() {
           ))}
         </ul>
       </div>
-      <div className="min-w-0 animate-[able-rise_320ms_var(--ease-smooth)_120ms_both]">
+      {/* Phones: the example profile leads (decorative, aria-hidden), the headline follows. */}
+      <div className="min-w-0 animate-[able-rise_320ms_var(--ease-smooth)_120ms_both] max-lg:order-first">
         <Parallax>
           <HeroMock />
         </Parallax>
@@ -69,12 +90,12 @@ function HeroMock() {
   const reduced = useReducedMotion();
   const skills = [t("mockSkill1"), t("mockSkill2"), t("mockSkill3")];
   const micRef = React.useRef<HTMLDivElement>(null);
-  const inView = useInView(micRef, { amount: 0.6 });
+  const inView = useInView(micRef, { once: true, amount: 0.6 });
   // Mic demo (section 4.1's one bold moment): listening → filled. Starts when the field is on screen.
   const [phase, setPhase] = React.useState<"idle" | "listening" | "filled">("idle");
   React.useEffect(() => {
     if (reduced) return setPhase("filled");
-    if (!inView) return setPhase("idle");
+    if (!inView) return;
     const a = setTimeout(() => setPhase("listening"), 400);
     const b = setTimeout(() => setPhase("filled"), 2800);
     return () => {
@@ -96,9 +117,9 @@ function HeroMock() {
           {/* Decorative cover as CSS (not an <img>), so the headline text is the page's LCP element. */}
           <div
             aria-hidden
-            className="bg-mist h-24 w-full bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--line)_44px_68px)] sm:h-28"
+            className="bg-mist h-14 w-full sm:h-28 bg-[repeating-linear-gradient(115deg,transparent_0_44px,var(--line)_44px_68px)]"
           />
-          <div className="flex flex-col gap-4 px-6 pb-6">
+          <div className="flex flex-col gap-3 px-5 pb-5 sm:gap-4 sm:px-6 sm:pb-6">
             {/* AI-generated photo of a fictional person (not a real individual). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -106,7 +127,7 @@ function HeroMock() {
               alt=""
               width={72}
               height={72}
-              className="border-raised bg-avatar -mt-9 size-[72px] rounded-full border-4"
+              className="border-raised bg-avatar -mt-8 size-14 rounded-full border-4 sm:-mt-9 sm:size-[72px]"
             />
             <div className="flex flex-col gap-1">
               <p className="text-h3 flex items-center gap-2">
@@ -125,7 +146,7 @@ function HeroMock() {
                 </span>
               ))}
             </div>
-            <p className="text-small text-graphite flex items-center gap-2">
+            <p className="text-small text-graphite flex items-center gap-2 max-sm:hidden">
               <Star className="text-star size-4" fill="currentColor" strokeWidth={0} />
               <span className="text-ink font-medium">{t("mockRating")}</span>
             </p>
@@ -136,7 +157,11 @@ function HeroMock() {
               <motion.p
                 initial={false}
                 animate={{ opacity: phase === "filled" ? 1 : 0, x: phase === "filled" ? 0 : 8 }}
-                transition={{ duration: durations.base, ease: easeSmooth }}
+                transition={{
+                  duration: durations.base,
+                  ease: easeSmooth,
+                  delay: phase === "filled" ? 0.22 : 0,
+                }}
                 className="text-small text-ink"
               >
                 {t("mockFilled")}
@@ -145,16 +170,16 @@ function HeroMock() {
                 {phase === "listening" ? (
                   <motion.div
                     key="capsule"
-                    className="absolute inset-y-2 right-2 left-2 flex items-center"
+                    className="absolute inset-1 z-[1] flex items-center"
                     exit={{ opacity: 0 }}
                     transition={{ duration: durations.base }}
                   >
                     {/* Background expands from the mic (origin right); content fades in after, never squashed. */}
                     <motion.span
-                      className="bg-brand-soft absolute inset-0 rounded-full"
+                      className="absolute inset-0 rounded-[11px] bg-[color-mix(in_srgb,var(--brand-soft)_100%,var(--paper))]"
                       // Grows out of the mic as a pill (clip-path keeps the round end caps; no squash).
-                      initial={{ clipPath: "inset(0 0 0 calc(100% - 48px) round 999px)" }}
-                      animate={{ clipPath: "inset(0 0 0 0px round 999px)" }}
+                      initial={{ clipPath: "inset(0 0 0 calc(100% - 48px) round 11px)" }}
+                      animate={{ clipPath: "inset(0 0 0 0px round 11px)" }}
                       transition={{ duration: durations.slow, ease: easeSmooth }}
                     />
                     <motion.span
@@ -198,7 +223,7 @@ function HeroMock() {
         </div>
 
         {/* Employer message */}
-        <div className="ml-auto flex max-w-[86%] flex-col gap-2">
+        <div className="ml-auto flex max-w-[86%] flex-col gap-2 max-sm:hidden">
           <p className="text-caption text-graphite flex justify-between gap-2 px-1">
             <span>{t("mockFrom")}</span>
             <span>{t("mockJustNow")}</span>

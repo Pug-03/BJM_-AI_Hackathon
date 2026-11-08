@@ -23,7 +23,7 @@ const laptop = (x, y, screen) => `<g transform="translate(${x} ${y})"><rect x="-
 
 const scenes = [
   // 1 chat support (headset)
-  { bg: "#E9EEF2", p: { skin: skins[1], hair: hairs[0], style: "long", top: "#6E6A8F", headset: true }, screen: [0,1,2,3].map(k=>`<rect x="${k%2?-20:-124}" y="${-146+k*38}" width="140" height="26" rx="13" fill="${k%2?"#7C4DFF":"#ECEBF3"}"/>`).join("") },
+  { bg: "#E9EEF2", p: { skin: skins[1], hair: hairs[0], style: "long", top: "#6E6A8F", headset: true }, screen: [0,1,2,3].map(k=>`<rect x="${k%2?-20:-124}" y="${-146+k*38}" width="140" height="26" rx="13" fill="${k%2?"#1E40AF":"#ECEBF3"}"/>`).join("") },
   // 2 packaging design
   { bg: "#F2ECE6", p: { skin: skins[2], hair: hairs[0], style: "short", top: "#5B6B7A" }, screen: `<rect x="-60" y="-146" width="120" height="140" rx="10" fill="#D9822B"/><rect x="-36" y="-110" width="72" height="44" rx="6" fill="#FFF1E0"/>` },
   // 3 poster

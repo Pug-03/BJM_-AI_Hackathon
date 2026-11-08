@@ -4,7 +4,7 @@ import fs from "fs";
 fs.mkdirSync("public/sample", { recursive: true });
 
 const palettes = [
-  ["#EDE7FF", "#C9B8FF", "#6D28FF", "#17151C"],
+  ["#EDE7FF", "#B9C8EE", "#1E40AF", "#17151C"],
   ["#E6F4EA", "#A7D7B5", "#2F7D4F", "#14281C"],
   ["#FFF1E0", "#FFD1A1", "#D9822B", "#2B1A0A"],
   ["#E5F0FB", "#A9CBEF", "#2D6CB5", "#0E1E33"],
@@ -56,7 +56,7 @@ for (let i = 1; i <= 10; i++) {
 
 // Certificate placeholder (clearly labelled sample).
 fs.writeFileSync("public/sample/certificate.svg",
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 566"><rect width="800" height="566" fill="#FBFAFD"/><rect x="24" y="24" width="752" height="518" fill="none" stroke="#C9B8FF" stroke-width="4"/><text x="400" y="190" text-anchor="middle" font-family="system-ui,sans-serif" font-size="40" font-weight="600" fill="#17151C">Certificate</text><text x="400" y="250" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#5C5866">Sample document for demo purposes</text><circle cx="400" cy="380" r="48" fill="#F0EAFF"/><path d="M380 380 l14 14 l28 -28" stroke="#6D28FF" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 566"><rect width="800" height="566" fill="#FBFAFD"/><rect x="24" y="24" width="752" height="518" fill="none" stroke="#B9C8EE" stroke-width="4"/><text x="400" y="190" text-anchor="middle" font-family="system-ui,sans-serif" font-size="40" font-weight="600" fill="#17151C">Certificate</text><text x="400" y="250" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#5C5866">Sample document for demo purposes</text><circle cx="400" cy="380" r="48" fill="#E8EEFB"/><path d="M380 380 l14 14 l28 -28" stroke="#1E40AF" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
 console.log("sample art written");
 
 // Neutral hero covers (light + dark) — the hero keeps violet for the mic only.

@@ -5,7 +5,7 @@ import { BadgeCheck, Building2, IdCard, Mail } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-/** Tier 1 email, Tier 2 organization, Tier 3 identity (Phase 2 — never awarded in this MVP). */
+/** Tier 1 email, Tier 2 organization, Tier 3 identity (ID card + selfie reviewed by an admin). */
 export function VerifiedBadge({
   tier,
   className,
@@ -16,8 +16,8 @@ export function VerifiedBadge({
   size?: number;
 }) {
   const t = useTranslations("verified");
-  const level = Math.max(1, Math.min(2, tier));
-  const name = level === 2 ? t("org") : t("email");
+  const level = Math.max(1, Math.min(3, tier));
+  const name = level === 3 ? t("identity") : level === 2 ? t("org") : t("email");
   const rows = [
     { key: "email", icon: Mail, title: t("email"), detail: t("emailDetail"), on: level >= 1, next: false },
     { key: "org", icon: Building2, title: t("org"), detail: t("orgDetail"), on: level >= 2, next: false },
@@ -26,8 +26,8 @@ export function VerifiedBadge({
       icon: IdCard,
       title: t("identity"),
       detail: t("identityDetail"),
-      on: false,
-      next: true,
+      on: level >= 3,
+      next: false,
     },
   ];
   return (
@@ -41,7 +41,18 @@ export function VerifiedBadge({
             className,
           )}
         >
-          <BadgeCheck style={{ width: size, height: size }} strokeWidth={2} aria-hidden />
+          {level === 3 ? (
+            // Identity verified: filled blue check, like the familiar social-media badge.
+            <BadgeCheck
+              style={{ width: size, height: size }}
+              fill="#1D9BF0"
+              stroke="#FFFFFF"
+              strokeWidth={2}
+              aria-hidden
+            />
+          ) : (
+            <BadgeCheck style={{ width: size, height: size }} strokeWidth={2} aria-hidden />
+          )}
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80">

@@ -169,4 +169,11 @@ export function serializeTalentForViewer(p: RawTalentProfile, v: ViewerContext, 
 export type TalentView = ReturnType<typeof serializeTalentForViewer>;
 
 /** Keys that must never appear in a non-owner payload. */
-export const PRIVATE_TALENT_KEYS = ["dob", "gender", "workSetupNeeds", "registrationNo", "disabilityTypes", "disabilityNote"] as const;
+export const PRIVATE_TALENT_KEYS = [
+  "dob",
+  "gender",
+  "workSetupNeeds",
+  "registrationNo",
+  "disabilityTypes",
+  "disabilityNote",
+] as const;

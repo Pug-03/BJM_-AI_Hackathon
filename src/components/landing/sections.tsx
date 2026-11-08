@@ -111,7 +111,7 @@ export async function LandingSections() {
         </div>
       </section>
 
-      <section aria-labelledby="speak-title" className={`${section} bg-mist`}>
+      <section aria-labelledby="speak-title" id="speak" className={`${section} bg-mist scroll-mt-20`}>
         <div
           className={`${wrap} grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-2 lg:gap-16`}
         >

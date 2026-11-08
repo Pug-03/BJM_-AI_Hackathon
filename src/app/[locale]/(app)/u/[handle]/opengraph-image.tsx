@@ -57,7 +57,7 @@ export default async function OgImage({ params }: { params: Promise<{ handle: st
             justifyContent: "center",
           }}
         >
-          <div style={{ width: 14, height: 14, borderRadius: 999, background: "#7C4DFF" }} />
+          <div style={{ width: 14, height: 14, borderRadius: 999, background: "#1E40AF" }} />
         </div>
         ABLE
       </div>

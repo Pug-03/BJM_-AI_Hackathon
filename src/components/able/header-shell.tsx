@@ -36,7 +36,7 @@ export function HeaderShell({ children }: { children: React.ReactNode }) {
       >
         <div
           className={cn(
-            "ease-smooth mx-auto flex items-center gap-4 border transition-[max-width,height,padding,border-radius,background-color,border-color,box-shadow] duration-500",
+            "ease-smooth pointer-events-auto mx-auto flex items-center gap-4 border transition-[max-width,height,padding,border-radius,background-color,border-color,box-shadow] duration-500",
             scrolled
               ? "border-line bg-paper/85 shadow-float h-14 max-w-[1080px] rounded-full pr-2 pl-4 backdrop-blur-md md:pl-5"
               : "h-16 max-w-[1200px] rounded-none border-transparent px-4 md:px-8",

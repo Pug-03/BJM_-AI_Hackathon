@@ -254,3 +254,24 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - `seedSamples` picks them up automatically, falling back to the illustration.
 - One generated shirt carried an invented company logo. The crop removes it.
 - The hero example card uses the judge persona's photo.
+
+## Trust features, navy brand, formal logo, mobile landing (owner requests)
+
+- **Disability information:** optional and self-described. It is sensitive personal data under PDPA s.26.
+  - There are 10 categories plus a free-text note.
+  - Visibility is HIDDEN by default, or CHAT_ONLY, or PUBLIC.
+  - It is stored only with an explicit `DISABILITY_INFO` consent.
+  - It is never a filter or a ranking input; `talentFilterSchema` still rejects it.
+  - It is stripped server-side per visibility (unit tests).
+- **Verification:**
+  - "Identity verified" (ID card plus selfie) gives tier 3 and an IG-style filled blue check.
+  - "Disability card verified" is useful for Section 33.
+  - Uploads go to a private `verification` bucket. An admin reviews them in `/admin`, and the files are **deleted on decision**. Only the outcome and date are kept, never ID numbers.
+  - This replaces the earlier "Phase 2" note, at the owner's decision.
+- **Brand colour is navy** (`#1E40AF`; dark mode `#7EA2FF`), with peach as the warm accent.
+- **Logo:** a formal monogram. The "A" doubles as a roof, with a warm dot (a person) under it, on a navy rounded square.
+- **Mobile landing:**
+  - The example profile comes first.
+  - Sign-up and log-in sit in a sticky bottom bar.
+  - A "Sign up by voice" callout leads to the Speak-to-fill demo.
+- **Fixed:** the condensed header pill had lost `pointer-events-auto`, so nothing in it was clickable. A regression test now covers this.

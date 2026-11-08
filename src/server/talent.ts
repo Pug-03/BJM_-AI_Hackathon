@@ -265,13 +265,22 @@ export async function savePrivacy(input: unknown): Promise<ActionResult> {
   const d = parsed.data;
   // Work-setup text is stored only with its processing consent.
   const workSetupNeeds = d.consentWorkSetup ? (d.workSetupNeeds ?? null) : null;
+  // Disability info is sensitive (PDPA s.26): stored only with explicit consent.
+  const disability = d.consentDisability
+    ? {
+        disabilityTypes: d.disabilityTypes,
+        disabilityNote: d.disabilityNote ?? null,
+        disabilityVisibility: d.disabilityVisibility,
+      }
+    : { disabilityTypes: [], disabilityNote: null, disabilityVisibility: "HIDDEN" as const };
   await db.$transaction([
     db.contactChannel.deleteMany({ where: { talentId: id } }),
     db.contactChannel.createMany({ data: d.contacts.map((c) => ({ ...c, talentId: id })) }),
-    db.talentProfile.update({ where: { id }, data: { workSetupNeeds, isPublic: d.isPublic } }),
+    db.talentProfile.update({ where: { id }, data: { workSetupNeeds, isPublic: d.isPublic, ...disability } }),
   ]);
   await recordConsent(user.id, "AI_PROCESSING", d.consentAi);
   await recordConsent(user.id, "WORK_SETUP", d.consentWorkSetup);
+  await recordConsent(user.id, "DISABILITY_INFO", d.consentDisability);
   return { ok: true };
 }
 

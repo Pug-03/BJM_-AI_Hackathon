@@ -28,6 +28,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ pat
       });
       allowed = Boolean(convo);
     }
+    if (!allowed && bucket === "verification" && user?.role === "ADMIN") allowed = true;
     if (!allowed) return new NextResponse(null, { status: 403 });
   }
 

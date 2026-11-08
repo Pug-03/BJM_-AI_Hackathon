@@ -90,9 +90,9 @@ test.describe("social and trust", () => {
     await admin.close();
   });
 
-  test("built vs planned lists Phase 2 identity verification", async ({ page }) => {
+  test("built vs planned lists identity verification as built", async ({ page }) => {
     await page.goto("/en/built-vs-planned");
     await expect(page.getByRole("heading", { level: 1, name: "Built vs planned" })).toBeVisible();
-    await expect(page.getByText(/Identity verification \(Tier 3/)).toBeVisible();
+    await expect(page.getByText(/Identity and disability-card verification/)).toBeVisible();
   });
 });
