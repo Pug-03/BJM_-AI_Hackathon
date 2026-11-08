@@ -42,7 +42,7 @@ export default async function LoginPage({
 
   return (
     <div className="bg-mist flex min-h-dvh flex-col">
-      <header className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-4 md:px-8">
+      <header className="bg-mist/90 sticky top-0 z-40 mx-auto flex h-16 w-full items-center justify-between px-[max(1rem,calc((100%-1200px)/2+2rem))] backdrop-blur-md">
         <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
         </Link>

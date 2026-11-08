@@ -33,7 +33,7 @@ export async function PolicyPage({ locale, k }: { locale: string; k: PolicyKey }
         <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,720px)] lg:gap-16">
           <nav aria-label={t("contents")} className="hidden lg:block">
             <p className="text-small text-graphite mb-3 font-medium">{t("contents")}</p>
-            <ol className="text-small sticky top-8 flex flex-col gap-2">
+            <ol className="text-small sticky top-24 flex flex-col gap-2">
               {sections.map((s, i) => (
                 <li key={i}>
                   <a href={`#s${i + 1}`} className="text-graphite hover:text-ink">
@@ -54,7 +54,7 @@ export async function PolicyPage({ locale, k }: { locale: string; k: PolicyKey }
                 key={i}
                 id={`s${i + 1}`}
                 aria-labelledby={`s${i + 1}-h`}
-                className="flex scroll-mt-8 flex-col gap-3"
+                className="flex scroll-mt-24 flex-col gap-3"
               >
                 <h2 id={`s${i + 1}-h`} className="text-h2">
                   {s.h}

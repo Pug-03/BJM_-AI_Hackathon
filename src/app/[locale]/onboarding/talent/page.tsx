@@ -85,7 +85,7 @@ export default async function TalentOnboarding({ params }: { params: Promise<{ l
 
   return (
     <div className="bg-paper min-h-dvh">
-      <header className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4">
+      <header className="bg-paper/90 sticky top-0 z-40 flex h-16 items-center justify-between px-[max(1rem,calc((100%-48rem)/2+1rem))] backdrop-blur-md">
         <Link href="/" aria-label={tb("home")} className="flex min-h-11 items-center rounded-lg">
           <Logo />
         </Link>
