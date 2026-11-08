@@ -3,6 +3,8 @@
  * Pure functions over a PrismaClient — no `server-only`, no path aliases, so
  * tsx can run it from prisma/seed.ts.
  */
+import fs from "node:fs";
+import path from "node:path";
 import type { PrismaClient, Prisma } from "@prisma/client";
 import { sampleOrgs, sampleReviews, sampleTalent, type SampleTalent } from "./sample-data";
 
@@ -12,6 +14,18 @@ const ago = (days: number, hours = 0) => new Date(Date.now() - days * day - hour
 
 export const sampleTalentEmail = (key: string) => `talent-${key}@${SAMPLE_DOMAIN}`;
 export const sampleOrgEmail = (key: string) => `org-${key}@${SAMPLE_DOMAIN}`;
+
+/** A provided photo in public/sample/people/<key>.(jpg|png|webp) wins over the illustration. */
+function sampleAvatar(key: string): string {
+  for (const ext of ["jpg", "jpeg", "png", "webp"]) {
+    try {
+      if (fs.existsSync(path.join(process.cwd(), "public", "sample", "people", `${key}.${ext}`))) return `/sample/people/${key}.${ext}`;
+    } catch {
+      // ignore (e.g. read-only FS)
+    }
+  }
+  return `/sample/avatar-${key}.svg`;
+}
 
 async function upsertTalent(
   db: PrismaClient,
@@ -25,16 +39,17 @@ async function upsertTalent(
       email: opts.email,
       emailVerified: true,
       name: t.displayName,
-      image: `/sample/avatar-${t.key}.svg`,
+      image: sampleAvatar(t.key),
       role: "TALENT",
       isSandbox: opts.isSandbox,
     },
   });
-  const avatarUrl = `/sample/avatar-${t.key}.svg`;
+  const avatarUrl = sampleAvatar(t.key);
   const existing = await db.talentProfile.findUnique({ where: { userId: user.id } });
   if (existing) {
     // Backfill the illustrated avatar on older seeds (never overwrites a photo someone uploaded).
-    if (!existing.avatarUrl) {
+    // Backfill, or upgrade an illustrated avatar to a provided photo (never touches real uploads).
+    if (!existing.avatarUrl || (existing.avatarUrl.startsWith("/sample/") && existing.avatarUrl !== avatarUrl)) {
       const profile = await db.talentProfile.update({ where: { id: existing.id }, data: { avatarUrl } });
       await db.user.update({ where: { id: user.id }, data: { image: avatarUrl } });
       return { user, profile };
