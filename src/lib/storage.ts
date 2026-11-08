@@ -6,7 +6,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
  * File storage behind one small interface.
- * - Production: Supabase Storage (buckets: avatars, covers, posts, certificates, chat).
+ * - Production: Supabase Storage (buckets: avatars, covers, posts, certificates, chat, verification).
  *   `certificates` and `chat` are private and served through short-lived signed URLs.
  * - Local development without Supabase keys: files go to `.uploads/` and are served by
  *   /api/files (private buckets still require an authorized request).

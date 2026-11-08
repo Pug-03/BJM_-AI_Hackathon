@@ -11,9 +11,9 @@ These steps let someone else redeploy ABLE from scratch. Allow about 45 minutes.
    - Direct (port 5432) goes in `DIRECT_URL`.
 4. **Storage:** create the buckets.
    - Public: `avatars`, `covers`, `posts`.
-   - Private: `certificates`, `chat`.
+   - Private: `certificates`, `chat`, `verification` (identity and disability card uploads, deleted after review).
 
-   The app serves private files only through short-lived signed URLs created with the service role. Do not add public read policies to `certificates` or `chat`. Leave RLS on: the app never uses the anon key for storage.
+   The app serves private files only through short-lived signed URLs created with the service role. Do not add public read policies to `certificates`, `chat` or `verification`. Leave RLS on: the app never uses the anon key for storage.
 5. **Realtime:** nothing to configure. The app uses broadcast channels (`able-convo-*`, `able-user-*`) sent through the REST API with the service key.
 6. **Project Settings → API:** copy the URL, the `anon` key and the `service_role` key.
 
