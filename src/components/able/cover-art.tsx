@@ -29,8 +29,8 @@ export function CoverArt({ src, className, eager }: { src: string; className?: s
   const cls = cn("size-full object-cover dark:brightness-75 dark:saturate-75", className);
   if (svg)
     return <div aria-hidden className={cn(cls, "[&>svg]:block")} dangerouslySetInnerHTML={{ __html: svg }} />;
-  // eslint-disable-next-line @next/next/no-img-element
   return (
+    // eslint-disable-next-line @next/next/no-img-element -- user uploads (signed URLs), sizes vary
     <img
       src={src}
       alt=""

@@ -187,3 +187,4 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
   - Settings shows "Demo account" and a chevron on the consent history.
 - Accessibility: in the cookie banner, "Choose" moves focus to the analytics switch, and closing returns focus to the opener or `#main`.
 - Performance: bundled sample covers are inlined as SVG (`CoverArt`), so they're never the LCP image. Re-measured: explore 100, org 100.
+| 9 | ✓ | ✓ | 50/50 | ✓ | 151/152 + rerun 8/8 (case-sensitive selector fixed) | quota, notifications, built-vs-planned — no overflow | Review flow tested end to end across two browsers (offer → accept → one review → notification); admin 404 for non-admins; likes/comments |

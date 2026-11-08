@@ -157,3 +157,23 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
 - **The Section 33 calculator** (`/employer/quota`) is public; the landing page links to it.
   - `requiredHires` is unit-tested with the spec's values.
   - The levy is shown only when `QUOTA_LEVY_PER_PERSON_THB` is set.
+
+## Stage 9: Social and trust
+
+- **`notify()` (`src/lib/notify.ts`)** handles every notification.
+  - It always writes the in-app row and sends a realtime nudge.
+  - Messages and offers also get an email (Resend), unless the person turned that off in Settings or is a sandbox user.
+  - Message emails are throttled to one per 10 minutes. Emails never contain message text, only who and a link.
+- **Reviews:**
+  - Only an employer whose conversation includes an ACCEPTED offer can review, once per conversation (unique index plus a server check).
+  - 1–5 stars as a radio group, plus optional text.
+  - The talent's rating is recomputed.
+- **Likes and comments:**
+  - Counts are kept on the post.
+  - The comment author, the post owner or an admin can delete a comment.
+  - Comments are rate-limited (20 per 10 min).
+- **Admin (`/admin`):** returns 404 unless `role=ADMIN`. Admins are set by `ADMIN_EMAILS` at account creation.
+  - It handles organization verification (approve sets tier 2 and notifies), the reports queue, and suspend/restore.
+  - Suspension ends sessions; `getCurrentUser` already refuses suspended users.
+- **`/built-vs-planned`** is an honest status list. Tier 3 identity verification is Phase 2.
+- **The Section 33 calculator** is public and is described under Stage 8.
