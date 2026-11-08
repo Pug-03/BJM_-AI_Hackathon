@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 
 export type StartResult =
-  { ok: true; id: string } | { ok: false; error: "auth" | "not_found" | "blocked" | "role" };
+  { ok: true; id: string } | { ok: false; error: "auth" | "not_found" | "blocked" | "role" | "restricted" };
 
 /** Opens (or reuses) the one conversation between a talent and an employer. */
 export async function startConversation(otherUserId: string): Promise<StartResult> {
@@ -32,6 +32,22 @@ export async function startConversation(otherUserId: string): Promise<StartResul
     },
   });
   if (blocked) return { ok: false, error: "blocked" };
+  // "Who can message me: only verified organizations" (Settings) applies to new conversations.
+  const existing = await db.conversation.findUnique({
+    where: { talentUserId_employerUserId: pair },
+    select: { id: true },
+  });
+  if (!existing && me.role === "EMPLOYER") {
+    const [prefs, org] = await Promise.all([
+      db.notificationPrefs.findUnique({
+        where: { userId: pair.talentUserId },
+        select: { whoCanMessage: true },
+      }),
+      db.orgProfile.findUnique({ where: { userId: me.id }, select: { verifyTier: true } }),
+    ]);
+    if (prefs?.whoCanMessage === "VERIFIED_ORGS" && (org?.verifyTier ?? 1) < 2)
+      return { ok: false, error: "restricted" };
+  }
   const convo = await db.conversation.upsert({
     where: { talentUserId_employerUserId: pair },
     update: {},

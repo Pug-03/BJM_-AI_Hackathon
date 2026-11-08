@@ -8,7 +8,10 @@ export interface QaRoute {
 }
 
 export const routes: QaRoute[] = [
-  { path: "/", stage: 1, name: "landing" },
+  { path: "/", stage: 8, name: "landing" },
+  { path: "/privacy", stage: 8, name: "privacy" },
+  { path: "/settings", stage: 8, name: "settings", auth: "judge-talent" },
+  { path: "/employer/quota", stage: 8, name: "quota" },
   { path: "/explore", stage: 6, name: "explore" },
   { path: "/styleguide", stage: 1, name: "styleguide" },
   { path: "/login", stage: 2, name: "login" },

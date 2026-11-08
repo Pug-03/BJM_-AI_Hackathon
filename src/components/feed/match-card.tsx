@@ -91,10 +91,16 @@ export function MatchCard({
           </motion.span>
         </>
       ) : null}
-      <div className="bg-mist h-20 sm:h-24">
+      <div className="bg-mist h-16 sm:h-20">
         {c.cover ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={c.cover} alt="" loading="lazy" draggable={false} className="size-full object-cover" />
+          <img
+            src={c.cover}
+            alt=""
+            loading="lazy"
+            draggable={false}
+            className="size-full object-cover dark:brightness-75 dark:saturate-75"
+          />
         ) : null}
       </div>
       <div className="flex flex-col gap-4 px-5 pb-5">

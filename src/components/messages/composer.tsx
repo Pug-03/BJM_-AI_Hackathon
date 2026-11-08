@@ -4,6 +4,7 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import { AudioLines, FileText, HandCoins, ImagePlus, Plus, SendHorizontal, Trash2 } from "lucide-react";
 import { IconButton } from "@/components/ui/icon-button";
+import { Tooltip } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/toaster";
 import {
   DropdownMenu,
@@ -131,7 +132,7 @@ export function Composer({
 
   return (
     <div className="flex items-end gap-2">
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <IconButton aria-label={t("attach")} disabled={disabled || busy} aria-busy={busy || undefined}>
             <Plus aria-hidden />
@@ -203,7 +204,7 @@ export function Composer({
               sendText();
             }
           }}
-          className="border-field-line bg-paper text-body placeholder:text-muted focus-visible:outline-brand block max-h-40 min-h-12 w-full resize-none rounded-[24px] border py-3 pr-14 pl-4 leading-normal focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60"
+          className="border-field-line bg-paper text-body placeholder:text-muted focus-visible:outline-brand block max-h-40 min-h-12 w-full resize-none rounded-[24px] border py-3 pr-14 pl-4 leading-normal focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid disabled:opacity-60"
         />
         <MicButton
           kind="input"
@@ -217,17 +218,19 @@ export function Composer({
           <SendHorizontal aria-hidden />
         </IconButton>
       ) : (
-        <IconButton
-          variant="soft"
-          aria-label={t("recordVoice")}
-          disabled={disabled || busy}
-          onClick={async () => {
-            const err = await rec.start();
-            if (err) toast.error(t(`voiceErrors.${err}`));
-          }}
-        >
-          <AudioLines aria-hidden />
-        </IconButton>
+        <Tooltip content={t("recordVoice")}>
+          <IconButton
+            variant="soft"
+            aria-label={t("recordVoice")}
+            disabled={disabled || busy}
+            onClick={async () => {
+              const err = await rec.start();
+              if (err) toast.error(t(`voiceErrors.${err}`));
+            }}
+          >
+            <AudioLines aria-hidden />
+          </IconButton>
+        </Tooltip>
       )}
     </div>
   );

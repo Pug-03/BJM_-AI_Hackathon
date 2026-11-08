@@ -20,6 +20,7 @@ export async function signInFresh(ctx: BrowserContext, baseURL: string, prefix =
 
 /** Enters judge mode in this context (sandbox talent or employer). */
 export async function enterJudge(ctx: BrowserContext, baseURL: string, role: "talent" | "employer") {
+  await ctx.addCookies([{ name: "able-cookies", value: "necessary", url: baseURL }]);
   const page = await ctx.newPage();
   await page.goto(`${baseURL}/en/judge`);
   await page

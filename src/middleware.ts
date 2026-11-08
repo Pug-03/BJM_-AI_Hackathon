@@ -13,7 +13,6 @@ const PROTECTED = [
   "/messages",
   "/notifications",
   "/settings",
-  "/employer",
   "/welcome",
   "/onboarding",
   "/admin",

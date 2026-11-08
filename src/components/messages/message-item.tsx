@@ -103,10 +103,10 @@ export function MessageItem({
     </p>
   );
 
-  const wrap = (children: React.ReactNode, bare = false) => (
-    <div className={cn("flex flex-col", m.mine ? "items-end" : "items-start")}>
-      <div className={cn("max-w-[min(85%,520px)]", bare ? "" : "")}>{children}</div>
-      {meta}
+  const wrap = (children: React.ReactNode, withMeta = true) => (
+    <div className={cn("flex flex-col gap-1", m.mine ? "items-end" : "items-start")}>
+      <div className="max-w-[min(85%,520px)]">{children}</div>
+      {withMeta ? meta : null}
     </div>
   );
 
@@ -183,12 +183,13 @@ export function MessageItem({
         </a>
       ))}
       {audio ? <VoiceNote src={audio.src} durationMs={audio.durationMs} mine={m.mine} /> : null}
-      {m.text ? <TextBubble m={m} /> : null}
+      {m.text ? <TextBubble m={m} meta={meta} /> : null}
     </div>,
+    !m.text,
   );
 }
 
-function TextBubble({ m }: { m: UiMessage }) {
+function TextBubble({ m, meta }: { m: UiMessage; meta: React.ReactNode }) {
   const t = useTranslations("messages");
   const ta = useTranslations("ai");
   const ai = useAi();
@@ -212,7 +213,9 @@ function TextBubble({ m }: { m: UiMessage }) {
       <p
         className={cn(
           "text-body rounded-[20px] px-4 py-2.5 break-words whitespace-pre-wrap",
-          m.mine ? "bg-ink text-paper rounded-br-md" : "bg-mist text-ink rounded-bl-md",
+          m.mine
+            ? "bg-ink text-paper dark:bg-avatar dark:text-ink rounded-br-md"
+            : "bg-mist text-ink rounded-bl-md",
         )}
       >
         {m.text}
@@ -225,17 +228,20 @@ function TextBubble({ m }: { m: UiMessage }) {
           </p>
         </div>
       ) : null}
-      {!m.mine && !m.pending ? (
-        <button
-          type="button"
-          onClick={() => void translate()}
-          aria-busy={busy || undefined}
-          className="text-caption text-graphite hover:text-ink inline-flex min-h-8 items-center gap-1 rounded-full px-1"
-        >
-          <Languages className="size-3.5" aria-hidden />
-          {busy ? t("translating") : tr ? t("showOriginalOnly") : t("translate")}
-        </button>
-      ) : null}
+      <div className={cn("flex items-center gap-2", m.mine ? "flex-row-reverse" : "")}>
+        {meta}
+        {!m.mine && !m.pending ? (
+          <button
+            type="button"
+            onClick={() => void translate()}
+            aria-busy={busy || undefined}
+            className="text-caption text-graphite hover:text-ink inline-flex min-h-8 items-center gap-1 rounded-full px-1"
+          >
+            <Languages className="size-3.5" aria-hidden />
+            {busy ? t("translating") : tr ? t("showOriginalOnly") : t("translate")}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

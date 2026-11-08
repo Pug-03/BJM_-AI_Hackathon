@@ -4,6 +4,7 @@ import { JudgeModeDialog } from "@/components/judge/judge-mode-dialog";
 import { Logo } from "./logo";
 import { LanguageSwitch } from "./language-switch";
 import { SponsorStrip } from "./sponsor-strip";
+import { CookieSettingsLink } from "@/components/policy/cookie-banner";
 import { KeyNotice } from "./key-notice";
 import { missingServices } from "@/lib/env";
 
@@ -56,6 +57,9 @@ export function SiteFooter({ hideJudge = false }: { hideJudge?: boolean }) {
                 </Link>
               </li>
             ))}
+            <li>
+              <CookieSettingsLink className={linkCls}>{t("cookieSettings")}</CookieSettingsLink>
+            </li>
           </ul>
         </nav>
       </div>

@@ -114,7 +114,144 @@
     "mockSkill1": "Live chat",
     "mockSkill2": "Thai⁠–⁠English",
     "mockSkill3": "Excel",
-    "mockJustNow": "Just now"
+    "mockJustNow": "Just now",
+    "newTab": "(opens in a new tab)",
+    "ctaTitle": "Show what you can do.",
+    "ctaExplore": "Browse talent",
+    "thanks": "Thank you to our supporters for making ABLE possible.",
+    "paths": {
+      "title": "How it works",
+      "body": "Two simple paths — one for people looking for work, one for people hiring.",
+      "label": "How it works for",
+      "forTalent": "For talent",
+      "forEmployers": "For employers",
+      "step": "Step {n}:",
+      "talent": {
+        "s1": "Sign in",
+        "b1": "Use Google or your email — a 6-digit code, no password.",
+        "s2": "Build your profile",
+        "b2": "Speak or type. AI drafts the fields; you check each one.",
+        "s3": "Show your work",
+        "b3": "Add portfolio pieces, certificates and training.",
+        "s4": "Chat and interview",
+        "b4": "Message, call and agree terms with employers who reach out."
+      },
+      "employer": {
+        "s1": "Sign in",
+        "b1": "Set up your organization in a few minutes.",
+        "s2": "Say who you’re hiring",
+        "b2": "Add a position with the skills and setup you offer.",
+        "s3": "Browse your matches",
+        "b3": "A feed of people whose skills fit, with why each one matches.",
+        "s4": "Chat, call and agree",
+        "b4": "Talk by message, voice or video, and send an offer."
+      }
+    },
+    "speak": {
+      "eyebrow": "Speak to fill",
+      "title": "Say it. ABLE fills it in.",
+      "body": "Every text field has a mic. Or talk for a minute about your work, and AI splits what you said into your profile — for you to review before anything is saved.",
+      "languages": "Understands Thai and English.",
+      "demo": "Demo",
+      "listening": "Listening…",
+      "quote": "I’m Ploy, I studied accounting and I do customer support by chat…",
+      "f1": "Headline",
+      "v1": "Customer support specialist",
+      "f2": "Skills",
+      "v2": "Live chat · Excel · Thai–English",
+      "f3": "Education",
+      "v3": "Bachelor’s in accounting"
+    },
+    "why": {
+      "title": "Why ABLE",
+      "body": "Built so everyone can use it — and so disability is never a label, a filter or a price tag.",
+      "skills": {
+        "title": "Real skills first",
+        "body": "Profiles lead with what you can do: work, certificates, reviews. There’s no field or filter for disability."
+      },
+      "verified": {
+        "title": "Verified people and organizations",
+        "body": "Email checks for everyone, and organization checks before a badge shows."
+      },
+      "chat": {
+        "title": "Chat, voice and video built in",
+        "body": "Talk, share files and agree an offer without leaving ABLE. Pay is agreed between you."
+      },
+      "data": {
+        "title": "Your data, your choice",
+        "body": "You decide who sees each contact. Download or delete everything at any time."
+      }
+    },
+    "quota": {
+      "eyebrow": "For employers in Thailand",
+      "title": "Meet your Section 33 quota with people who fit.",
+      "body": "Organizations with 100 or more staff employ 1 person with a disability per 100 employees, plus 1 more when the remainder is over 50. Check your number in a minute.",
+      "source": "Source: Department of Empowerment of Persons with Disabilities",
+      "cta": "Open the calculator"
+    },
+    "howTo": {
+      "title": "How do I…?",
+      "body": "Short guides for the things people ask most.",
+      "profile": {
+        "q": "Create a profile",
+        "a": "Sign in, choose “I’m looking for work”, and follow the 5 steps. Everything saves as you go, so you can stop and come back."
+      },
+      "mic": {
+        "q": "Use the mic",
+        "a": "Tap the mic in any text field and speak in Thai or English. Tap stop, check the text, and keep or edit it. You can always type instead."
+      },
+      "certs": {
+        "q": "Add certificates",
+        "a": "In step 4, upload a PDF or photo of each certificate with the issuer and date. You choose whether each one is public."
+      },
+      "find": {
+        "q": "Find talent",
+        "a": "Add a position, then open your feed. Use filters for skills, location and work mode, and star the people you like."
+      },
+      "chat": {
+        "q": "Start a chat or call",
+        "a": "Tap Message on a profile or card. In the conversation, use the phone or camera buttons to call."
+      },
+      "delete": {
+        "q": "Delete my data",
+        "a": "Go to Settings → Your data. Download a copy first if you like, then delete your account by typing your handle."
+      }
+    },
+    "faq": {
+      "title": "Questions and answers",
+      "free": {
+        "q": "Is ABLE free?",
+        "a": "Yes. Creating a profile, matching and messaging are free for talent and employers."
+      },
+      "disclose": {
+        "q": "Do I have to say I have a disability?",
+        "a": "No. Nothing asks about disability. If you want, you can add a private “Work setup I need” note and share it only with an employer you choose."
+      },
+      "phone": {
+        "q": "Who can see my phone number?",
+        "a": "You decide for each contact: everyone, only employers you’re chatting with, or no one. The default is only employers you chat with."
+      },
+      "verified": {
+        "q": "How are employers verified?",
+        "a": "Every account verifies its email. Organizations can submit a registration number, which our team checks before showing the organization badge."
+      },
+      "ai": {
+        "q": "How does AI use my data?",
+        "a": "Only when you use a mic or AI button, or for matching. Voice recordings are deleted right after they’re turned into text. AI suggestions are always yours to accept or edit."
+      },
+      "phone2": {
+        "q": "Can I use it on my phone?",
+        "a": "Yes. ABLE works in any modern phone browser and with VoiceOver and TalkBack. You can add it to your home screen."
+      },
+      "languages": {
+        "q": "Which languages does ABLE support?",
+        "a": "English and Thai, including the mic. Messages can be translated between them."
+      },
+      "delete": {
+        "q": "How do I delete my account?",
+        "a": "Settings → Your data → Delete my account. Your personal data is removed straight away."
+      }
+    }
   },
   "styleguide": {
     "title": "ABLE design system",
@@ -206,7 +343,7 @@
     "emptyBody": "New profiles show up here as soon as people publish them.",
     "emptyAction": "Create your profile",
     "searchLabel": "Search talent",
-    "searchPlaceholder": "Search by name, skill or job title",
+    "searchPlaceholder": "Name, skill or job title",
     "search": "Search",
     "resultCount": "{count, plural, =0 {No people found} one {# person} other {# people}}",
     "noResults": "No one found",
@@ -325,7 +462,8 @@
     "login": "Log in",
     "calculator": "Section 33 calculator",
     "builtVsPlanned": "Roadmap",
-    "supportedBy": "Supported by"
+    "supportedBy": "Supported by",
+    "cookieSettings": "Cookie settings"
   },
   "feed": {
     "title": "Feed",
@@ -379,7 +517,8 @@
     "interestedEmpty": "When employers view or star your profile, they’ll show up here.",
     "skillsNeeded": "Skills needed",
     "youHaveThis": "you have this skill",
-    "setupOffered": "Workplace setup offered"
+    "setupOffered": "Workplace setup offered",
+    "showMorePositions": "Show more positions"
   },
   "enums": {
     "workMode": {
@@ -960,5 +1099,311 @@
       "FAKE": "Fake profile",
       "OTHER": "Something else"
     }
+  },
+  "policy": {
+    "updated": "Last updated: {date}",
+    "contents": "On this page",
+    "contact": "Questions? Email privacy@able.example (placeholder address for this prototype).",
+    "privacy": {
+      "title": "Privacy policy",
+      "lead": "What we collect, why, and the choices you have. Written in plain language.",
+      "sections": [
+        {
+          "h": "Who we are",
+          "p": [
+            "ABLE is a talent platform that connects people looking for work with employers. For this prototype, ABLE is the data controller. Contact: privacy@able.example."
+          ]
+        },
+        {
+          "h": "What we collect",
+          "p": [
+            "Account: your email, name and, if you sign in with Google, your Google profile name and photo.",
+            "Profile: what you choose to add — photo, headline, bio, skills, education, certificates, portfolio, posts and contact channels.",
+            "Private fields: date of birth, gender and the “Work setup I need” note. These are never shown publicly and never used to filter or rank you.",
+            "Activity: messages, offers, follows, stars and profile views, so the product works.",
+            "We never collect national ID numbers."
+          ]
+        },
+        {
+          "h": "Why we use it (legal basis)",
+          "p": [
+            "To provide the service you asked for (contract): your profile, matching, messages and calls.",
+            "With your consent: AI processing of your voice and text, the private work-setup note, and email notifications. You can withdraw consent at any time in Settings.",
+            "For legitimate interests: security, preventing abuse and keeping basic, anonymous usage counts."
+          ]
+        },
+        {
+          "h": "AI providers",
+          "p": [
+            "When you use a mic or an AI button, your audio or text goes to OpenAI (speech to text, matching embeddings) and Anthropic (writing help, match reasons, translation). They act as our processors and do not use it to train their models under their API terms.",
+            "Voice recordings sent for transcription are deleted right after they’re turned into text — we don’t store them.",
+            "Your public profile text is used to compute matches. Private fields are never sent."
+          ]
+        },
+        {
+          "h": "Who can see what",
+          "p": [
+            "Your public profile is visible to everyone unless you make it private. You choose the visibility of each contact channel: public, only employers you chat with, or hidden.",
+            "Registration numbers submitted by organizations are used only for verification."
+          ]
+        },
+        {
+          "h": "Other processors",
+          "p": [
+            "Hosting (Vercel), database and files (Supabase), email (Resend) and calls (Daily.co). Data may be processed outside Thailand with appropriate safeguards."
+          ]
+        },
+        {
+          "h": "How long we keep it",
+          "p": [
+            "As long as your account is open. When you delete your account, we delete your personal data straight away and keep only anonymous aggregate counts. Security logs without personal content are kept for up to 90 days."
+          ]
+        },
+        {
+          "h": "Your rights",
+          "p": [
+            "You can access, correct, download or delete your data, withdraw consent, and object to processing. See “Your data rights”. You can also complain to Thailand’s Personal Data Protection Committee (PDPC)."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "lead": "The simple rules for using ABLE.",
+      "sections": [
+        {
+          "h": "Using ABLE",
+          "p": [
+            "You must be at least 15 years old (or have a guardian’s permission) and give true information about yourself or your organization."
+          ]
+        },
+        {
+          "h": "Fair and respectful",
+          "p": [
+            "No discrimination, harassment, scams or requests for money to apply. Employers must not ask for, filter by, or pay less because of disability, gender, religion, ethnicity or age.",
+            "We may remove content or suspend accounts that break these rules."
+          ]
+        },
+        {
+          "h": "Offers and pay",
+          "p": [
+            "Offers sent in chat are messages, not contracts. Pay and terms are agreed directly between talent and employer. ABLE never suggests a rate."
+          ]
+        },
+        {
+          "h": "AI suggestions",
+          "p": [
+            "AI drafts and match reasons are suggestions. You are responsible for checking anything you publish."
+          ]
+        },
+        {
+          "h": "Your content",
+          "p": [
+            "You keep ownership of what you post. You give ABLE permission to show it as you choose in your settings, only to run the service."
+          ]
+        },
+        {
+          "h": "Prototype",
+          "p": [
+            "ABLE is a hackathon prototype. It is provided as is, without guarantees of availability. Sample profiles are fictional and labelled “Sample”."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookies",
+      "lead": "ABLE uses only the cookies it needs to work.",
+      "sections": [
+        {
+          "h": "Necessary cookies",
+          "p": [
+            "Sign-in session (keeps you signed in, secure and httpOnly), language, theme, your cookie choice, and judge-mode sandbox id. These can’t be turned off because the site can’t work without them."
+          ]
+        },
+        {
+          "h": "Analytics and ads",
+          "p": [
+            "None. ABLE doesn’t load analytics or advertising scripts. If that ever changes, they will stay off until you accept them."
+          ]
+        },
+        {
+          "h": "Your choice",
+          "p": [
+            "You can change your choice at any time with the “Cookie settings” link in the footer."
+          ]
+        }
+      ]
+    },
+    "dataRights": {
+      "title": "Your data rights",
+      "lead": "Under Thailand’s PDPA (B.E. 2562) and GDPR-style principles.",
+      "sections": [
+        {
+          "h": "See and correct",
+          "p": [
+            "Everything you entered is visible and editable in your profile and Settings."
+          ]
+        },
+        {
+          "h": "Download",
+          "p": [
+            "Settings → Your data → Download my data gives you a ZIP with a JSON file of your data and your uploaded files."
+          ]
+        },
+        {
+          "h": "Delete",
+          "p": [
+            "Settings → Your data → Delete my account removes your personal data immediately, including conversations you were part of."
+          ]
+        },
+        {
+          "h": "Withdraw consent",
+          "p": [
+            "Turn AI processing, the work-setup note or email notifications off in Settings at any time. Withdrawing doesn’t affect what was done before."
+          ]
+        },
+        {
+          "h": "Object or restrict",
+          "p": [
+            "Make your profile private, hide contacts, or block people. For anything else, email privacy@able.example."
+          ]
+        },
+        {
+          "h": "Complain",
+          "p": [
+            "You can complain to the Personal Data Protection Committee (PDPC), Thailand."
+          ]
+        }
+      ]
+    },
+    "accessibility": {
+      "title": "Accessibility statement",
+      "lead": "ABLE is built to be usable by everyone, with the tools you already use.",
+      "sections": [
+        {
+          "h": "Our approach",
+          "p": [
+            "Instead of special “modes”, the site itself is built to work with screen readers (VoiceOver, TalkBack, NVDA), keyboard, zoom up to 200%, large system text, reduced motion and dark mode."
+          ]
+        },
+        {
+          "h": "What we test",
+          "p": [
+            "Automated checks (axe) on every page, keyboard walkthroughs, and layouts from 320px phones to large desktops. We aim for WCAG 2.1 level AA."
+          ]
+        },
+        {
+          "h": "Voice and text",
+          "p": [
+            "Every mic has a typing alternative, voice notes can be shown as text, and messages can be translated between Thai and English."
+          ]
+        },
+        {
+          "h": "Known limits",
+          "p": [
+            "Video calls use Daily.co’s interface, which we don’t control. Some sample images have short descriptions only."
+          ]
+        },
+        {
+          "h": "Tell us",
+          "p": [
+            "If something doesn’t work for you, email accessibility@able.example (placeholder). We read every message."
+          ]
+        }
+      ]
+    },
+    "cookieBanner": {
+      "title": "Cookies on ABLE",
+      "body": "We only use necessary cookies to keep you signed in and remember your language and theme. No analytics or ads.",
+      "accept": "Accept all",
+      "reject": "Reject optional",
+      "choose": "Choose",
+      "save": "Save choices",
+      "necessary": "Necessary",
+      "necessaryNote": "Always on — needed for sign-in and settings.",
+      "analytics": "Analytics",
+      "analyticsNote": "Not used by ABLE today. Stays off unless you turn it on.",
+      "more": "Read the cookie policy",
+      "settings": "Cookie settings"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "intro": "Your account, privacy and data.",
+    "saved": "Saved",
+    "failed": "Couldn’t save. Please try again.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "account": "Account",
+    "name": "Name",
+    "email": "Email",
+    "signIn": "Sign-in method",
+    "googleConnected": "Google account connected",
+    "emailCode": "Email with a 6-digit code",
+    "display": "Language and theme",
+    "language": "Language",
+    "theme": "Theme",
+    "privacy": "Privacy and visibility",
+    "privacyBody": "Control who sees your profile and who can reach you.",
+    "profilePublic": "Public profile",
+    "profilePublicHint": "Off: only employers you’re already chatting with can see your profile.",
+    "showAge": "Show my age on my profile",
+    "showAgeHint": "Your date of birth itself is never shown.",
+    "whoCanMessage": "Who can message me",
+    "everyone": "Any employer",
+    "verifiedOrgs": "Only verified organizations",
+    "contactsNote": "Visibility for each contact channel is set in your profile builder, step 5.",
+    "showViewing": "Let talent see that we viewed their profile",
+    "showViewingHint": "Shown on their feed as “Viewed your profile”.",
+    "notifications": "Notifications",
+    "notificationsBody": "In-app notifications are always on. Choose your emails.",
+    "emailMessages": "Email me about new messages",
+    "emailOffers": "Email me about offers",
+    "consents": "AI and consent",
+    "consentsBody": "You can change these at any time. Changes are recorded with the date.",
+    "aiConsent": "AI help (voice and writing)",
+    "aiConsentHint": "Sends your voice or text to OpenAI and Anthropic only when you use a mic or AI button.",
+    "workSetupConsent": "Keep my “Work setup I need” note",
+    "workSetupConsentHint": "Turning this off deletes the note and stops sharing it.",
+    "history": "Consent history",
+    "granted": "given",
+    "withdrawn": "withdrawn",
+    "kinds": {
+      "TERMS_PRIVACY": "Terms and privacy",
+      "AI_PROCESSING": "AI help",
+      "WORK_SETUP": "Work setup note",
+      "EMAIL_NOTIFICATIONS": "Email notifications"
+    },
+    "data": "Your data",
+    "dataBody": "Download a copy or delete everything.",
+    "download": "Download my data",
+    "downloadHint": "A ZIP with your data as JSON and the files you uploaded.",
+    "downloadCta": "Download",
+    "delete": "Delete my account",
+    "deleteHint": "Removes your profile, messages and files straight away. This can’t be undone.",
+    "deleteCta": "Delete account",
+    "deleteTitle": "Delete your account?",
+    "deleteBody": "Your profile, posts, conversations and files are deleted now. We keep only anonymous counts.",
+    "deleteType": "Type {text} to confirm",
+    "deleteConfirm": "Delete my account"
+  },
+  "quota": {
+    "title": "Section 33 calculator",
+    "eyebrow": "For employers in Thailand",
+    "intro": "Organizations with 100 or more employees hire 1 person with a disability for every 100 staff, plus 1 more when the remainder is over 50.",
+    "employees": "Number of employees",
+    "employeesHint": "Everyone on your payroll, full-time and part-time.",
+    "current": "People with disabilities you employ now",
+    "currentHint": "Used only for this calculation. Not saved or shown anywhere.",
+    "required": "Required under Section 33",
+    "gap": "Still to hire",
+    "levyEstimate": "Estimated Section 34 contribution if the gap isn’t filled: {amount} THB per year (from the configured rate — check with the authority).",
+    "levyUnset": "The Section 34 contribution rate isn’t configured here. Check the current amount with the authority.",
+    "otherTitle": "Other ways to meet the law",
+    "s34": "Section 34: organizations that don’t hire enough people contribute to the Empowerment of Persons with Disabilities Fund instead.",
+    "s35": "Section 35: organizations can instead provide concessions, such as space to sell goods, job training, or contracted work.",
+    "verify": "This page is a guide, not legal advice. Rules and amounts change — confirm with the department before deciding.",
+    "source": "Department of Empowerment of Persons with Disabilities",
+    "cta": "Find matched talent"
   }
 }

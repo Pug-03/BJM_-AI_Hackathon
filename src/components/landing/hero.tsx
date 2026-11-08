@@ -69,19 +69,10 @@ function HeroMock() {
 
         {/* Profile card */}
         <div className="border-line bg-raised shadow-float overflow-hidden rounded-[20px] border">
-          {/* Real <img> with high fetch priority: this cover is the page's LCP element. */}
-          {/* eslint-disable-next-line @next/next/no-img-element -- tiny local SVG; next/image adds nothing here */}
-          <img
-            src="/sample/cover-neutral.svg"
-            alt=""
-            fetchPriority="high"
-            className="h-24 w-full object-cover sm:h-28 dark:hidden"
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/sample/cover-neutral-dark.svg"
-            alt=""
-            className="hidden h-24 w-full object-cover sm:h-28 dark:block"
+          {/* Decorative cover as CSS (not an <img>), so the headline text is the page's LCP element. */}
+          <div
+            aria-hidden
+            className="h-24 w-full bg-[radial-gradient(circle_at_20%_120%,#D9DCE1_0_38%,transparent_39%),radial-gradient(circle_at_70%_10%,#E6E8EC_0_30%,transparent_31%),linear-gradient(#F2F3F5,#F2F3F5)] sm:h-28 dark:bg-[radial-gradient(circle_at_20%_120%,#2A2930_0_38%,transparent_39%),radial-gradient(circle_at_70%_10%,#24232A_0_30%,transparent_31%),linear-gradient(#1C1B21,#1C1B21)]"
           />
           <div className="flex flex-col gap-4 px-6 pb-6">
             <span className="border-raised bg-avatar text-h3 text-graphite -mt-9 flex size-[72px] items-center justify-center rounded-full border-4 font-semibold">

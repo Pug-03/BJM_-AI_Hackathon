@@ -88,7 +88,13 @@ export const auth = betterAuth({
       create: {
         before: async (user) => {
           const isAdmin = adminEmails().includes(user.email.toLowerCase());
-          return { data: { ...user, role: isAdmin ? "ADMIN" : null } };
+          // E2E accounts (fixed-OTP mode only, never on Vercel) are sandboxed so test data never
+          // appears in real feeds or the directory.
+          const e2e =
+            Boolean(process.env.ABLE_E2E_OTP) &&
+            !process.env.VERCEL &&
+            /^[a-z]+-\d{10,}-\d+@example\.com$/.test(user.email);
+          return { data: { ...user, role: isAdmin ? "ADMIN" : null, ...(e2e ? { isSandbox: true } : {}) } };
         },
         after: async (user) => {
           // Accepting Terms & Privacy is the condition of creating an account ("By continuing, you agree…").

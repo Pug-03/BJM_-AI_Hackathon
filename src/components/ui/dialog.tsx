@@ -8,7 +8,23 @@ import { cn } from "@/lib/utils";
 import { dropIn, sheetUp, useReducedMotion, variantsFor } from "@/lib/motion";
 import { IconButton } from "./icon-button";
 
-type Ctx = { open: boolean; setOpen: (v: boolean) => void };
+type Ctx = { open: boolean; setOpen: (v: boolean) => void; opener: React.RefObject<HTMLElement | null> };
+
+/**
+ * Last focused element outside any dialog or menu. Dialogs opened from state or a menu item
+ * have no Radix trigger, so on close focus returns here instead of falling to <body>.
+ */
+let lastOutside: HTMLElement | null = null;
+if (typeof document !== "undefined")
+  document.addEventListener(
+    "focusin",
+    (e) => {
+      const el = e.target as HTMLElement | null;
+      if (el && !el.closest?.("[role=dialog],[role=alertdialog],[role=menu],[role=listbox]"))
+        lastOutside = el;
+    },
+    true,
+  );
 const DialogCtx = React.createContext<Ctx | null>(null);
 function useDialogCtx() {
   const c = React.useContext(DialogCtx);
@@ -27,6 +43,10 @@ export interface DialogProps {
 export function Dialog({ open: openProp, defaultOpen, onOpenChange, children }: DialogProps) {
   const [inner, setInner] = React.useState(defaultOpen ?? false);
   const open = openProp ?? inner;
+  const opener = React.useRef<HTMLElement | null>(null);
+  React.useEffect(() => {
+    if (open) opener.current = lastOutside;
+  }, [open]);
   const setOpen = React.useCallback(
     (v: boolean) => {
       if (openProp === undefined) setInner(v);
@@ -35,7 +55,7 @@ export function Dialog({ open: openProp, defaultOpen, onOpenChange, children }: 
     [openProp, onOpenChange],
   );
   return (
-    <DialogCtx.Provider value={{ open, setOpen }}>
+    <DialogCtx.Provider value={{ open, setOpen, opener }}>
       <D.Root open={open} onOpenChange={setOpen}>
         {children}
       </D.Root>
@@ -64,6 +84,8 @@ export interface DialogContentProps {
   sheetOnMobile?: boolean;
   /** Always render as a bottom sheet (used by <Sheet>). */
   forceSheet?: boolean;
+  /** Element to focus on close (defaults to whatever had focus before opening). */
+  returnFocusRef?: React.RefObject<HTMLElement | null>;
 }
 
 function useIsMobile() {
@@ -87,8 +109,9 @@ export function DialogContent({
   children,
   sheetOnMobile = true,
   forceSheet = false,
+  returnFocusRef,
 }: DialogContentProps) {
-  const { open, setOpen } = useDialogCtx();
+  const { open, setOpen, opener } = useDialogCtx();
   const reduced = useReducedMotion();
   const mobile = useIsMobile();
   const asSheet = forceSheet || (sheetOnMobile && mobile);
@@ -117,7 +140,17 @@ export function DialogContent({
               asSheet ? "items-end" : "items-center p-4",
             )}
           >
-            <D.Content asChild forceMount>
+            <D.Content
+              asChild
+              forceMount
+              onCloseAutoFocus={(e) => {
+                const el = returnFocusRef?.current ?? opener.current;
+                if (el?.isConnected) {
+                  e.preventDefault();
+                  el.focus();
+                }
+              }}
+            >
               <motion.div
                 className={cn(
                   "bg-paper text-ink shadow-dialog pointer-events-auto flex flex-col focus:outline-none",

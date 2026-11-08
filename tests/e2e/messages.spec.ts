@@ -2,7 +2,11 @@ import { test, expect } from "@playwright/test";
 import { enterJudge } from "./helpers";
 
 test.describe("messages", () => {
-  test("judge talent: inbox, offer card, send a message, calls explain themselves", async ({ page, baseURL, context }) => {
+  test("judge talent: inbox, offer card, send a message, calls explain themselves", async ({
+    page,
+    baseURL,
+    context,
+  }) => {
     test.setTimeout(120_000);
     await enterJudge(context, baseURL!, "talent");
     await page.goto("/en/messages");
@@ -35,7 +39,10 @@ test.describe("messages", () => {
     await expect(page.getByText("Calls aren’t set up here")).toBeVisible();
   });
 
-  test("two browsers: employer messages talent, talent replies (polling fallback)", async ({ browser, baseURL }) => {
+  test("two browsers: employer messages talent, talent replies (polling fallback)", async ({
+    browser,
+    baseURL,
+  }) => {
     test.setTimeout(150_000);
     const tCtx = await browser.newContext();
     const eCtx = await browser.newContext();
@@ -44,7 +51,11 @@ test.describe("messages", () => {
     const tp = await tCtx.newPage();
     await tp.goto(`${baseURL}/en/me`);
     await expect(tp.getByRole("heading", { level: 1 })).toBeVisible();
-    const line = (await tp.getByText(/^@[a-z0-9-]+ ·/).first().textContent()) ?? "";
+    const line =
+      (await tp
+        .getByText(/^@[a-z0-9-]+ ·/)
+        .first()
+        .textContent()) ?? "";
     const at = line.match(/^@([a-z0-9-]+)/)?.[1];
     expect(at).toBeTruthy();
 

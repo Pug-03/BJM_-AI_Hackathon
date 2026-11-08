@@ -83,9 +83,9 @@ export default async function ExplorePage({
       </p>
       {rows.length ? (
         <ul className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {rows.map((r) => (
+          {rows.map((r, i) => (
             <li key={r.id}>
-              <TalentCard c={toCard(r)} sampleLabel={!user?.isSandbox} />
+              <TalentCard c={toCard(r)} sampleLabel={!user?.isSandbox} eager={i < 3} />
             </li>
           ))}
         </ul>

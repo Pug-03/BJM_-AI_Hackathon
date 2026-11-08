@@ -84,7 +84,7 @@ export function NeedsManager({
           {rows.map((n) => (
             <li
               key={n.id}
-              className="border-line bg-raised flex flex-col gap-4 rounded-[20px] border p-5 sm:flex-row sm:items-center"
+              className="border-line bg-raised flex flex-col gap-4 rounded-[20px] border p-5 lg:flex-row lg:items-center"
             >
               <div className="flex min-w-0 flex-1 flex-col gap-1">
                 <p className="text-h3 truncate">{n.title}</p>
@@ -102,7 +102,7 @@ export function NeedsManager({
                   ) : null}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <label className="text-small text-graphite flex min-h-11 items-center gap-2">
                   <Switch
                     checked={n.isOpen}

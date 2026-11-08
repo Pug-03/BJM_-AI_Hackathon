@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers/providers";
 import { appUrl, services } from "@/lib/env";
 import { AiProvider } from "@/components/ai/ai-provider";
+import { CookieBanner } from "@/components/policy/cookie-banner";
 import "../globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
@@ -74,6 +75,7 @@ export default async function LocaleLayout({
             <AiProvider speech={services.speech()} text={services.ai()}>
               {children}
             </AiProvider>
+            <CookieBanner />
           </Providers>
         </NextIntlClientProvider>
       </body>

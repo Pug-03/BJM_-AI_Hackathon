@@ -8,8 +8,8 @@ const keys = (o: Tree, p = ""): string[] =>
 
 describe("i18n messages", () => {
   it("EN and TH have exactly the same keys", () => {
-    const a = keys(en as Tree).sort();
-    const b = keys(th as Tree).sort();
+    const a = keys(en as unknown as Tree).sort();
+    const b = keys(th as unknown as Tree).sort();
     expect(b.filter((k) => !a.includes(k))).toEqual([]);
     expect(a.filter((k) => !b.includes(k))).toEqual([]);
   });
@@ -25,7 +25,7 @@ describe("i18n messages", () => {
       Object.entries(o).flatMap(([k, v]) =>
         typeof v === "object" ? empty(v, `${p}${k}.`) : v.trim() ? [] : [`${p}${k}`],
       );
-    expect(empty(en as Tree)).toEqual([]);
-    expect(empty(th as Tree)).toEqual([]);
+    expect(empty(en as unknown as Tree)).toEqual([]);
+    expect(empty(th as unknown as Tree)).toEqual([]);
   });
 });

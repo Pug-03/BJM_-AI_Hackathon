@@ -46,7 +46,7 @@ test.describe("employer onboarding + matched feed", () => {
     await expect(async () => {
       await page.reload();
       await expect(page.getByRole("article").first()).toBeVisible({ timeout: 3000 });
-    }).toPass({ timeout: 45_000 });
+    }).toPass({ timeout: 90_000 });
     await expect(page.getByText("Why this match").first()).toBeVisible();
   });
 

@@ -182,7 +182,7 @@ export function EmployerBuilder({ initial, hasOrg }: { initial: EmployerData; ha
             style={{ transform: `scaleX(${(step + 1) / STEPS.length})` }}
           />
         </div>
-        <ol className="no-scrollbar -mx-1 hidden gap-1 overflow-x-auto md:flex">
+        <ol className="no-scrollbar hidden gap-1 overflow-x-auto md:flex">
           {STEPS.map((s, i) => (
             <li key={s}>
               <button

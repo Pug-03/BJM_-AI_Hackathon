@@ -35,7 +35,7 @@ export const DropdownMenuItem = React.forwardRef<
     ref={ref}
     className={cn(
       "text-small flex min-h-11 cursor-pointer items-center gap-3 rounded-[14px] px-3 outline-none select-none",
-      "data-[highlighted]:bg-mist data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "data-[highlighted]:bg-brand-soft data-[highlighted]:text-brand data-[highlighted]:ring-brand data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:ring-2 data-[highlighted]:ring-inset",
       "[&_svg]:size-5 [&_svg]:stroke-[1.75]",
       destructive && "text-danger",
       className,
@@ -64,7 +64,7 @@ export const DropdownMenuRadioItem = React.forwardRef<
   <M.RadioItem
     ref={ref}
     className={cn(
-      "text-small data-[highlighted]:bg-mist data-[state=checked]:text-brand flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[14px] px-3 outline-none select-none data-[state=checked]:font-medium",
+      "text-small data-[highlighted]:bg-brand-soft data-[highlighted]:text-brand data-[highlighted]:ring-brand data-[state=checked]:text-brand flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-[14px] px-3 outline-none select-none data-[highlighted]:ring-2 data-[highlighted]:ring-inset data-[state=checked]:font-medium",
       className,
     )}
     {...props}

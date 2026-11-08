@@ -272,3 +272,10 @@
     transform: none;
   }
 }
+
+/* Native date picker icon: visible focus ring (axe/keyboard, section 10). */
+input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

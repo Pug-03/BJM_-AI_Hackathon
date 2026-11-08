@@ -135,3 +135,25 @@ Every assumption made while building ABLE, newest at the bottom of each stage.
   - Reports go to `Report` for the Stage 9 admin queue.
   - The first message from an unverified organization shows a calm safety tip.
 - **`/messages/latest`** redirects to the newest conversation. It is used for notification deep links and QA screenshots.
+
+## Stage 8: Landing, policies, cookies, settings
+
+- **Landing sections follow section 6.**
+  - "Speak to fill" is a pre-recorded animation labelled "Demo" and makes no AI call. It loops only while on screen and is static when reduced motion is on.
+  - "Why ABLE" is a divided list, not a card grid.
+  - The Section 33 block links to the department's site (a text link, not a logo).
+  - Sponsors appear in the mid-page thank-you section and in the footer, never in the header.
+- **Policies** are plain-language EN and TH content in `messages/*.json` (`policy.*`), rendered by a single `PolicyPage`. Contact addresses are marked as placeholders.
+- **Cookie banner:**
+  - ABLE loads no analytics, and the banner says so.
+  - The choice is stored in a necessary `able-cookies` cookie for one year.
+  - "Cookie settings" in the footer reopens it.
+  - It is fixed-position, so it causes no layout shift.
+  - E2E presets the cookie via `tests/fixtures/consent.json`.
+- **Settings:** account name, language and theme, profile visibility and show-age, who can message me (enforced in `startConversation` for new conversations), email preferences, AI and work-setup consents with history, Download (ZIP of `data.json` plus own uploaded files), and Delete.
+  - Delete is confirmed by typing the handle (or the email when there is no profile).
+  - It hard-deletes the user, their conversations and every file in them, anonymizes audit rows, removes their reports, and increments an `accounts_deleted` counter.
+  - Withdrawing the work-setup consent deletes the note and its shares.
+- **The Section 33 calculator** (`/employer/quota`) is public; the landing page links to it.
+  - `requiredHires` is unit-tested with the spec's values.
+  - The levy is shown only when `QUOTA_LEVY_PER_PERSON_THB` is set.

@@ -80,7 +80,7 @@ export function CoverImage({
           alt=""
           fetchPriority="high"
           draggable={false}
-          className="size-full object-cover select-none"
+          className="size-full object-cover select-none dark:brightness-75 dark:saturate-75"
           style={{ objectPosition: `50% ${y}%` }}
         />
       ) : null}

@@ -11,7 +11,8 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"], ["html", { open: "never" }]],
-  use: { baseURL, trace: "retain-on-failure" },
+  // Cookie choice pre-set so the first-visit banner doesn't cover controls (stage8.spec tests the banner itself).
+  use: { baseURL, trace: "retain-on-failure", storageState: "tests/fixtures/consent.json" },
   projects: [
     { name: "desktop", testIgnore: /screens\.spec/, use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", testIgnore: /screens\.spec|a11y\.spec/, use: { ...devices["Pixel 7"] } },

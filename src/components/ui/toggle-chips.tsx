@@ -32,7 +32,7 @@ export function ToggleChips<T extends string>({
               key={o}
               className={cn(
                 "text-small has-[:focus-visible]:outline-brand flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2",
-                on ? "border-ink bg-ink text-paper" : "border-field-line hover:bg-mist",
+                on ? "border-brand bg-brand-soft text-brand font-medium" : "border-field-line hover:bg-mist",
               )}
             >
               <input

@@ -130,3 +130,35 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 | 5 | ✓ | ✓ | 31/31 | ✓ | 80/80 (4 skipped) | onboarding-talent, profile-me — no overflow | Live AI not exercised: the QA server has no OpenAI/Anthropic keys, so e2e covers the "not set up here" explanations and the auth/consent gate on /api/ai/transcribe. Fixed: mic aria-labels collided with field labels in e2e selectors |
 | 6 | ✓ | ✓ | 38/38 | ✓ | 104/104 (4 skipped) | explore, feed-talent, feed-employer, needs, saved-employer, org-public, onboarding-employer — no overflow | Fixed: client-module helpers called from server pages (moved to `src/lib`), a 1px grid overflow on mobile feed/org pages, and page transition rendering the new route twice during exit. Local explore shows leftover e2e test accounts (local DB only) |
 | 7 | ✓ | ✓ | 41/41 | ✓ | 116/116 (4 skipped) | messages-inbox, messages-thread — no overflow | Two-browser chat (send, reply, read receipt) passes on the 5-second polling fallback; Supabase Realtime and Daily calls not exercised (no keys). Fixed: mobile thread sat under the bottom nav (z-index); voice-note button now uses a waveform icon so it isn't confused with the dictation mic |
+
+## Stage 7 full QA loop
+
+| Stage | Loop | Polish | Type | Spacing | Colour | Responsive | Motion | UX | Copy | Consistency | Delight | Avg | Tests | axe | Lighthouse |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 7 | 1 | 7 | 7 | 6 | 6 | 6 | 7 | 6 | 8 | 6 | 6 | 6.5 | 116/116 | 0 on 136 route runs; 4 serious in one open-menu state | /en 89, explore 88, org 90, login 100, judge 100 (A 100, BP 100, SEO 100; login/judge SEO 60 from intentional noindex); CLS 0 |
+
+**Loop 1 fixes.** Screenshots: `qa/screens/stage-*`.
+
+- Design (Agent B):
+  - E2E accounts are sandboxed, so test data no longer appears in Explore.
+  - Org page: the logo was stacked behind the cover, and the badge was detached from a two-line name.
+  - The violet sample cover was replaced with a neutral one, and covers are dimmed in dark mode.
+  - Selected chips now use `--brand-soft` (section 4.2).
+  - Talent cards: one chip row, and the Sample badge sits on the cover.
+  - Needs rows stack below `lg`, and the Select value truncates.
+  - Onboarding: the age switch sits under the date of birth, Province is paired with Country, and the step-nav offset is gone.
+  - Thread: "Translate" now sits on the time row, sent bubbles are softer in dark mode, and the voice-note button has a tooltip.
+  - Talent feed is paged (8, then "Show more").
+- Accessibility (Agent C):
+  - Thread menus are non-modal, which fixes `aria-hidden-focus`.
+  - Dialogs opened from state or a menu now return focus to their opener (`dialog.tsx` focus tracking).
+  - The composer textarea has a visible focus ring.
+  - Highlighted menu items use brand-soft with an inset ring.
+  - The native date-picker icon gets a focus ring.
+- Performance (Agent C):
+  - The hero cover is now CSS, so the headline is the LCP element.
+  - The first-row Explore covers load eagerly.
+- Found while fixing: on mobile, the new landing "Speak to fill" grid overflowed to 578px, which shifted the whole layout viewport. Fixed with `grid-cols-[minmax(0,1fr)]`.
+- **Loop 2** runs as part of the Stage 8 full check, which re-shoots and re-scores every page, including all Stage 7 pages.
+
+| 8 | ✓ | ✓ | 50/50 | ✓ | 135/136 (1 flaky under load, passes on rerun; wait raised) | landing, privacy, settings, quota — no overflow | Cookie banner, policies, settings export/delete covered by `stage8.spec.ts` |

@@ -7,16 +7,35 @@ import { provinceLabel } from "@/config/th-provinces";
 import type { TalentCard as Card } from "@/lib/talent-query";
 
 /** Directory card — the whole card is one link (name is the accessible label). */
-export async function TalentCard({ c, sampleLabel }: { c: Card; sampleLabel: boolean }) {
+export async function TalentCard({
+  c,
+  sampleLabel,
+  eager = false,
+}: {
+  c: Card;
+  sampleLabel: boolean;
+  eager?: boolean;
+}) {
   const t = await getTranslations("explore");
   const te = await getTranslations("enums");
   const locale = await getLocale();
   return (
     <article className="border-line bg-raised group hover:shadow-float relative flex h-full flex-col overflow-hidden rounded-[20px] border transition-shadow duration-200">
-      <div className="bg-mist h-16">
+      <div className="bg-mist relative h-16">
         {c.cover ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={c.cover} alt="" loading="lazy" className="size-full object-cover" />
+          <img
+            src={c.cover}
+            alt=""
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : "auto"}
+            className="size-full object-cover dark:brightness-75 dark:saturate-75"
+          />
+        ) : null}
+        {sampleLabel && c.sample ? (
+          <span className="bg-paper/90 text-caption text-graphite absolute top-2 right-2 rounded-full px-2.5 py-0.5">
+            {t("sample")}
+          </span>
         ) : null}
       </div>
       <div className="flex flex-1 flex-col gap-3 px-4 pb-4">
@@ -47,7 +66,7 @@ export async function TalentCard({ c, sampleLabel }: { c: Card; sampleLabel: boo
               {provinceLabel(c.province, locale)}
             </span>
           ) : null}
-          <span>{te(`workMode.${c.workMode as "REMOTE"}`)}</span>
+          {c.workMode !== "ANY" ? <span>{te(`workMode.${c.workMode as "REMOTE"}`)}</span> : null}
           {c.ratingCount ? (
             <span className="inline-flex items-center gap-1">
               <Star className="text-star size-3.5" fill="currentColor" strokeWidth={0} aria-hidden />
@@ -56,9 +75,9 @@ export async function TalentCard({ c, sampleLabel }: { c: Card; sampleLabel: boo
           ) : null}
         </p>
         {c.skills.length ? (
-          <ul className="mt-auto flex flex-wrap gap-1.5" aria-label={t("skills")}>
-            {c.skills.slice(0, 3).map((s) => (
-              <li key={s} className="bg-mist text-caption text-ink rounded-full px-2.5 py-1">
+          <ul className="mt-auto flex flex-nowrap gap-1.5 overflow-hidden" aria-label={t("skills")}>
+            {c.skills.slice(0, 2).map((s) => (
+              <li key={s} className="bg-mist text-caption text-ink truncate rounded-full px-2.5 py-1">
                 {s}
               </li>
             ))}

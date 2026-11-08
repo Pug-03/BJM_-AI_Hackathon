@@ -208,7 +208,7 @@ export function ThreadView({ initial, callsAvailable }: { initial: Thread; calls
         </div>
         {callButton(false)}
         {callButton(true)}
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <IconButton aria-label={t("more")}>
               <EllipsisVertical aria-hidden />

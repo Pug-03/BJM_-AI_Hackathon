@@ -27,10 +27,10 @@ export default async function FeedPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ need?: string }>;
+  searchParams: Promise<{ need?: string; all?: string }>;
 }) {
   const { locale } = await params;
-  const { need } = await searchParams;
+  const { need, all } = await searchParams;
   setRequestLocale(locale);
   const user = await getCurrentUser();
   if (!user) return redirect({ href: "/login?next=/feed", locale });
@@ -85,13 +85,21 @@ export default async function FeedPage({
         </header>
         {data.needs.length ? (
           <ul className="flex flex-col gap-4">
-            {data.needs.map((n) => (
+            {data.needs.slice(0, all ? 20 : 8).map((n) => (
               <li key={n.id}>
                 <NeedCard n={n} sampleLabel={!user.isSandbox} />
               </li>
             ))}
           </ul>
-        ) : (
+        ) : null}
+        {data.needs.length > 8 && !all ? (
+          <Button asChild variant="secondary" className="self-center">
+            <Link href="/feed?all=1" scroll={false}>
+              {t("showMorePositions")}
+            </Link>
+          </Button>
+        ) : null}
+        {data.needs.length ? null : (
           <EmptyState
             icon={UserRoundPen}
             title={t("noOpportunities")}

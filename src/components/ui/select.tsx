@@ -46,7 +46,9 @@ export function Select({ id, options, placeholder, className, ...props }: Select
           className,
         )}
       >
-        <S.Value placeholder={placeholder} />
+        <span className="min-w-0 truncate">
+          <S.Value placeholder={placeholder} />
+        </span>
         <S.Icon>
           <ChevronDown className="text-graphite size-5 stroke-[1.75]" aria-hidden />
         </S.Icon>

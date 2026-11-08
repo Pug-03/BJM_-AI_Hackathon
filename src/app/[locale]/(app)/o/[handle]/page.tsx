@@ -72,11 +72,16 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
       <div className="bg-mist relative aspect-[16/7] w-full overflow-hidden sm:aspect-[16/5] md:rounded-[20px]">
         {o.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={o.coverUrl} alt="" className="size-full object-cover" fetchPriority="high" />
+          <img
+            src={o.coverUrl}
+            alt=""
+            className="size-full object-cover dark:brightness-75 dark:saturate-75"
+            fetchPriority="high"
+          />
         ) : null}
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-12">
-        <section className="-mt-16 flex flex-col gap-4 sm:-mt-20">
+        <section className="relative z-10 -mt-16 flex flex-col gap-4 sm:-mt-20">
           {o.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={o.logoUrl} alt="" className="border-paper size-28 rounded-full border-4 object-cover" />
@@ -86,9 +91,8 @@ export default async function OrgPage({ params }: { params: Promise<{ locale: st
             </span>
           )}
           <div className="flex flex-col gap-1">
-            <h1 className="text-h1 tracking-display flex items-center gap-2">
-              {o.name}
-              <VerifiedBadge tier={o.verifyTier} size={22} />
+            <h1 className="text-h1 tracking-display">
+              {o.name} <VerifiedBadge tier={o.verifyTier} size={22} className="inline-flex align-middle" />
             </h1>
             <p className="text-small text-graphite">
               @{o.handle} · {te(`orgType.${o.type}`)}

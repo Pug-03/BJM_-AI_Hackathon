@@ -386,7 +386,7 @@ export function TalentBuilder({ initial, hasProfile }: { initial: BuilderData; h
             style={{ transform: `scaleX(${(step + 1) / STEPS.length})` }}
           />
         </div>
-        <ol className="no-scrollbar -mx-1 hidden gap-1 overflow-x-auto md:flex">
+        <ol className="no-scrollbar hidden gap-1 overflow-x-auto md:flex">
           {STEPS.map((s, i) => (
             <li key={s}>
               <button
@@ -625,21 +625,23 @@ function StepBasics({
             />
           )}
         </Field>
-        <Field id="ob-dob" label={t("dob")} hint={t("dobHint")} optionalLabel={t("optional")}>
-          {(a) => (
-            <DatePicker
-              {...a}
-              value={d.dob}
-              max={new Date().toISOString().slice(0, 10)}
-              onChange={(e) => set("dob", e.target.value)}
-            />
-          )}
-        </Field>
-        <div className="bg-mist flex items-center justify-between gap-4 self-end rounded-[20px] px-4 py-3">
-          <label htmlFor="ob-showAge" className="text-small font-medium">
-            {t("showAge")}
-          </label>
-          <Switch id="ob-showAge" checked={d.showAge} onCheckedChange={(v) => set("showAge", v)} />
+        <div className="flex flex-col gap-3">
+          <Field id="ob-dob" label={t("dob")} hint={t("dobHint")} optionalLabel={t("optional")}>
+            {(a) => (
+              <DatePicker
+                {...a}
+                value={d.dob}
+                max={new Date().toISOString().slice(0, 10)}
+                onChange={(e) => set("dob", e.target.value)}
+              />
+            )}
+          </Field>
+          <div className="bg-mist flex items-center justify-between gap-4 rounded-[16px] px-4 py-3">
+            <label htmlFor="ob-showAge" className="text-small font-medium">
+              {t("showAge")}
+            </label>
+            <Switch id="ob-showAge" checked={d.showAge} onCheckedChange={(v) => set("showAge", v)} />
+          </div>
         </div>
         <Field id="ob-gender" label={t("gender")} hint={t("genderHint")} optionalLabel={t("optional")}>
           {(a) => (
@@ -667,7 +669,7 @@ function StepBasics({
             />
           )}
         </Field>
-        <Field id="ob-province" label={t("province")} optionalLabel={t("optional")} className="md:col-span-2">
+        <Field id="ob-province" label={t("province")} optionalLabel={t("optional")}>
           {(a) =>
             d.country === "TH" ? (
               <Select
