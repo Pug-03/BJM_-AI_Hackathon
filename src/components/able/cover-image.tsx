@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { toast } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+import { darkCoverOf } from "@/lib/cover";
 import { toWebp, uploadFile } from "@/lib/upload-client";
 import { saveCoverOffset, saveProfileImage } from "@/server/talent";
 
@@ -80,7 +81,17 @@ export function CoverImage({
           alt=""
           fetchPriority="high"
           draggable={false}
-          className="size-full object-cover select-none dark:brightness-75 dark:saturate-75"
+          className={`size-full object-cover select-none ${darkCoverOf(url) ? "dark:hidden" : "dark:brightness-75 dark:saturate-75"}`}
+          style={{ objectPosition: `50% ${y}%` }}
+        />
+      ) : null}
+      {darkCoverOf(url) ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={darkCoverOf(url)!}
+          alt=""
+          draggable={false}
+          className="hidden size-full object-cover select-none dark:block"
           style={{ objectPosition: `50% ${y}%` }}
         />
       ) : null}

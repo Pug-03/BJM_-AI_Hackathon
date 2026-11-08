@@ -59,7 +59,10 @@ export function Tabs({
       >
         <T.List
           aria-label={label}
-          className={cn("no-scrollbar border-line flex gap-1 overflow-x-auto border-b", listClassName)}
+          className={cn(
+            "no-scrollbar border-line flex gap-1 overflow-x-auto border-b max-sm:[mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] max-sm:pr-8",
+            listClassName,
+          )}
         >
           {items.map((it) => (
             <T.Trigger

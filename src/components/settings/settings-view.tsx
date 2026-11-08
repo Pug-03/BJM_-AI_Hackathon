@@ -74,7 +74,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section aria-labelledby={id} className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[240px_minmax(0,1fr)] md:gap-10">
+    <section
+      aria-labelledby={id}
+      className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-[240px_minmax(0,1fr)] md:gap-10"
+    >
       <div className="flex flex-col gap-1">
         <h2 id={id} className="text-h3">
           {title}

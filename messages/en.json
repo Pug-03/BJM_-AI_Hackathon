@@ -529,7 +529,8 @@
     "sideTitle": "Your positions",
     "sideSaved": "{count, plural, =0 {No starred people yet} one {# starred person} other {# starred people}}",
     "sideQuota": "Section 33 calculator",
-    "sideFair": "Matches use skills, education, work mode and profile completeness only — never disability, gender, religion, ethnicity or age."
+    "sideFair": "Matches use skills, education, work mode and profile completeness only — never disability, gender, religion, ethnicity or age.",
+    "fallbackRelated": "Related experience: {headline}"
   },
   "enums": {
     "workMode": {

@@ -13,6 +13,7 @@ import { VerifiedBadge } from "@/components/able/verified-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { provinceLabel } from "@/config/th-provinces";
 import { normSkill } from "@/lib/match";
+import { darkCoverOf } from "@/lib/cover";
 import { cn } from "@/lib/utils";
 import type { MatchCardData } from "@/server/feed";
 
@@ -99,7 +100,17 @@ export function MatchCard({
             alt=""
             loading="lazy"
             draggable={false}
-            className="size-full object-cover dark:brightness-75 dark:saturate-75"
+            className={`size-full object-cover ${darkCoverOf(c.cover) ? "dark:hidden" : "dark:brightness-75 dark:saturate-75"}`}
+          />
+        ) : null}
+        {darkCoverOf(c.cover) ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={darkCoverOf(c.cover)!}
+            alt=""
+            loading="lazy"
+            draggable={false}
+            className="hidden size-full object-cover dark:block"
           />
         ) : null}
       </div>
@@ -180,8 +191,8 @@ export function MatchCard({
             <p className="text-small text-ink">{reason ?? fallback}</p>
           )}
         </div>
-        <div className="flex items-center gap-2">
-          <Button type="button" onClick={onMessage} className="sm:flex-none">
+        <div className="flex flex-wrap items-center gap-2">
+          <Button type="button" onClick={onMessage}>
             <MessageCircle aria-hidden />
             {t("message")}
           </Button>

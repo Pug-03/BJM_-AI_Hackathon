@@ -64,3 +64,9 @@ tones.forEach(([a, b], i) =>
   fs.writeFileSync(`public/sample/cover-${i + 1}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="500" fill="${a}"/>${patterns[i](b)}</svg>`),
 );
 console.log("wrote", people.length, "avatars and 8 covers");
+
+// Dark variants of the covers: same geometry on a dark ground (no grey slabs in dark mode).
+const darkTones = [["#16171B", "#2A3038"], ["#17181A", "#2C3128"], ["#1A1816", "#383028"], ["#17161C", "#2E2B3A"], ["#151A1A", "#263434"], ["#1A1618", "#3A2B31"], ["#181816", "#34322A"], ["#15171A", "#29303A"]];
+darkTones.forEach(([a, b], i) =>
+  fs.writeFileSync(`public/sample/cover-${i + 1}-dark.svg`, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice"><rect width="1600" height="500" fill="${a}"/>${patterns[i](b)}</svg>`),
+);

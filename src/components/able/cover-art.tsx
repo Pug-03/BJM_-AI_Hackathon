@@ -2,6 +2,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import { cn } from "@/lib/utils";
+import { darkCoverOf } from "@/lib/cover";
 
 const cache = new Map<string, string | null>();
 function inlineSample(src: string): string | null {
@@ -26,9 +27,26 @@ function inlineSample(src: string): string | null {
  */
 export function CoverArt({ src, className, eager }: { src: string; className?: string; eager?: boolean }) {
   const svg = inlineSample(src);
-  const cls = cn("size-full object-cover dark:brightness-75 dark:saturate-75", className);
+  const dark = darkCoverOf(src);
+  const darkSvg = dark ? inlineSample(dark) : null;
+  const cls = cn("size-full object-cover", className);
   if (svg)
-    return <div aria-hidden className={cn(cls, "[&>svg]:block")} dangerouslySetInnerHTML={{ __html: svg }} />;
+    return (
+      <>
+        <div
+          aria-hidden
+          className={cn(cls, "[&>svg]:block", darkSvg && "dark:hidden")}
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+        {darkSvg ? (
+          <div
+            aria-hidden
+            className={cn(cls, "hidden dark:block [&>svg]:block")}
+            dangerouslySetInnerHTML={{ __html: darkSvg }}
+          />
+        ) : null}
+      </>
+    );
   return (
     // eslint-disable-next-line @next/next/no-img-element -- user uploads (signed URLs), sizes vary
     <img
@@ -36,7 +54,7 @@ export function CoverArt({ src, className, eager }: { src: string; className?: s
       alt=""
       loading={eager ? "eager" : "lazy"}
       fetchPriority={eager ? "high" : "auto"}
-      className={cls}
+      className={cn(cls, "dark:brightness-75 dark:saturate-75")}
     />
   );
 }

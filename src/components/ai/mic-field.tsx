@@ -44,7 +44,7 @@ function useSuggestion(p: MicProps, maxLength?: number) {
       <span
         key={flash}
         aria-hidden
-        className="bg-brand-soft pointer-events-none absolute inset-0 animate-[able-wash_1100ms_var(--ease-smooth)_forwards] rounded-[14px] mix-blend-multiply dark:mix-blend-screen"
+        className="bg-brand-soft pointer-events-none absolute inset-0 animate-[able-wash_480ms_var(--ease-smooth)_forwards] rounded-[14px] mix-blend-multiply dark:mix-blend-screen"
       />
     ) : null,
     shown,

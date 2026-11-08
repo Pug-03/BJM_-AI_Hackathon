@@ -208,3 +208,27 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 - The mic capsule cross-fades instead of truly morphing into the text.
 - A few consistency items (the position of the Sample pill, Follow labels on mobile).
 | 10 | ✓ | ✓ | 50/50 | ✓ | 154/154 (4 skipped) | all 22 routes quick-shot, no overflow | sitemap, robots, manifest, generated icons and per-profile OG image verified over HTTP; CSP/HSTS/XFO/Referrer/Permissions headers present; error + loading boundaries; DB indexes added |
+
+| 8 | 3 | 7 | 7.5 | 7 | 6.5 | 6 | 7.5 | 6.5 | 7.5 | 6.5 | 6.5 | 6.9 | 154/154 | 0 (loop 1/2 scans) | explore/org 100 |
+
+**Loop 3 (final for Stage 8)** stayed at 6.9.
+
+- **What gained:** illustrated avatars, the employer side panel, the settings segmented control, the needs menu, and judge mode on sign-in.
+- **What regressed:** the match-card action row clipped Skip from 320 to 430px, and the light sample covers glared in dark mode.
+
+**Fixed after loop 3:**
+
+- The action row now wraps, so Skip is always visible and swipe is never the only way.
+- Dark-mode twins exist for every sample cover.
+- The `[locale]/loading.tsx` that hid the app shell during navigation is removed.
+- A "Related experience" fallback reason shows when no skills match.
+- A fade hint marks scrollable tabs on mobile.
+- The mic wash is 480ms.
+
+**Below the target of 9 after 3 loops (logged per §12.2).** Still open:
+
+- Sample organizations have no illustrated logos.
+- Sample content is English in the Thai UI (by decision).
+- Pill placement is inconsistent.
+- Explore leaves empty width at 1440px and above.
+- The capsule grows with clip-path (outside the transform/opacity rule).
