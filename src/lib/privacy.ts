@@ -48,6 +48,11 @@ export interface RawTalentProfile {
   availability: string[];
   specialTalents: string | null;
   workSetupNeeds: string | null;
+  disabilityTypes?: string[];
+  disabilityNote?: string | null;
+  disabilityVisibility?: string;
+  identityVerifiedAt?: Date | null;
+  disabilityCardVerifiedAt?: Date | null;
   isPublic: boolean;
   isSample: boolean;
   verifyTier: number;
@@ -87,6 +92,17 @@ export function canSeeContact(
   return false;
 }
 
+/** Disability info is sensitive (PDPA s.26): shown only as the talent chose. */
+export function canSeeDisability(
+  p: Pick<RawTalentProfile, "userId" | "disabilityVisibility">,
+  v: ViewerContext,
+): boolean {
+  if (isOwner(p, v) || v.isAdmin) return true;
+  if (p.disabilityVisibility === "PUBLIC") return true;
+  if (p.disabilityVisibility === "CHAT_ONLY") return v.inConversation;
+  return false;
+}
+
 /** The profile as this viewer may see it. Private fields are removed, not just hidden in UI. */
 export function serializeTalentForViewer(p: RawTalentProfile, v: ViewerContext, now = new Date()) {
   const owner = isOwner(p, v);
@@ -112,7 +128,9 @@ export function serializeTalentForViewer(p: RawTalentProfile, v: ViewerContext, 
     specialTalents: p.specialTalents,
     isPublic: p.isPublic,
     isSample: p.isSample,
-    verifyTier: Math.min(p.verifyTier, 2),
+    // Tier 3 = identity verified by an admin (ID card + selfie, documents deleted after review).
+    verifyTier: p.identityVerifiedAt ? 3 : Math.min(p.verifyTier, 2),
+    identityVerified: Boolean(p.identityVerifiedAt),
     ratingAvg: p.ratingAvg,
     ratingCount: p.ratingCount,
     completedJobs: p.completedJobs,
@@ -136,6 +154,14 @@ export function serializeTalentForViewer(p: RawTalentProfile, v: ViewerContext, 
       : null,
     // Shared only when the talent chose to share it with this employer.
     sharedWorkSetup: !owner && v.setupShared ? p.workSetupNeeds : null,
+    disability: canSeeDisability(p, v)
+      ? {
+          types: p.disabilityTypes ?? [],
+          note: p.disabilityNote ?? null,
+          cardVerified: Boolean(p.disabilityCardVerifiedAt),
+          ...(owner ? { visibility: p.disabilityVisibility ?? "HIDDEN" } : {}),
+        }
+      : null,
     isOwner: owner,
   };
 }
@@ -143,4 +169,4 @@ export function serializeTalentForViewer(p: RawTalentProfile, v: ViewerContext, 
 export type TalentView = ReturnType<typeof serializeTalentForViewer>;
 
 /** Keys that must never appear in a non-owner payload. */
-export const PRIVATE_TALENT_KEYS = ["dob", "gender", "workSetupNeeds", "registrationNo"] as const;
+export const PRIVATE_TALENT_KEYS = ["dob", "gender", "workSetupNeeds", "registrationNo", "disabilityTypes", "disabilityNote"] as const;

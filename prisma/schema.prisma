@@ -105,29 +105,37 @@ model RateLimit {
 // ───────────── Talent ─────────────
 
 model TalentProfile {
-  id             String         @id @default(cuid())
-  userId         String         @unique
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  handle         String         @unique
-  firstName      String
-  lastName       String
-  displayName    String
-  avatarUrl      String?
-  coverUrl       String?
-  coverOffsetY   Int            @default(50)
-  headline       String?
-  bio            String?
-  dob            DateTime? // private
-  showAge        Boolean        @default(false)
-  gender         String? // private, never public, never filterable
-  country        String         @default("TH")
-  province       String?
-  languages      String[]
-  workMode       WorkMode       @default(ANY)
-  availability   Availability[]
-  specialTalents String?
-  workSetupNeeds String? // private
-  isSample       Boolean        @default(false)
+  id                       String         @id @default(cuid())
+  userId                   String         @unique
+  user                     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle                   String         @unique
+  firstName                String
+  lastName                 String
+  displayName              String
+  avatarUrl                String?
+  coverUrl                 String?
+  coverOffsetY             Int            @default(50)
+  headline                 String?
+  bio                      String?
+  dob                      DateTime? // private
+  showAge                  Boolean        @default(false)
+  gender                   String? // private, never public, never filterable
+  country                  String         @default("TH")
+  province                 String?
+  languages                String[]
+  workMode                 WorkMode       @default(ANY)
+  availability             Availability[]
+  specialTalents           String?
+  workSetupNeeds           String? // private
+  /// Optional, self-described, sensitive (PDPA s.26): shown only per disabilityVisibility; never filterable.
+  disabilityTypes          String[]
+  disabilityNote           String?
+  disabilityVisibility     Visibility     @default(HIDDEN)
+  /// Set by an admin after reviewing an ID card + selfie (documents deleted after review).
+  identityVerifiedAt       DateTime?
+  /// Set by an admin after reviewing a Thai disability ID card (Section 33 eligibility).
+  disabilityCardVerifiedAt DateTime?
+  isSample                 Boolean        @default(false)
 
   skills       Skill[]
   educations   Education[]
@@ -573,4 +581,22 @@ model JudgeSandbox {
   talentUserId   String
   employerUserId String
   seededAt       DateTime @default(now())
+}
+
+/// Identity / disability-card verification request. Uploaded files live in the private
+/// "verification" bucket and are deleted as soon as an admin decides; only the outcome stays.
+model VerificationRequest {
+  id         String    @id @default(cuid())
+  userId     String
+  kind       String // IDENTITY | DISABILITY_CARD
+  status     String    @default("PENDING") // PENDING | APPROVED | REJECTED
+  files      String[]
+  note       String?
+  reason     String?
+  reviewerId String?
+  reviewedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([status, createdAt])
+  @@index([userId, kind])
 }
