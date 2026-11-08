@@ -48,14 +48,21 @@ export async function enterJudgeMode(role: string): Promise<JudgeResult> {
   if (!services.database()) return { ok: false, error: "unavailable" };
   const parsed = roleSchema.safeParse(role);
   if (!parsed.success) return { ok: false, error: "failed" };
-  const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  const rl = await rateLimit(`judge:${ip}`, limits.judge.max, limits.judge.windowSec);
-  if (!rl.ok) return { ok: false, error: "rate_limited" };
-
   const jar = await cookies();
-  let judgeId = jar.get(COOKIE)?.value;
-  if (!judgeId || !/^[a-f0-9-]{36}$/.test(judgeId)) judgeId = randomUUID();
+  const fromCookie = jar.get(COOKIE)?.value;
+  const valid = fromCookie && /^[a-f0-9-]{36}$/.test(fromCookie) ? fromCookie : null;
+  const judgeId = valid ?? randomUUID();
+  const known = valid
+    ? await db.judgeSandbox.findUnique({ where: { id: valid }, select: { id: true } })
+    : null;
+  if (!known) {
+    // Only creating a new sandbox is limited; returning to an existing one is free.
+    // Judges often share one venue network, so the per-network limit is generous.
+    const h = await headers();
+    const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+    const rl = await rateLimit(`judge-new:${ip}`, limits.judge.max, limits.judge.windowSec);
+    if (!rl.ok) return { ok: false, error: "rate_limited" };
+  }
   try {
     const sb = await ensureSandbox(judgeId);
     jar.set(COOKIE, judgeId, {

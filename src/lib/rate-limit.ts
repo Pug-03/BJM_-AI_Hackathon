@@ -40,5 +40,5 @@ export const limits = {
   ai: { max: 30, windowSec: 60 * 60 },
   upload: { max: 60, windowSec: 60 * 60 },
   message: { max: 60, windowSec: 60 },
-  judge: { max: 10, windowSec: 60 * 60 },
+  judge: { max: 60, windowSec: 60 * 60 },
 } as const;
