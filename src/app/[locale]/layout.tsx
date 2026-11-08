@@ -64,7 +64,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${thai.variable}`}>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <noscript>
+          <style>{"[data-reveal],[data-reveal]>*{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+        <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Bangkok" now={new Date()}>
           <Providers>
             <a
               href="#main"

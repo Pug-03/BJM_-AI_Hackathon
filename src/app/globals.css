@@ -299,3 +299,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
 html {
   scroll-padding-top: 5rem;
 }
+
+/* Scroll reveals never hide content: reduced motion, focused content, and no-JS all show it as-is. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+[data-reveal]:focus-within,
+[data-reveal]:focus-within > * {
+  opacity: 1 !important;
+  transform: none !important;
+}

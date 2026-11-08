@@ -286,7 +286,10 @@ export async function pollThread(id: string, since: string) {
       readAt: r.readAt?.toISOString() ?? null,
       deliveredAt: r.deliveredAt?.toISOString() ?? null,
     })),
-    offers: offers.map((o) => ({ id: o.id, offer: o.offer as ChatMessage["offer"] })),
+    offers: offers.map((o) => ({
+      id: o.id,
+      offer: o.offer ? localizeOffer(o.offer as NonNullable<ChatMessage["offer"]>, lang) : null,
+    })),
     typing: await isTyping(id, p.otherId),
     blocked: Boolean(
       (await db.conversation.findUnique({ where: { id }, select: { blockedBy: true } }))?.blockedBy,

@@ -25,6 +25,8 @@ export interface NeedRow extends NeedDraft {
   id: string;
   isOpen: boolean;
   matches: number;
+  /** Localized title for display (sample data); the form edits the stored title. */
+  displayTitle?: string;
 }
 
 export function NeedsManager({
@@ -64,6 +66,7 @@ export function NeedsManager({
     setRows((cur) => {
       const row: NeedRow = {
         ...editing,
+        displayTitle: undefined,
         id,
         isOpen: true,
         matches: cur.find((x) => x.id === id)?.matches ?? 0,
@@ -93,7 +96,7 @@ export function NeedsManager({
               className="border-line bg-raised flex flex-col gap-4 rounded-[20px] border p-5 lg:flex-row lg:items-center"
             >
               <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <p className="text-h3 truncate">{n.title}</p>
+                <p className="text-h3 truncate">{n.displayTitle ?? n.title}</p>
                 <p className="text-caption text-graphite flex flex-wrap items-center gap-x-2">
                   <span>{te(`workMode.${n.workMode as "REMOTE"}`)}</span>·
                   <span>{te(`availability.${n.employmentType as "FULL_TIME"}`)}</span>

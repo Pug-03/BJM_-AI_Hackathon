@@ -10,7 +10,14 @@ import { rateLimit, limits } from "./rate-limit";
 import { CONSENT_VERSION } from "./consent";
 import { log } from "./log";
 
-const e2e = Boolean(process.env.ABLE_E2E_OTP && !process.env.VERCEL);
+/** The fixed E2E code only works for a localhost app URL, never on Vercel or a real domain. */
+const e2eAllowed = () =>
+  Boolean(process.env.ABLE_E2E_OTP) &&
+  !process.env.VERCEL &&
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(
+    process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+  );
+const e2e = e2eAllowed();
 // Must be identical in every server bundle (route handlers, server actions), so it is derived,
 // not random. The database URL contains the DB password, so outsiders cannot reproduce it.
 const fallbackSecret = createHash("sha256")
@@ -113,8 +120,7 @@ export const auth = betterAuth({
       allowedAttempts: 5,
       storeOTP: "hashed",
       // E2E only: a fixed code so Playwright can sign in. Ignored on Vercel and unless ABLE_E2E_OTP is set.
-      generateOTP: () =>
-        process.env.ABLE_E2E_OTP && !process.env.VERCEL ? process.env.ABLE_E2E_OTP : undefined,
+      generateOTP: () => (e2eAllowed() ? process.env.ABLE_E2E_OTP : undefined),
       async sendVerificationOTP({ email, otp }, ctx) {
         const rl = await rateLimit(
           `otp:${email.toLowerCase()}`,

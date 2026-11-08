@@ -19,7 +19,8 @@ export const sampleOrgEmail = (key: string) => `org-${key}@${SAMPLE_DOMAIN}`;
 function sampleAvatar(key: string): string {
   for (const ext of ["jpg", "jpeg", "png", "webp"]) {
     try {
-      if (fs.existsSync(path.join(process.cwd(), "public", "sample", "people", `${key}.${ext}`))) return `/sample/people/${key}.${ext}`;
+      if (fs.existsSync(path.join(process.cwd(), "public", "sample", "people", `${key}.${ext}`)))
+        return `/sample/people/${key}.${ext}`;
     } catch {
       // ignore (e.g. read-only FS)
     }
@@ -49,7 +50,10 @@ async function upsertTalent(
   if (existing) {
     // Backfill the illustrated avatar on older seeds (never overwrites a photo someone uploaded).
     // Backfill, or upgrade an illustrated avatar to a provided photo (never touches real uploads).
-    if (!existing.avatarUrl || (existing.avatarUrl.startsWith("/sample/") && existing.avatarUrl !== avatarUrl)) {
+    if (
+      !existing.avatarUrl ||
+      (existing.avatarUrl.startsWith("/sample/") && existing.avatarUrl !== avatarUrl)
+    ) {
       const profile = await db.talentProfile.update({ where: { id: existing.id }, data: { avatarUrl } });
       await db.user.update({ where: { id: user.id }, data: { image: avatarUrl } });
       return { user, profile };

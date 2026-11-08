@@ -4,6 +4,7 @@ import { redirect } from "@/i18n/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { NeedsManager } from "@/components/employer/needs-manager";
+import { st } from "@/lib/sample-i18n";
 
 export async function generateMetadata({
   params,
@@ -46,6 +47,7 @@ export default async function NeedsPage({
         initial={org.needs.map((n) => ({
           id: n.id,
           title: n.title,
+          displayTitle: st(n.title, locale),
           skills: n.skills,
           workMode: n.workMode,
           location: n.location ?? "",

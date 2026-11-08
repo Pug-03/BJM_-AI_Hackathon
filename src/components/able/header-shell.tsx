@@ -16,7 +16,10 @@ export function HeaderShell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
-    <header data-scrolled={scrolled || undefined} className={cn("sticky top-0 z-40", scrolled && "pointer-events-none")}>
+    <header
+      data-scrolled={scrolled || undefined}
+      className={cn("sticky top-0 z-40", scrolled && "pointer-events-none")}
+    >
       {/* Full-width bar background: fades out as the pill takes over (opacity only). */}
       <div
         aria-hidden

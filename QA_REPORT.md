@@ -232,3 +232,26 @@ Screenshots are written to `qa/screens/stage-<n>/<route>/<locale>-<theme>-<viewp
 - Pill placement is inconsistent.
 - Explore leaves empty width at 1440px and above.
 - The capsule grows with clip-path (outside the transform/opacity rule).
+
+## Release-readiness audit (independent agent)
+
+**Verdict:** READY WITH CAVEATS. All checks passed:
+
+- **Gates:** lint, typecheck, 50/50 unit tests, 157/158 E2E (one flake, which passed 24/24 on rerun).
+- **DEMO.md walkthrough:** OK on desktop and phone, in EN and TH.
+- **Main routes:** no 4xx/5xx and no failed requests.
+- **axe:** 0 violations.
+- **Lighthouse:** /en and /th scored 100/100/100/100 with CLS 0.
+- **Security:** security headers present; auth checks return 401.
+
+**Fixed after the audit:**
+
+1. Scroll reveals left content invisible with reduced motion or no JS. Fixed with `data-reveal` plus a CSS override (reduced motion, focus-within, `<noscript>`). Re-verified: 0 hidden elements in both modes.
+2. Offer cards reverted to English after the 5 s poll. The poll now localizes offers.
+3. The next-intl `ENVIRONMENT_FALLBACK` console error is gone: `timeZone` (Asia/Bangkok) and `now` are now set on the server and the client.
+4. The button hover lift jittered under a resting cursor. The lift is removed, keeping press feedback and colour transitions.
+5. The fixed E2E OTP is now also refused unless the app URL is localhost (so it can't be used on a non-Vercel production deploy).
+6. Position titles on `/th/needs` are Thai for display; the form still edits the stored title.
+7. DEMO.md now matches the app: "Roadmap" link, the Profile tab on phones, a sample profile for reviews.
+
+E2E after the fixes: 154/154.

@@ -29,6 +29,7 @@ export function Reveal({
   const reduced = useReducedMotion();
   return (
     <motion.div
+      data-reveal=""
       initial={reduced ? false : from[dir]}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.2, margin: "0px 0px -8% 0px" }}
@@ -58,6 +59,7 @@ export function RevealList({
   return (
     <Comp
       className={className}
+      data-reveal=""
       initial={reduced ? false : "hidden"}
       whileInView="shown"
       viewport={{ once: true, amount: 0.15 }}
